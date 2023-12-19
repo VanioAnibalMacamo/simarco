@@ -45,4 +45,13 @@ class PacienteController extends Controller
         // Redireciona para a página desejada após salvar o paciente
         return redirect('/pacienteIndex')->with('success', 'Paciente salvo com sucesso!');
     }
+
+    public function delete($id)
+    {
+        $paciente = Paciente::findOrFail($id);
+        $paciente->delete();
+    
+        return redirect('/pacienteIndex')->with('successDelete', 'Paciente excluído com sucesso!');
+    }
+    
 }

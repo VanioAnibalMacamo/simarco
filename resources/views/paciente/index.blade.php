@@ -3,8 +3,8 @@
 @section('title', 'Paciente')
 
 @section('content_header')
-    @if (session('mensagem'))
-        <div class="alert alert-success">{{ session('mensagem') }}</div>
+    @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
     @endif
     @if (session('successDelete'))
         <div class="alert alert-danger">{{ session('successDelete') }}</div>
