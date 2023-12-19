@@ -60,5 +60,31 @@ class PacienteController extends Controller
 
         return view('paciente.view', ['paciente' => $paciente]);
     }
+    
+    public function edit($id)
+    {
+        $paciente = Paciente::findOrFail($id);
+
+        return view('paciente.edit', ['paciente' => $paciente]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nome' => 'required|string|max:255',
+            'data_nascimento' => 'required|date',
+            'genero' => 'required|in:masculino,feminino,outro',
+            'numero_identificacao' => 'required|string|max:255',
+            'endereco' => 'required|string|max:255',
+            'telefone' => 'required|string|max:20',
+            'email' => 'required|email|max:255',
+        ]);
+
+        $paciente = Paciente::findOrFail($id);
+        $paciente->update($request->all());
+
+        return redirect('/pacienteIndex')->with('success', 'Paciente atualizado com sucesso!');
+    }
+
 
 }

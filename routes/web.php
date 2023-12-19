@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PacienteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,12 +23,12 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::get('/pacienteIndex', [App\Http\Controllers\PacienteController::class, 'index'])->name('pacienteIndex');
-Route::get('/pacienteCreate', [App\Http\Controllers\PacienteController::class, 'create'])->name('pacienteCreate');
-Route::post('/savePaciente', [App\Http\Controllers\PacienteController::class, 'savePaciente']);
-Route::get('/update_paciente/{id}', [App\Http\Controllers\PacienteController::class, 'update_view']);
-Route::post('/updatePaciente/{id}', [App\Http\Controllers\PacienteController::class, 'update']);
-Route::get('/visualizar_paciente/{id}', [App\Http\Controllers\PacienteController::class, 'show']);
-Route::post('/visualizarPaciente/{id}', [App\Http\Controllers\PacienteController::class, 'visualizar']);
-Route::delete('/paciente/{id}', 'App\Http\Controllers\PacienteController@delete')->name('pacientes.delete');
+Route::get('/pacienteIndex', [PacienteController::class, 'index'])->name('pacienteIndex');
+Route::get('/pacienteCreate', [PacienteController::class, 'create'])->name('pacienteCreate');
+Route::post('/savePaciente', [PacienteController::class, 'savePaciente']);
+Route::get('/update_paciente/{id}', [PacienteController::class, 'edit'])->name('pacientes.edit');
+Route::post('/update_paciente/{id}', [PacienteController::class, 'update'])->name('pacientes.update');
+Route::get('/visualizar_paciente/{id}', [PacienteController::class, 'show']);
+Route::post('/visualizarPaciente/{id}', [PacienteController::class, 'visualizar']);
+Route::delete('/paciente/{id}', 'PacienteController@delete')->name('pacientes.delete');
 
