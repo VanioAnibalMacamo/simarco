@@ -16,7 +16,6 @@
         <!-- form start -->
         <form action="{{ route('pacientes.update', ['id' => $paciente->id]) }}" method="POST" enctype="multipart/form-data">
             @csrf
-            @method('PUT')
             <div class="card-body">
                 <div class="form-group">
                     <label for="nome">Nome Completo</label>
