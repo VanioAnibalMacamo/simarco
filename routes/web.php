@@ -27,7 +27,7 @@ Route::get('/pacienteCreate', [App\Http\Controllers\PacienteController::class, '
 Route::post('/savePaciente', [App\Http\Controllers\PacienteController::class, 'savePaciente']);
 Route::get('/update_paciente/{id}', [App\Http\Controllers\PacienteController::class, 'update_view']);
 Route::post('/updatePaciente/{id}', [App\Http\Controllers\PacienteController::class, 'update']);
-Route::get('/visualizar_paciente/{id}', [App\Http\Controllers\PacienteController::class, 'visualizar_view']);
+Route::get('/visualizar_paciente/{id}', [App\Http\Controllers\PacienteController::class, 'show']);
 Route::post('/visualizarPaciente/{id}', [App\Http\Controllers\PacienteController::class, 'visualizar']);
 Route::delete('/paciente/{id}', 'App\Http\Controllers\PacienteController@delete')->name('pacientes.delete');
 

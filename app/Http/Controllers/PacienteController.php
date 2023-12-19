@@ -54,4 +54,11 @@ class PacienteController extends Controller
         return redirect('/pacienteIndex')->with('successDelete', 'Paciente excluído com sucesso!');
     }
     
+    public function show($id)
+    {
+        $paciente = Paciente::findOrFail($id);
+
+        return view('paciente.view', ['paciente' => $paciente]);
+    }
+
 }
