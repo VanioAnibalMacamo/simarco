@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PacienteController;
+use App\Http\Controllers\EspecialidadeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,3 +32,10 @@ Route::get('/visualizar_paciente/{id}', [PacienteController::class, 'show']);
 Route::post('/visualizarPaciente/{id}', [PacienteController::class, 'visualizar']);
 Route::delete('/paciente/{id}', 'App\Http\Controllers\PacienteController@delete')->name('pacientes.delete');
 
+Route::get('/especialidadeIndex', [EspecialidadeController::class, 'index'])->name('especialidadeIndex');
+Route::get('/especialidadeCreate', [EspecialidadeController::class, 'create'])->name('especialidadeCreate');
+Route::post('/saveEspecialidade', [EspecialidadeController::class, 'store'])->name('saveEspecialidade');
+Route::get('/update_especialidade/{id}', [EspecialidadeController::class, 'edit'])->name('especialidades.edit');
+Route::post('/update_especialidade/{id}', [EspecialidadeController::class, 'update'])->name('especialidades.update');
+Route::get('/visualizar_especialidade/{id}', [EspecialidadeController::class, 'show']);
+Route::delete('/especialidade/{id}', [EspecialidadeController::class, 'destroy'])->name('especialidades.delete');
