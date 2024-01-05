@@ -324,6 +324,43 @@ return [
             'url'  => 'pacienteIndex',
             'icon' => 'fas fa-fw fa-user-injured',
         ],
+        [
+            'text' => ' Médicos',
+            'url'  => 'medicoIndex',
+            'icon' => 'fas fa-fw fa-user-md',
+        ],
+        
+
+
+
+
+
+        [
+            'text'    => 'Parametrização',
+            'icon'    => 'fas fa-tools',
+
+            'submenu' => [
+                [
+                    'text'    => 'Médicos',
+                    'url'     => '#',
+                   'icon' => 'fas fa-fw fa-user-md',
+                    'submenu' => [
+                        [
+                            'text' => 'Especialidade',
+                            'url'  => 'especialidadeIndex',
+
+                        ],
+                    ],
+                ],
+
+                [
+                    'text' => 'Cargos',
+                    'url'  => 'cargoIndex',
+                    'icon' => 'fas fa-briefcase',
+                ],
+            ],
+        ],
+
        
         
         ['header' => 'labels'],
