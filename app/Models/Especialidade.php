@@ -14,4 +14,9 @@ class Especialidade extends Model
     ];
 
     public $timestamps = false;
+
+    public function medicos()
+    {
+        return $this->hasMany(Medico::class);
+    }
 }
