@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\DisponibilidadeEnum;
+use App\Enums\GeneroEnum;
 use App\Models\Especialidade;
 use App\Models\Medico;
 use Illuminate\Http\Request;
@@ -21,15 +22,11 @@ class MedicoController extends Controller
     {
         $especialidades = Especialidade::all();
         $disponibilidades = DisponibilidadeEnum::getConstants();
+        $generos = GeneroEnum::getConstants();
 
-        return view('medico.create', compact('especialidades', 'disponibilidades'));
+        return view('medico.create', compact('especialidades', 'disponibilidades', 'generos'));
     }
 
-
-
-
-
-    // MedicoController.php
     public function saveMedico(Request $request)
     {
 
@@ -38,6 +35,7 @@ class MedicoController extends Controller
             'especialidade_id' => 'required|exists:especialidades,id',
             'numero_identificacao' => 'required|string|max:50',
             'disponibilidade' => 'required|string|max:255',
+            'genero' => 'required|in:' . implode(',', GeneroEnum::getConstants()),
         ]);
 
         Medico::create([
@@ -45,6 +43,7 @@ class MedicoController extends Controller
             'especialidade_id' => $request->input('especialidade_id'),
             'numero_identificacao' => $request->input('numero_identificacao'),
             'disponibilidade' => $request->input('disponibilidade'),
+            'genero' => $request->input('genero'),
         ]);
 
         return redirect('/medicoIndex')->with('success', 'Médico salvo com sucesso!');
@@ -70,9 +69,11 @@ class MedicoController extends Controller
         $medico = Medico::findOrFail($id);
         $especialidades = Especialidade::all();
         $disponibilidades = DisponibilidadeEnum::getConstants();
+        $generos = GeneroEnum::getConstants();
 
-        return view('medico.edit', compact('medico', 'especialidades', 'disponibilidades'));
+        return view('medico.edit', compact('medico', 'especialidades', 'disponibilidades', 'generos'));
     }
+
 
 
 
@@ -83,6 +84,7 @@ class MedicoController extends Controller
             'especialidade_id' => 'required|exists:especialidades,id',
             'numero_identificacao' => 'required|string|max:255',
             'disponibilidade' => 'required|string|max:255',
+            'genero' => 'required|in:' . implode(',', GeneroEnum::getConstants()),
         ]);
 
         $medico = Medico::findOrFail($id);

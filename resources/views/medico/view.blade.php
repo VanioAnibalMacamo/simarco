@@ -34,6 +34,10 @@
                     <input type="text" class="form-control" id="disponibilidade" name='disponibilidade' value="{{ ucfirst($medico->disponibilidade) }}" readonly>
                 </div>
             </div>
+            <div class="form-group col-md-4">
+                <label for="genero">Gênero</label>
+                <input type="text" class="form-control" id="genero" name="genero" value="{{ $medico->genero }}" readonly>
+            </div>
         </div>
         <div class="card-footer">
             <a href="{{ url('/medicoIndex') }}" type="button" class="btn btn-warning">Voltar</a>

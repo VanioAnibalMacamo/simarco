@@ -14,6 +14,7 @@ class Medico extends Model
         'especialidade_id', // Corrigido para refletir a chave estrangeira
         'numero_identificacao',
         'disponibilidade',
+        'genero',
     ];
 
     public function especialidade()

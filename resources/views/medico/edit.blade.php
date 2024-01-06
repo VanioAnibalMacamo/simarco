@@ -44,10 +44,7 @@
                                 </option>
                             @endforeach
                         </select>
-                    </div>
-                    
-                    
-                    
+                    </div> 
                     
                     <div class="form-group col-md-4">
                         <label for="numero_identificacao">Número de Identificação</label>
@@ -61,6 +58,16 @@
                             @foreach ($disponibilidades as $value)
                                 <option value="{{ $value }}" {{ $medico->disponibilidade == $value ? 'selected' : '' }}>
                                     {{ ucfirst($value) }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="genero">Gênero</label>
+                        <select class="form-control" id="genero" name="genero">
+                            @foreach($generos as $genero)
+                                <option value="{{ $genero }}" {{ $medico->genero == $genero ? 'selected' : '' }}>
+                                    {{ ucfirst($genero) }}
                                 </option>
                             @endforeach
                         </select>
