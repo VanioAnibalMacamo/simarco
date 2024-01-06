@@ -40,8 +40,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="endereco">Disponibilidade</label>
-                    <input type="text" class="form-control" id="endereco" name='endereco' placeholder="Disponibilidade">
+                    <label for="disponibilidade">Disponibilidade</label>
+                    <input type="text" class="form-control" id="disponibilidade" name='disponibilidade' placeholder="Disponibilidade">
                 </div>
                
             </div>

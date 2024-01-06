@@ -48,7 +48,7 @@
                     <tr>
                         <td>{{ $loop->index + 1 }}</td>
                         <td>{{ $medico->nome }}</td>
-                        <td>{{ $medico->especialidade }}</td>
+                        <td>{{ $medico->especialidade->descricao }}</td>
                         <td>{{ $medico->numero_identificacao }}</td> 
                         <td>{{ $medico->disponibilidade }}</td> 
                        
@@ -66,7 +66,7 @@
                 @endforeach
 
                 @if ($count > 1)
-                    {{ $pacientes->links('pagination::bootstrap-4') }}
+                    {{ $medicos->links('pagination::bootstrap-4') }}
                 @endif
             </tbody>
         </table>
