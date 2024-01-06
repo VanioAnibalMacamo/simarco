@@ -361,14 +361,6 @@ return [
             ],
         ],
 
-       
-        
-        ['header' => 'labels'],
-        [
-            'text'       => 'important',
-            'icon_color' => 'red',
-            'url'        => '#',
-        ],
         
         
     ],
