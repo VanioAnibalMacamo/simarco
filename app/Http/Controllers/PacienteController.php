@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Paciente;
+use App\Enums\GeneroEnum;
 
 class PacienteController extends Controller
 {
@@ -15,7 +16,9 @@ class PacienteController extends Controller
     
     public function create()
     {
-        return view('paciente.create'); 
+        $generos = GeneroEnum::getConstants();
+
+        return view('paciente.create', compact('generos')); 
     }
 
     public function savePaciente(Request $request)

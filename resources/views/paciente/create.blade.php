@@ -29,9 +29,10 @@
                     <div class="form-group col-md-4">
                         <label for="genero">Gênero</label>
                         <select class="form-control" id="genero" name="genero">
-                            <option value="masculino">Masculino</option>
-                            <option value="feminino">Feminino</option>
-                            <option value="outro">Outro</option>
+                            <option value="">Selecione um Gênero</option>
+                            @foreach ($generos as $value)
+                                <option value="{{ $value }}">{{ ucfirst($value) }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group col-md-4">
