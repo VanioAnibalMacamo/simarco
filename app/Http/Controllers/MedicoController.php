@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\DisponibilidadeEnum;
 use App\Models\Especialidade;
 use App\Models\Medico;
 use Illuminate\Http\Request;
+
 
 
 class MedicoController extends Controller
@@ -18,8 +20,14 @@ class MedicoController extends Controller
     public function create()
     {
         $especialidades = Especialidade::all();
-        return view('medico.create', compact('especialidades'));
+        $disponibilidades = DisponibilidadeEnum::getConstants();
+
+        return view('medico.create', compact('especialidades', 'disponibilidades'));
     }
+
+
+
+
 
     // MedicoController.php
     public function saveMedico(Request $request)
@@ -60,9 +68,13 @@ class MedicoController extends Controller
     public function edit($id)
     {
         $medico = Medico::findOrFail($id);
+        $especialidades = Especialidade::all();
+        $disponibilidades = DisponibilidadeEnum::getConstants();
 
-        return view('medico.edit', ['medico' => $medico]);
+        return view('medico.edit', compact('medico', 'especialidades', 'disponibilidades'));
     }
+
+
 
     public function update(Request $request, $id)
     {

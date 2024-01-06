@@ -45,7 +45,7 @@ Route::get('/medicoIndex', [MedicoController::class, 'index'])->name('medicoInde
 Route::get('/medicoCreate', [MedicoController::class, 'create'])->name('medicoCreate');
 Route::post('/saveMedico', [MedicoController::class, 'saveMedico']);
 Route::get('/update_medico/{id}', [MedicoController::class, 'edit'])->name('medicos.edit');
-Route::post('/update_medico/{id}', [MedicoController::class, 'update'])->name('medicos.update');
+Route::put('/update_medico/{id}', [MedicoController::class, 'update'])->name('medicos.update');
 Route::get('/visualizar_medico/{id}', [MedicoController::class, 'show']);
 Route::post('/visualizarMedico/{id}', [MedicoController::class, 'visualizar']);
-Route::delete('/medico/{id}', [MedicoController::class, 'destroy'])->name('medicos.delete');
+Route::delete('/medico/{id}', [MedicoController::class, 'delete'])->name('medicos.delete');

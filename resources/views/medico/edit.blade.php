@@ -15,7 +15,19 @@
         <!-- /.card-header -->
         <!-- form start -->
         <form action="{{ route('medicos.update', ['id' => $medico->id]) }}" method="POST" enctype="multipart/form-data">
+            @method('PUT')
             @csrf
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="card-body">
                 <div class="form-group">
                     <label for="nome">Nome Completo</label>
@@ -28,21 +40,33 @@
                             <option value="">Selecione uma Especialidade</option>
                             @foreach($especialidades as $especialidade)
                                 <option value="{{ $especialidade->id }}" {{ $medico->especialidade_id == $especialidade->id ? 'selected' : '' }}>
-                                    {{ $especialidade->nome }}
+                                    {{ $especialidade->descricao }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
+                    
+                    
+                    
+                    
                     <div class="form-group col-md-4">
                         <label for="numero_identificacao">Número de Identificação</label>
                         <input type="text" class="form-control" id="numero_identificacao" name='numero_identificacao' value="{{ $medico->numero_identificacao }}">
                     </div>
+                    
+                    <div class="form-group col-md-4">
+                        <label for="disponibilidade">Disponibilidade</label>
+                        <select class="form-control" id="disponibilidade" name="disponibilidade">
+                            <option value="">Selecione a Disponibilidade</option>
+                            @foreach ($disponibilidades as $value)
+                                <option value="{{ $value }}" {{ $medico->disponibilidade == $value ? 'selected' : '' }}>
+                                    {{ ucfirst($value) }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
                 </div>
-                <div class="form-group">
-                    <label for="disponibilidade">Disponibilidade</label>
-                    <input type="text" class="form-control" id="disponibilidade" name='disponibilidade' value="{{ $medico->disponibilidade }}">
-                </div>
-                <!-- Adicione mais campos conforme necessário -->
             </div>
             <div class="card-footer">
                 <input type="submit" class="btn btn-primary" value='Atualizar'>

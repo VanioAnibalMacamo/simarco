@@ -38,12 +38,18 @@
                         <label for="numero_identificacao">Número de Identificação</label>
                         <input type="text" class="form-control" id="numero_identificacao" name='numero_identificacao' placeholder="Ex: 123456789">
                     </div>
-                </div>
-                <div class="form-group">
+                
+                
+                <div class="form-group col-md-4">
                     <label for="disponibilidade">Disponibilidade</label>
-                    <input type="text" class="form-control" id="disponibilidade" name='disponibilidade' placeholder="Disponibilidade">
+                    <select class="form-control" id="disponibilidade" name="disponibilidade">
+                        <option value="">Selecione a Disponibilidade</option>
+                        @foreach ($disponibilidades as $value)
+                            <option value="{{ $value }}">{{ ucfirst($value) }}</option>
+                        @endforeach
+                    </select>
                 </div>
-               
+            </div>
             </div>
             <div class="card-footer">
                 <input type="submit" class="btn btn-primary" value='Salvar'>

@@ -52,7 +52,7 @@
                 <!-- Adicione mais campos conforme necessário -->
             </div>
             <div class="card-footer">
-                <input type="submit" class="btn btn-primary" value='Salvar'>
+                <input type="submit" class="btn btn-primary" value='Actualizar'>
                 <a href="{{ url('/pacienteIndex') }}" type="button" class="btn btn-warning">Cancelar</a>
             </div>
         </form>

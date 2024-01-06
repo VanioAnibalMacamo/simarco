@@ -19,19 +19,21 @@
                 <label for="nome">Nome Completo</label>
                 <input type="text" class="form-control" id="nome" name='nome' value="{{ $medico->nome }}" readonly>
             </div>
-            <div class="form-group col-md-4">
-                <label for="especialidade_id">Especialidade</label>
-                <input type="text" class="form-control" id="especialidade_id" name="especialidade_id" value="{{ $medico->especialidade->nome }}" readonly>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="especialidade_id">Especialidade</label>
+                    <input type="text" class="form-control" id="especialidade_id" name='especialidade_id' value="{{ $medico->especialidade->descricao }}" readonly>
+                </div>
+                
+                <div class="form-group col-md-4">
+                    <label for="numero_identificacao">Número de Identificação</label>
+                    <input type="text" class="form-control" id="numero_identificacao" name='numero_identificacao' value="{{ $medico->numero_identificacao }}" readonly>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="disponibilidade">Disponibilidade</label>
+                    <input type="text" class="form-control" id="disponibilidade" name='disponibilidade' value="{{ ucfirst($medico->disponibilidade) }}" readonly>
+                </div>
             </div>
-            <div class="form-group col-md-4">
-                <label for="numero_identificacao">Número de Identificação</label>
-                <input type="text" class="form-control" id="numero_identificacao" name='numero_identificacao' value="{{ $medico->numero_identificacao }}" readonly>
-            </div>
-            <div class="form-group">
-                <label for="endereco">Disponibilidade</label>
-                <input type="text" class="form-control" id="endereco" name='endereco' value="{{ $medico->endereco }}" readonly>
-            </div>
-        
         </div>
         <div class="card-footer">
             <a href="{{ url('/medicoIndex') }}" type="button" class="btn btn-warning">Voltar</a>
