@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Medico extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'nome',
+        'especialidade_id', // Corrigido para refletir a chave estrangeira
+        'numero_identificacao',
+        'disponibilidade',
+    ];
+
+    public function especialidade()
+    {
+        return $this->belongsTo(Especialidade::class);
+    }
 }

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\EspecialidadeController;
+use App\Http\Controllers\MedicoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,3 +40,12 @@ Route::get('/update_especialidade/{id}', [EspecialidadeController::class, 'edit'
 Route::post('/update_especialidade/{id}', [EspecialidadeController::class, 'update'])->name('especialidades.update');
 Route::get('/visualizar_especialidade/{id}', [EspecialidadeController::class, 'show']);
 Route::delete('/especialidade/{id}', [EspecialidadeController::class, 'destroy'])->name('especialidades.delete');
+
+Route::get('/medicoIndex', [MedicoController::class, 'index'])->name('medicoIndex');
+Route::get('/medicoCreate', [MedicoController::class, 'create'])->name('medicoCreate');
+Route::post('/saveMedico', [MedicoController::class, 'saveMedico']);
+Route::get('/update_medico/{id}', [MedicoController::class, 'edit'])->name('medicos.edit');
+Route::post('/update_medico/{id}', [MedicoController::class, 'update'])->name('medicos.update');
+Route::get('/visualizar_medico/{id}', [MedicoController::class, 'show']);
+Route::post('/visualizarMedico/{id}', [MedicoController::class, 'visualizar']);
+Route::delete('/medico/{id}', [MedicoController::class, 'destroy'])->name('medico.delete');
