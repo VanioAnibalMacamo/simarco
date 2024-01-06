@@ -329,40 +329,57 @@ return [
             'url'  => 'medicoIndex',
             'icon' => 'fas fa-fw fa-user-md',
         ],
-        
 
 
+        [
+            'text' => ' Consultas',
+            'url'  => 'consultaIndex',
+            'icon' => 'fas fa-fw fa-stethoscope',
+        ],
 
 
 
         [
             'text'    => 'Parametrização',
             'icon'    => 'fas fa-tools',
-
             'submenu' => [
                 [
                     'text'    => 'Médicos',
                     'url'     => '#',
-                   'icon' => 'fas fa-fw fa-user-md',
+                    'icon'    => 'fas fa-fw fa-user-md',
                     'submenu' => [
                         [
                             'text' => 'Especialidade',
                             'url'  => 'especialidadeIndex',
-
                         ],
+                        // submenu de Médicos 
                     ],
                 ],
-
+                [
+                    'text'    => 'Consultas',
+                    'url'     => '#',
+                    'icon'    => 'fas fa-fw fa-user-md',
+                    'submenu' => [
+                        [
+                            'text' => 'Status Consulta',
+                            'url'  => 'statusIndex',
+                        ],
+                        //  submenu de Consultas 
+                    ],
+                ],
                 [
                     'text' => 'Cargos',
                     'url'  => 'cargoIndex',
                     'icon' => 'fas fa-briefcase',
                 ],
+                // submenu de Parametrização 
             ],
         ],
 
-        
-        
+
+
+
+
     ],
 
     /*
