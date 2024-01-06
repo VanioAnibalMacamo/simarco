@@ -24,21 +24,21 @@ class MedicoController extends Controller
     // MedicoController.php
     public function saveMedico(Request $request)
     {
-        /*
+
         $request->validate([
             'nome' => 'required|string|max:255',
             'especialidade_id' => 'required|exists:especialidades,id',
             'numero_identificacao' => 'required|string|max:50',
             'disponibilidade' => 'required|string|max:255',
         ]);
-        */
+
         Medico::create([
             'nome' => $request->input('nome'),
             'especialidade_id' => $request->input('especialidade_id'),
             'numero_identificacao' => $request->input('numero_identificacao'),
             'disponibilidade' => $request->input('disponibilidade'),
         ]);
-        
+
         return redirect('/medicoIndex')->with('success', 'Médico salvo com sucesso!');
     }
 
