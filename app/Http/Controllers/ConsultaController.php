@@ -4,22 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Consulta;
-use App\Enums\DisponibilidadeEnum;
 use App\Models\StatusConsulta;
+use App\Enums\StatusConsultaEnum;
 
 class ConsultaController extends Controller
 {
     public function index()
     {
-        $consultas = Consulta::paginate(8);
+        $consultas = Consulta::with('statusConsulta')->paginate(8);
         return view('consulta.index', ['consultas' => $consultas]);
     }
+
 
     public function create()
     {
         $statusConsultas = StatusConsulta::all();
         return view('consulta.create', compact('statusConsultas'));
     }
+
 
     public function saveConsulta(Request $request)
     {
@@ -31,6 +33,7 @@ class ConsultaController extends Controller
             'numero_identificacao' => 'required|string|max:50',
         ]);
 
+        // Cria a consulta
         Consulta::create([
             'data_consulta' => $request->input('data_consulta'),
             'duracao' => $request->input('duracao'),
@@ -42,6 +45,9 @@ class ConsultaController extends Controller
         return redirect('/consultaIndex')->with('success', 'Consulta salva com sucesso!');
     }
 
+
+
+
     public function delete($id)
     {
         $consulta = Consulta::findOrFail($id);
@@ -50,22 +56,22 @@ class ConsultaController extends Controller
         return redirect('/consultaIndex')->with('successDelete', 'Consulta excluída com sucesso!');
     }
 
-
     public function show($id)
     {
         $consulta = Consulta::findOrFail($id);
+        $statusConsulta = $consulta->statusConsulta;
 
-        return view('consulta.view', ['consulta' => $consulta]);
+        return view('consulta.view', ['consulta' => $consulta, 'statusConsulta' => $statusConsulta]);
     }
 
     public function edit($id)
     {
         $consulta = Consulta::findOrFail($id);
         $statusConsultas = StatusConsulta::all();
-        $disponibilidades = DisponibilidadeEnum::getConstants();
 
 
-        return view('consulta.edit', compact('consulta', 'statusConsultas', 'disponibilidades'));
+
+        return view('consulta.edit', compact('consulta', 'statusConsultas'));
     }
 
     public function update(Request $request, $id)

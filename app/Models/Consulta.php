@@ -17,6 +17,7 @@ class Consulta extends Model
         'numero_identificacao',
     ];
 
+    // Relacionamento com StatusConsulta
     public function statusConsulta()
     {
         return $this->belongsTo(StatusConsulta::class, 'id_status');

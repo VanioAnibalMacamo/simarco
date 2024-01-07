@@ -58,8 +58,9 @@
                 @endforeach
 
                 @if ($count > 1)
-                    {{ $estado->links('pagination::bootstrap-4') }}
-                @endif
+                {{ $status->links('pagination::bootstrap-4') }}
+            @endif
+            
             </tbody>
         </table>
     </div>
@@ -83,7 +84,7 @@
             event.preventDefault();
 
             Swal.fire({
-                title: 'Tem certeza que deseja excluir a Especialidade ' + descricao + '?',
+                title: 'Tem certeza que deseja excluir o status ' + descricao + '?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',

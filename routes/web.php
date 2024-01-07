@@ -56,7 +56,7 @@ Route::get('/consultaIndex', [ConsultaController::class, 'index'])->name('consul
 Route::get('/consultaCreate', [ConsultaController::class, 'create'])->name('consultaCreate');
 Route::post('/saveConsulta', [ConsultaController::class, 'saveConsulta']);
 Route::get('/update_consulta/{id}', [ConsultaController::class, 'edit'])->name('consultas.edit');
-Route::put('/update_consulta/{id}', [ConsultaController::class, 'update'])->name('consultas.update');
+Route::post('/update_consulta/{id}', [ConsultaController::class, 'update'])->name('consultas.update');
 Route::get('/visualizar_consulta/{id}', [ConsultaController::class, 'show']);
 Route::delete('/consulta/{id}', [ConsultaController::class, 'delete'])->name('consultas.delete');
 

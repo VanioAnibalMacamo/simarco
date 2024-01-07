@@ -3,7 +3,7 @@
 @section('title', 'Cadastrar Status da Consulta')
 
 @section('content_header')
-    <h1> Cadastrar Status da Consulta</h1>
+    <h1>Cadastrar Status da Consulta</h1>
 @stop
 
 @section('content')
@@ -18,10 +18,9 @@
             @csrf
             <div class="card-body">
                 <div class="form-group">
-                    <label for="nome">Descrição</label>
+                    <label for="descricao">Descrição</label>
                     <input type="text" class="form-control" id="descricao" name='descricao' placeholder="Digite a Descrição">
                 </div>
-                              
             </div>
             <div class="card-footer">
                 <input type="submit" class="btn btn-primary" value='Salvar'>

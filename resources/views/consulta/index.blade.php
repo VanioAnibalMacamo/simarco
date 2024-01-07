@@ -31,7 +31,7 @@
                     <th style="width: 10px">#</th>
                     <th>Data_consulta</th>
                     <th>Duracao</th>
-                    <th>id_status</th>
+                    <th>Status Consulta</th>
                     <th>observacoes</th> 
                     <th>Número de Identificação</th>
                 </tr>
@@ -49,7 +49,7 @@
                         <td>{{ $loop->index + 1 }}</td>
                         <td>{{ $consulta->data_consulta }}</td>
                         <td>{{ $consulta->duracao }}</td>
-                        <td>{{ $consulta->id_status }}</td>
+                        <td>{{ $consulta->statusConsulta->descricao }}</td>
                         <td>{{ $consulta->observacoes }}</td> 
                         <td>{{ $consulta->numero_identificacao }}</td> 
                         <td>
@@ -59,7 +59,7 @@
                             <form id="form-excluir-{{ $consulta->id }}" action="{{ route('consultas.delete', ['id' => $consulta->id]) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event, '{{ $consulta->nome }}', {{ $consulta->id }})"><i class="fas fa-trash"></i></button>
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event, '{{ $consulta->numero_identificacao }}', {{ $consulta->id }})"><i class="fas fa-trash"></i></button>
                             </form>
                         </td>
                     </tr>
@@ -91,7 +91,7 @@
             event.preventDefault();
 
             Swal.fire({
-                title: 'Tem certeza que deseja excluir o Paciente ' + nome + '?',
+                title: 'Tem certeza que deseja excluir a consulta ' + nome + '?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',

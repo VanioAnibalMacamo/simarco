@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Editar Especialidade')
+@section('title', 'Editar Status da Consulta')
 
 @section('content_header')
     <h1>Editar Status da Consulta</h1>
@@ -14,12 +14,12 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form action="{{ route('status.update', $estado->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('status.update', $status->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
                 <div class="form-group">
                     <label for="descricao">Descrição</label>
-                    <input type="text" class="form-control" id="descricao" name='descricao' placeholder="Digite a Descrição" value="{{ old('descricao', $estado->descricao) }}">
+                    <input type="text" class="form-control" id="descricao" name='descricao' placeholder="Digite a Descrição" value="{{ old('descricao', $status->descricao) }}">
                 </div>
             </div>
             <div class="card-footer">

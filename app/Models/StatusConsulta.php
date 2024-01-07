@@ -13,6 +13,7 @@ class StatusConsulta extends Model
         'descricao',
     ];
 
+    // Relacionamento inverso com Consulta
     public function consultas()
     {
         return $this->hasMany(Consulta::class, 'id_status');

@@ -25,6 +25,7 @@
                     <label for="duracao">Duração</label>
                     <input type="text" class="form-control" id="duracao" name='duracao' placeholder="Digite a duração da consulta...">
                 </div>
+                
                 <div class="form-group">
                     <label for="id_status">Status da Consulta</label>
                     <select class="form-control" id="id_status" name="id_status">
@@ -33,6 +34,10 @@
                             <option value="{{ $status->id }}">{{ $status->descricao }}</option>
                         @endforeach
                     </select>
+                </div>
+                
+                    
+                       
                 </div>
                 <div class="form-group">
                     <label for="observacoes">Observações</label>
