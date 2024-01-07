@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\EspecialidadeController;
 use App\Http\Controllers\MedicoController;
+use App\Http\Controllers\ConsultaController;
+use App\Http\Controllers\StatusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,3 +51,19 @@ Route::put('/update_medico/{id}', [MedicoController::class, 'update'])->name('me
 Route::get('/visualizar_medico/{id}', [MedicoController::class, 'show']);
 Route::post('/visualizarMedico/{id}', [MedicoController::class, 'visualizar']);
 Route::delete('/medico/{id}', [MedicoController::class, 'delete'])->name('medicos.delete');
+
+Route::get('/consultaIndex', [ConsultaController::class, 'index'])->name('consultaIndex');
+Route::get('/consultaCreate', [ConsultaController::class, 'create'])->name('consultaCreate');
+Route::post('/saveConsulta', [ConsultaController::class, 'saveConsulta']);
+Route::get('/update_consulta/{id}', [ConsultaController::class, 'edit'])->name('consultas.edit');
+Route::put('/update_consulta/{id}', [ConsultaController::class, 'update'])->name('consultas.update');
+Route::get('/visualizar_consulta/{id}', [ConsultaController::class, 'show']);
+Route::delete('/consulta/{id}', [ConsultaController::class, 'delete'])->name('consultas.delete');
+
+Route::get('/statusIndex', [StatusController::class, 'index'])->name('statusIndex');
+Route::get('/statusCreate', [StatusController::class, 'create'])->name('statusCreate');
+Route::post('/saveStatus', [StatusController::class, 'store'])->name('saveStatus');
+Route::get('/update_status/{id}', [StatusController::class, 'edit'])->name('status.edit');
+Route::post('/update_status/{id}', [StatusController::class, 'update'])->name('status.update');
+Route::get('/visualizar_status/{id}', [StatusController::class, 'show']);
+Route::delete('/status/{id}', [StatusController::class, 'destroy'])->name('status.delete');
