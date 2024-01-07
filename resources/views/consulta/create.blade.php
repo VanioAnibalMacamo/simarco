@@ -17,16 +17,23 @@
         <form action="{{ url('saveConsulta') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
-                <div class="form-group">
-                    <label for="data_consulta">Data da Consulta</label>
-                    <input type="date" class="form-control" id="data_consulta" name='data_consulta'>
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label for="data_consulta">Data da Consulta</label>
+                        <input type="date" class="form-control" id="data_consulta" name='data_consulta'>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="duracao">Duração</label>
+                        <input type="text" class="form-control" id="duracao" name='duracao' placeholder="Digite a duração da consulta...">
+                    </div>
+                    
+                    <div class="form-group col-md-4">
+                        <label for="observacoes">Observações</label>
+                        <textarea class="form-control h-100" id="observacoes" name='observacoes' placeholder="Digite as observações da consulta..."></textarea>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="duracao">Duração</label>
-                    <input type="text" class="form-control" id="duracao" name='duracao' placeholder="Digite a duração da consulta...">
-                </div>
-                
-                <div class="form-group">
+                <div class="row">
+                <div class="form-group col-md-4">
                     <label for="id_status">Status da Consulta</label>
                     <select class="form-control" id="id_status" name="id_status">
                         <option value="">Selecione um Status</option>
@@ -36,18 +43,13 @@
                     </select>
                 </div>
                 
-                    
-                       
-                </div>
-                <div class="form-group">
-                    <label for="observacoes">Observações</label>
-                    <textarea class="form-control" id="observacoes" name='observacoes' placeholder="Digite as observações da consulta..."></textarea>
-                </div>
-                <div class="form-group">
+
+                <div class="form-group col-md-4">
                     <label for="numero_identificacao">Número de Identificação</label>
                     <input type="text" class="form-control" id="numero_identificacao" name='numero_identificacao' placeholder="Digite o número de identificação...">
                 </div>
             </div>
+        </div>
             <div class="card-footer">
                 <input type="submit" class="btn btn-primary" value='Salvar'>
                 <a href="{{ url('/consultaIndex') }}" type="button" class="btn btn-warning">Cancelar</a>

@@ -15,23 +15,26 @@
         <!-- /.card-header -->
         <!-- form start -->
         <div class="card-body">
+            <div class="row">
             <div class="form-group">
-                <label for="data_consulta">Data da Consulta</label>
+                <label for="data_consulta col-md-4">Data da Consulta</label>
                 <input type="text" class="form-control" id="data_consulta" name='data_consulta' value="{{ $consulta->data_consulta }}" readonly>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-4">
                 <label for="duracao">Duração</label>
                 <input type="text" class="form-control" id="duracao" name='duracao' value="{{ $consulta->duracao }}" readonly>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-4">
                 <label for="id_status">Status da Consulta</label>
                 <input type="text" class="form-control" id="id_status" name='id_status' value="{{ $consulta->statusConsulta->descricao }}" readonly>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-4">
                 <label for="observacoes">Observações</label>
-                <input type="text" class="form-control" id="observacoes" name='observacoes' value="{{ $consulta->observacoes }}" readonly>
+                <textarea class="form-control" id="observacoes" name='observacoes' readonly>{{ $consulta->observacoes }}</textarea>
             </div>
-            <div class="form-group">
+        </div>
+
+            <div class="form-group col-md-4">
                 <label for="numero_identificacao">Número de Identificação</label>
                 <input type="text" class="form-control" id="numero_identificacao" name='numero_identificacao' value="{{ $consulta->numero_identificacao }}" readonly>
             </div>
