@@ -29,7 +29,7 @@
                    
                     <div class="form-group col-md-4">
                         <label for="observacoes">Observações</label>
-                        <textarea class="form-control h-100" id="observacoes" name='observacoes' placeholder="Digite as observações da consulta..."></textarea>
+                        <textarea class="form-control h-98" id="observacoes" name='observacoes' placeholder="Digite as observações da consulta..."></textarea>
                     </div>
                 </div>
                 <div class="row">
@@ -48,8 +48,27 @@
                     <input type="time" class="form-control" id="hora_fim" name="hora_fim">
                 </div>
                 
+                <div class="form-group col-md-4">
+                    <label for="id_paciente">Paciente</label>
+                    <select class="form-control" id="id_paciente" name="id_paciente">
+                        <option value="">Selecione um paciente</option>
+                        @foreach ($pacientes as $paciente)
+                            <option value="{{ $paciente->id }}">{{ $paciente->nome }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 
             </div>
+            <div class="form-group col-md-4">
+                <label for="id_medico">Médico Responsavel</label>
+                <select class="form-control" id="id_medico" name="id_medico">
+                    <option value="">Selecione um médico</option>
+                    @foreach ($medicos as $medico)
+                        <option value="{{ $medico->id }}">{{ $medico->nome }}</option>
+                    @endforeach
+                </select>
+            </div>
+            
         </div>
             <div class="card-footer">
                 <input type="submit" class="btn btn-primary" value='Salvar'>

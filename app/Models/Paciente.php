@@ -19,6 +19,8 @@ class Paciente extends Model
         'email',
     ];
 
-    // Adicione métodos ou relacionamentos aqui, se necessário
-
+    public function consultas()
+    {
+        return $this->belongsToMany(Consulta::class, 'consulta_paciente')->withTimestamps();
+    }
 }

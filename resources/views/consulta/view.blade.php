@@ -7,13 +7,13 @@
 @stop
 
 @section('content')
-    <!-- general form elements -->
+    <!-- General form elements -->
     <div class="card card-primary">
         <div class="card-header">
             <h3 class="card-title">Dados da Consulta</h3>
         </div>
         <!-- /.card-header -->
-        <!-- form start -->
+        <!-- Form start -->
         <div class="card-body">
             <div class="row">
                 <div class="form-group col-md-4">
@@ -32,17 +32,31 @@
                     <label for="duracao">Duração</label>
                     <input type="text" class="form-control" id="duracao" name='duracao' value="{{ $consulta->duracaoFormatada }}" readonly>
                 </div>
+               
                 <div class="form-group col-md-4">
-                    <label for="observacoes">Observações</label>
-                    <textarea class="form-control  h-100" id="observacoes" name='observacoes' readonly>{{ $consulta->observacoes }}</textarea>
+                    <label for="id_paciente">Paciente</label>
+                    @foreach ($consulta->pacientes as $paciente)
+                        <input type="text" class="form-control" value="{{ $paciente->nome }}" readonly>
+                    @endforeach
                 </div>
-            </div>
-            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="id_medico">Médico Responsavel</label>
+                    @foreach ($consulta->medicos as $medico)
+                        <input type="text" class="form-control" value="{{ $medico->nome }}" readonly>
+                    @endforeach
+                </div>
+               
+                
                 <div class="form-group col-md-4">
                     <label for="id_status">Status da Consulta</label>
                     <input type="text" class="form-control" id="id_status" name='id_status' value="{{ $consulta->statusConsulta->descricao }}" readonly>
                 </div>
             
+                <div class="form-group col-md-4">
+                    <label for="observacoes">Observações</label>
+                    <textarea class="form-control h-100" id="observacoes" name='observacoes' readonly>{{ $consulta->observacoes }}</textarea>
+                </div>
+             
             </div>
         </div>
         <div class="card-footer">
