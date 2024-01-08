@@ -28,3 +28,4 @@ class CreateMedicosTable extends Migration
         Schema::dropIfExists('medicos');
     }
 }
+

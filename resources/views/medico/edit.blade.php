@@ -62,7 +62,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-md-4">
                         <label for="genero">Gênero</label>
                         <select class="form-control" id="genero" name="genero">
                             @foreach($generos as $genero)
