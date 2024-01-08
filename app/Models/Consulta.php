@@ -11,10 +11,10 @@ class Consulta extends Model
 
     protected $fillable = [
         'data_consulta',
-        'duracao',
+        'hora_inicio',
+        'hora_fim',
         'id_status',
         'observacoes',
-        'numero_identificacao',
     ];
 
     // Relacionamento com StatusConsulta

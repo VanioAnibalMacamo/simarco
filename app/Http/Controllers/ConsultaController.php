@@ -22,24 +22,23 @@ class ConsultaController extends Controller
         return view('consulta.create', compact('statusConsultas'));
     }
 
-
     public function saveConsulta(Request $request)
     {
         $request->validate([
             'data_consulta' => 'required|date',
-            'duracao' => 'required|string|max:255',
+            'hora_inicio' => 'required|date_format:H:i',
+            'hora_fim' => 'required|date_format:H:i|after:hora_inicio',
             'id_status' => 'required|exists:status_consultas,id',
             'observacoes' => 'nullable|string',
-            'numero_identificacao' => 'required|string|max:50',
         ]);
 
         // Cria a consulta
         Consulta::create([
             'data_consulta' => $request->input('data_consulta'),
-            'duracao' => $request->input('duracao'),
+            'hora_inicio' => $request->input('hora_inicio'),
+            'hora_fim' => $request->input('hora_fim'),
             'id_status' => $request->input('id_status'),
             'observacoes' => $request->input('observacoes'),
-            'numero_identificacao' => $request->input('numero_identificacao'),
         ]);
 
         return redirect('/consultaIndex')->with('success', 'Consulta salva com sucesso!');

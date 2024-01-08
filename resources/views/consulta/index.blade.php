@@ -32,7 +32,6 @@
                     <th>Data_consulta</th>
                     <th>Duracao</th>
                     <th>Status Consulta</th>
-                    <th>observacoes</th> 
                     <th>Número de Identificação</th>
                 </tr>
             </thead>
@@ -50,7 +49,6 @@
                         <td>{{ $consulta->data_consulta }}</td>
                         <td>{{ $consulta->duracao }}</td>
                         <td>{{ $consulta->statusConsulta->descricao }}</td>
-                        <td>{{ $consulta->observacoes }}</td> 
                         <td>{{ $consulta->numero_identificacao }}</td> 
                         <td>
                             <a class="btn btn-primary btn-sm d-inline" href="{{ url('visualizar_consulta', $consulta->id) }}"><i class="fas fa-eye"></i></a>
