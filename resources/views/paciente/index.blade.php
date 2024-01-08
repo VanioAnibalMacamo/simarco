@@ -49,7 +49,7 @@
                         <td>{{ $loop->index + 1 }}</td>
                         <td>{{ $paciente->nome }}</td>
                         <td>{{ $paciente->data_nascimento }}</td>
-                        <td>{{ $paciente->genero }}</td>
+                        <td>{{ ucfirst($paciente->genero) }}</td>
                         <td>{{ $paciente->telefone }}</td> 
                         <td>{{ $paciente->numero_identificacao }}</td> 
                         <td>

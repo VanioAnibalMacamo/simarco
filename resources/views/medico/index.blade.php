@@ -51,8 +51,8 @@
                         <td>{{ $medico->nome }}</td>
                         <td>{{ $medico->especialidade->descricao }}</td>
                         <td>{{ $medico->numero_identificacao }}</td> 
-                        <td>{{ $medico->disponibilidade }}</td> 
-                        <td>{{ $medico->genero }}</td> 
+                        <td>{{ ucfirst($medico->disponibilidade)}}</td> 
+                        <td>{{ ucfirst($medico->genero) }}</td> 
                        
                         <td>
                             <a class="btn btn-primary btn-sm d-inline" href="{{ url('visualizar_medico', $medico->id) }}"><i class="fas fa-eye"></i></a>
