@@ -8,6 +8,7 @@ use App\Models\StatusConsulta;
 use App\Models\Paciente;
 use App\Models\Medico;
 
+
 class ConsultaController extends Controller
 {
 
@@ -28,6 +29,7 @@ class ConsultaController extends Controller
 
     public function saveConsulta(Request $request)
     {
+        // Valida os dados da requisição
         $request->validate([
             'data_consulta' => 'required|date',
             'hora_inicio' => 'required|date_format:H:i',
@@ -38,8 +40,10 @@ class ConsultaController extends Controller
             'id_paciente' => 'required|exists:pacientes,id',
         ]);
 
+
         $horaInicio = \Carbon\Carbon::createFromFormat('H:i', $request->input('hora_inicio'));
         $horaFim = \Carbon\Carbon::createFromFormat('H:i', $request->input('hora_fim'));
+
 
         $consulta = Consulta::create([
             'data_consulta' => $request->input('data_consulta'),
@@ -49,11 +53,14 @@ class ConsultaController extends Controller
             'observacoes' => $request->input('observacoes'),
         ]);
 
+        // Adiciona os médicos e pacientes relacionados à consulta
         $consulta->medicos()->attach($request->input('id_medico'));
         $consulta->pacientes()->attach($request->input('id_paciente'));
 
         return redirect('/consultaIndex')->with('success', 'Consulta salva com sucesso!');
     }
+
+
 
     public function delete($id)
     {
@@ -70,41 +77,29 @@ class ConsultaController extends Controller
 
         return view('consulta.view', ['consulta' => $consulta, 'statusConsulta' => $statusConsulta]);
     }
-
     public function edit($id)
     {
         $consulta = Consulta::findOrFail($id);
         $statusConsultas = StatusConsulta::all();
         $pacientes = Paciente::all();
         $medicos = Medico::all();
-
         return view('consulta.edit', compact('consulta', 'statusConsultas', 'pacientes', 'medicos'));
     }
+
 
     public function update(Request $request, $id)
     {
         $request->validate([
             'data_consulta' => 'required|date',
-            'hora_inicio' => 'required|date_format:H:i',
-            'hora_fim' => 'required|date_format:H:i|after:hora_inicio',
-            'observacoes' => 'nullable|string',
+            'duracao' => 'required|string|max:255',
             'id_status' => 'required|exists:status_consultas,id',
-            'id_medico' => 'required|exists:medicos,id',
-            'id_paciente' => 'required|exists:pacientes,id',
+            'observacoes' => 'nullable|string',
+
         ]);
+
 
         $consulta = Consulta::findOrFail($id);
-
-        $consulta->update([
-            'data_consulta' => $request->input('data_consulta'),
-            'hora_inicio' => $request->input('hora_inicio'),
-            'hora_fim' => $request->input('hora_fim'),
-            'observacoes' => $request->input('observacoes'),
-            'id_status' => $request->input('id_status'),
-        ]);
-
-        $consulta->medicos()->sync([$request->input('id_medico')]);
-        $consulta->pacientes()->sync([$request->input('id_paciente')]);
+        $consulta->update($request->all());
 
         return redirect('/consultaIndex')->with('success', 'Consulta atualizada com sucesso!');
     }
