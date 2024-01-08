@@ -16,27 +16,33 @@
         <!-- form start -->
         <div class="card-body">
             <div class="row">
-            <div class="form-group">
-                <label for="data_consulta col-md-4">Data da Consulta</label>
-                <input type="text" class="form-control" id="data_consulta" name='data_consulta' value="{{ $consulta->data_consulta }}" readonly>
+                <div class="form-group col-md-4">
+                    <label for="data_consulta">Data da Consulta</label>
+                    <input type="text" class="form-control" id="data_consulta" name='data_consulta' value="{{ $consulta->data_consulta }}" readonly>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="hora_inicio">Hora de Início</label>
+                    <input type="text" class="form-control" id="hora_inicio" name="hora_inicio" value="{{ $consulta->hora_inicio }}" readonly>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="hora_fim">Hora de Fim</label>
+                    <input type="text" class="form-control" id="hora_fim" name="hora_fim" value="{{ $consulta->hora_fim }}" readonly>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="duracao">Duração</label>
+                    <input type="text" class="form-control" id="duracao" name='duracao' value="{{ $consulta->duracaoFormatada }}" readonly>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="observacoes">Observações</label>
+                    <textarea class="form-control  h-100" id="observacoes" name='observacoes' readonly>{{ $consulta->observacoes }}</textarea>
+                </div>
             </div>
-            <div class="form-group col-md-4">
-                <label for="duracao">Duração</label>
-                <input type="text" class="form-control" id="duracao" name='duracao' value="{{ $consulta->duracao }}" readonly>
-            </div>
-            <div class="form-group col-md-4">
-                <label for="id_status">Status da Consulta</label>
-                <input type="text" class="form-control" id="id_status" name='id_status' value="{{ $consulta->statusConsulta->descricao }}" readonly>
-            </div>
-            <div class="form-group col-md-4">
-                <label for="observacoes">Observações</label>
-                <textarea class="form-control" id="observacoes" name='observacoes' readonly>{{ $consulta->observacoes }}</textarea>
-            </div>
-        </div>
-
-            <div class="form-group col-md-4">
-                <label for="numero_identificacao">Número de Identificação</label>
-                <input type="text" class="form-control" id="numero_identificacao" name='numero_identificacao' value="{{ $consulta->numero_identificacao }}" readonly>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="id_status">Status da Consulta</label>
+                    <input type="text" class="form-control" id="id_status" name='id_status' value="{{ $consulta->statusConsulta->descricao }}" readonly>
+                </div>
+            
             </div>
         </div>
         <div class="card-footer">

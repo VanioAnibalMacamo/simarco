@@ -17,6 +17,18 @@ class Consulta extends Model
         'observacoes',
     ];
 
+    public function getDuracaoFormatadaAttribute()
+    {
+        $horaInicio = \Carbon\Carbon::parse($this->hora_inicio);
+        $horaFim = \Carbon\Carbon::parse($this->hora_fim);
+        $duracaoEmMinutos = $horaInicio->diffInMinutes($horaFim);
+
+        $formato = $horaInicio->format('A'); // Retorna AM ou PM
+
+        return sprintf('%02d:%02d %s', $duracaoEmMinutos / 60, $duracaoEmMinutos % 60, $formato);
+    }
+
+
     // Relacionamento com StatusConsulta
     public function statusConsulta()
     {

@@ -21,9 +21,9 @@ class ConsultaController extends Controller
         $statusConsultas = StatusConsulta::all();
         return view('consulta.create', compact('statusConsultas'));
     }
-
     public function saveConsulta(Request $request)
     {
+        // Valida os dados da requisição
         $request->validate([
             'data_consulta' => 'required|date',
             'hora_inicio' => 'required|date_format:H:i',
@@ -32,17 +32,22 @@ class ConsultaController extends Controller
             'observacoes' => 'nullable|string',
         ]);
 
-        // Cria a consulta
+        // Converte os horários de entrada em objetos Carbon
+        $horaInicio = \Carbon\Carbon::createFromFormat('H:i', $request->input('hora_inicio'));
+        $horaFim = \Carbon\Carbon::createFromFormat('H:i', $request->input('hora_fim'));
+
+        // Cria um novo registro de Consulta no banco de dados
         Consulta::create([
             'data_consulta' => $request->input('data_consulta'),
-            'hora_inicio' => $request->input('hora_inicio'),
-            'hora_fim' => $request->input('hora_fim'),
+            'hora_inicio' => $horaInicio,
+            'hora_fim' => $horaFim,
             'id_status' => $request->input('id_status'),
             'observacoes' => $request->input('observacoes'),
         ]);
 
         return redirect('/consultaIndex')->with('success', 'Consulta salva com sucesso!');
     }
+
 
 
 

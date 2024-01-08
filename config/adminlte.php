@@ -358,7 +358,7 @@ return [
                 [
                     'text'    => 'Consultas',
                     'url'     => '#',
-                    'icon'    => 'fas fa-fw fa-user-md',
+                    'icon'    => 'fas fa-fw fa-stethoscope',
                     'submenu' => [
                         [
                             'text' => 'Status Consulta',
