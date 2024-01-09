@@ -30,6 +30,7 @@
                 <tr>
                     <th style="width: 10px">#</th>
                     <th>Data Consulta</th>
+                    <th>Hora Consulta</th>
                     <th>Duração</th>
                     <th>Status Consulta</th>
                   
@@ -47,6 +48,7 @@
                     <tr>
                         <td>{{ $loop->index + 1 }}</td>
                         <td>{{ $consulta->data_consulta }}</td>
+                        <td>{{ $consulta->hora_inicio }}</td>
                         <td>{{ $consulta->duracaoFormatada }}</td>
                         <td>{{ $consulta->statusConsulta->descricao }}</td>
                        
