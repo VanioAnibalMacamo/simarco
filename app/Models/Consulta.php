@@ -35,12 +35,12 @@ class Consulta extends Model
         return $this->belongsTo(StatusConsulta::class, 'id_status');
     }
     public function medicos()
-{
-    return $this->belongsToMany(Medico::class, 'consulta_medico')->withTimestamps();
-}
+    {
+        return $this->belongsToMany(Medico::class, 'consulta_medico')->withTimestamps();
+    }
 
-public function pacientes()
-{
-    return $this->belongsToMany(Paciente::class, 'consulta_paciente')->withTimestamps();
-}
+    public function pacientes()
+    {
+        return $this->belongsToMany(Paciente::class, 'consulta_paciente')->withTimestamps();
+    }
 }
