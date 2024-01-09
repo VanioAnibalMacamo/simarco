@@ -21,35 +21,33 @@ class Consulta extends Model
     {
         $horaInicio = \Carbon\Carbon::parse($this->hora_inicio);
         $horaFim = \Carbon\Carbon::parse($this->hora_fim);
-        $duracaoEmMinutos = $horaInicio->diffInMinutes($horaFim);
-
-        $horas = floor($duracaoEmMinutos / 60);
-        $minutos = $duracaoEmMinutos % 60;
+        $duracao = $horaInicio->diff($horaFim);
 
         $duracaoFormatada = '';
 
-        if ($horas > 0) {
-            $duracaoFormatada .= ($horas == 1) ? '1 hora' : $horas . ' horas';
+        if ($duracao->h > 0) {
+            $duracaoFormatada .= ($duracao->h == 1) ? '1 hora' : $duracao->h . ' horas';
         }
 
-        if ($minutos > 0) {
-            if ($horas > 0) {
-                $duracaoFormatada .= ($minutos == 1) ? ' e 1 minuto' : ' e ' . $minutos . ' minutos';
+        if ($duracao->i > 0) {
+            if ($duracao->h > 0) {
+                $duracaoFormatada .= ($duracao->i == 1) ? ' e 1 minuto' : ' e ' . $duracao->i . ' minutos';
             } else {
-                $duracaoFormatada .= ($minutos == 1) ? '1 minuto' : $minutos . ' minutos';
+                $duracaoFormatada .= ($duracao->i == 1) ? '1 minuto' : $duracao->i . ' minutos';
             }
         }
 
+        // Não inclui os segundos na formatação
+
         return $duracaoFormatada;
     }
-
-
 
     // Relacionamento com StatusConsulta
     public function statusConsulta()
     {
         return $this->belongsTo(StatusConsulta::class, 'id_status');
     }
+
     public function medicos()
     {
         return $this->belongsToMany(Medico::class, 'consulta_medico')->withTimestamps();

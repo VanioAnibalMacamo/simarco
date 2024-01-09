@@ -16,62 +16,60 @@
 @stop
 
 @section('content')
-
-<div class="d-flex flex-row-reverse align-items-end mb-3">
-    <a href="{{ url('consultaCreate') }}" class="btn btn-primary">
-        <i class="fas fa-plus"></i> Adicionar
-    </a>
-</div>
-
-<div class="card">
-    <div class="card-body p-0">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th style="width: 10px">#</th>
-                    <th>Data Consulta</th>
-                    <th>Hora Consulta</th>
-                    <th>Duração</th>
-                    <th>Status Consulta</th>
-                  
-                </tr>
-            </thead>
-            <tbody>
-                @php
-                    $count = 0;
-                @endphp
-
-                @foreach ($consultas as $consulta)
-                    @php
-                        $count++;
-                    @endphp
-                    <tr>
-                        <td>{{ $loop->index + 1 }}</td>
-                        <td>{{ $consulta->data_consulta }}</td>
-                        <td>{{ $consulta->hora_inicio }}</td>
-                        <td>{{ $consulta->duracaoFormatada }}</td>
-                        <td>{{ $consulta->statusConsulta->descricao }}</td>
-                       
-                        <td>
-                            <a class="btn btn-primary btn-sm d-inline" href="{{ url('visualizar_consulta', $consulta->id) }}"><i class="fas fa-eye"></i></a>
-                            <a class="btn btn-info btn-sm d-inline" href="{{ url('update_consulta', $consulta->id) }}"><i class="fas fa-pencil-alt"></i></a>
-
-                            <form id="form-excluir-{{ $consulta->id }}" action="{{ route('consultas.delete', ['id' => $consulta->id]) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event, '{{ $consulta->numero_identificacao }}', {{ $consulta->id }})"><i class="fas fa-trash"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-
-                @if ($count > 1)
-                    {{ $consultas->links('pagination::bootstrap-4') }}
-                @endif
-            </tbody>
-        </table>
+    <div class="d-flex flex-row-reverse align-items-end mb-3">
+        <a href="{{ url('consultaCreate') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Adicionar
+        </a>
     </div>
-</div>
+
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th style="width: 10px">#</th>
+                        <th>Data Consulta</th>
+                        <th>Hora Consulta</th>
+                        <th>Duração</th>
+                        <th>Status Consulta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $count = 0;
+                    @endphp
+
+                    @foreach ($consultas as $consulta)
+                        @php
+                            $count++;
+                        @endphp
+                        <tr>
+                            <td>{{ $loop->index + 1 }}</td>
+                            <td>{{ $consulta->data_consulta }}</td>
+                            <td>{{ \Carbon\Carbon::createFromFormat('H:i:s', $consulta->hora_inicio)->format('H:i') }}</td>
+                            <td>{{ $consulta->duracaoFormatada }}</td>
+                            <td>{{ $consulta->statusConsulta->descricao }}</td>
+
+                            <td>
+                                <a class="btn btn-primary btn-sm d-inline" href="{{ url('visualizar_consulta', $consulta->id) }}"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-info btn-sm d-inline" href="{{ url('update_consulta', $consulta->id) }}"><i class="fas fa-pencil-alt"></i></a>
+
+                                <form id="form-excluir-{{ $consulta->id }}" action="{{ route('consultas.delete', ['id' => $consulta->id]) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event, '{{ $consulta->numero_identificacao }}', {{ $consulta->id }})"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    @if ($count > 1)
+                        {{ $consultas->links('pagination::bootstrap-4') }}
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
 @stop
 
 @section('css')
