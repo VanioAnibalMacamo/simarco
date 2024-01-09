@@ -23,10 +23,26 @@ class Consulta extends Model
         $horaFim = \Carbon\Carbon::parse($this->hora_fim);
         $duracaoEmMinutos = $horaInicio->diffInMinutes($horaFim);
 
-        $formato = $horaInicio->format('A'); // Retorna AM ou PM
+        $horas = floor($duracaoEmMinutos / 60);
+        $minutos = $duracaoEmMinutos % 60;
 
-        return sprintf('%02d:%02d %s', $duracaoEmMinutos / 60, $duracaoEmMinutos % 60, $formato);
+        $duracaoFormatada = '';
+
+        if ($horas > 0) {
+            $duracaoFormatada .= ($horas == 1) ? '1 hora' : $horas . ' horas';
+        }
+
+        if ($minutos > 0) {
+            if ($horas > 0) {
+                $duracaoFormatada .= ($minutos == 1) ? ' e 1 minuto' : ' e ' . $minutos . ' minutos';
+            } else {
+                $duracaoFormatada .= ($minutos == 1) ? '1 minuto' : $minutos . ' minutos';
+            }
+        }
+
+        return $duracaoFormatada;
     }
+
 
 
     // Relacionamento com StatusConsulta
