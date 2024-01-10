@@ -32,6 +32,8 @@
                         <th>Hora Consulta</th>
                         <th>Duração</th>
                         <th>Status Consulta</th>
+                        <th>Medico Responsavel</th>
+                        <th>Paciente</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,7 +51,8 @@
                             <td>{{ \Carbon\Carbon::createFromFormat('H:i:s', $consulta->hora_inicio)->format('H:i') }}</td>
                             <td>{{ $consulta->duracaoFormatada }}</td>
                             <td>{{ $consulta->statusConsulta->descricao }}</td>
-
+                            <td>{{ $consulta->medico->nome }}</td>
+                            <td>{{ $consulta->paciente->nome }}</td>
                             <td>
                                 <a class="btn btn-primary btn-sm d-inline" href="{{ url('visualizar_consulta', $consulta->id) }}"><i class="fas fa-eye"></i></a>
                                 <a class="btn btn-info btn-sm d-inline" href="{{ url('update_consulta', $consulta->id) }}"><i class="fas fa-pencil-alt"></i></a>
