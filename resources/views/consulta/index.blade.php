@@ -28,9 +28,7 @@
                 <thead>
                     <tr>
                         <th style="width: 10px">#</th>
-                        <th>Data Consulta</th>
-                        <th>Hora Consulta</th>
-                        <th>Duração</th>
+                        <th>Data e Hora da Consulta</th>
                         <th>Status Consulta</th>
                         <th>Medico Responsavel</th>
                         <th>Paciente</th>
@@ -47,9 +45,7 @@
                         @endphp
                         <tr>
                             <td>{{ $loop->index + 1 }}</td>
-                            <td>{{ $consulta->data_consulta }}</td>
-                            <td>{{ \Carbon\Carbon::createFromFormat('H:i:s', $consulta->hora_inicio)->format('H:i') }}</td>
-                            <td>{{ $consulta->duracaoFormatada }}</td>
+                            <td>{{ $consulta->data_consulta . ' ' . \Carbon\Carbon::createFromFormat('H:i:s', $consulta->hora_inicio)->format('H:i') }}</td>
                             <td>{{ $consulta->statusConsulta->descricao }}</td>
                             <td>{{ $consulta->medico->nome }}</td>
                             <td>{{ $consulta->paciente->nome }}</td>
