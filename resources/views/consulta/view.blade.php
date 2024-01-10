@@ -32,19 +32,17 @@
                     <label for="duracao">Duração</label>
                     <input type="text" class="form-control" id="duracao" name='duracao' value="{{ $consulta->duracaoFormatada }}" readonly>
                 </div>
-               
                 <div class="form-group col-md-4">
                     <label for="id_paciente">Paciente</label>
-                    @foreach ($consulta->pacientes as $paciente)
-                        <input type="text" class="form-control" value="{{ $paciente->nome }}" readonly>
-                    @endforeach
+                    <input type="text" class="form-control" value="{{ $consulta->paciente->nome }}" readonly>
                 </div>
+                
                 <div class="form-group col-md-4">
-                    <label for="id_medico">Médico Responsavel</label>
-                    @foreach ($consulta->medicos as $medico)
-                        <input type="text" class="form-control" value="{{ $medico->nome }}" readonly>
-                    @endforeach
+                    <label for="id_medico">Médico Responsável</label>
+              <input type="text" class="form-control" value="{{ $consulta->medico->nome }}" readonly>
+                  
                 </div>
+                
                
                 
                 <div class="form-group col-md-4">

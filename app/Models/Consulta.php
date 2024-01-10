@@ -15,6 +15,8 @@ class Consulta extends Model
         'hora_fim',
         'id_status',
         'observacoes',
+        'medico_id', // Adicione estas linhas para refletir as alterações nas migrações
+        'paciente_id', // Adicione estas linhas para refletir as alterações nas migrações
     ];
 
     public function getDuracaoFormatadaAttribute()
@@ -42,19 +44,18 @@ class Consulta extends Model
         return $duracaoFormatada;
     }
 
-    // Relacionamento com StatusConsulta
     public function statusConsulta()
     {
         return $this->belongsTo(StatusConsulta::class, 'id_status');
     }
 
-    public function medicos()
+    public function medico()
     {
-        return $this->belongsToMany(Medico::class, 'consulta_medico')->withTimestamps();
+        return $this->belongsTo(Medico::class, 'medico_id');
     }
 
-    public function pacientes()
+    public function paciente()
     {
-        return $this->belongsToMany(Paciente::class, 'consulta_paciente')->withTimestamps();
+        return $this->belongsTo(Paciente::class, 'paciente_id');
     }
 }

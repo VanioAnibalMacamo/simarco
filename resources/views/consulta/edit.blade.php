@@ -40,35 +40,35 @@
                         <label for="id_status">Status da Consulta</label>
                         <select class="form-control" id="id_status" name="id_status">
                             @foreach ($statusConsultas as $statusConsulta)
-                                <option value="{{ $statusConsulta->id }}" {{ $consulta->id_status == $statusConsulta->id ? 'selected' : '' }}>
+                                <option value="{{ $statusConsulta->id }}" {{ $consulta->statusConsulta && $consulta->statusConsulta->id == $statusConsulta->id ? 'selected' : '' }}>
                                     {{ $statusConsulta->descricao }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
+                    
                     <div class="form-group col-md-4">
                         <label for="id_paciente">Paciente</label>
                         <select class="form-control" id="id_paciente" name="id_paciente">
                             @foreach ($pacientes as $paciente)
-                                <option value="{{ $paciente->id }}" {{ $consulta->pacientes->contains($paciente->id) ? 'selected' : '' }}>
+                                <option value="{{ $paciente->id }}" {{ $consulta->paciente && $consulta->paciente->id == $paciente->id ? 'selected' : '' }}>
                                     {{ $paciente->nome }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
-                </div>
-                <div class="row">
+                    
                     <div class="form-group col-md-4">
                         <label for="id_medico">Médico Responsável</label>
                         <select class="form-control" id="id_medico" name="id_medico">
                             @foreach ($medicos as $medico)
-                                <option value="{{ $medico->id }}" {{ $consulta->medicos->contains($medico->id) ? 'selected' : '' }}>
+                                <option value="{{ $medico->id }}" {{ $consulta->medico && $consulta->medico->id == $medico->id ? 'selected' : '' }}>
                                     {{ $medico->nome }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
-                </div>
+                    
             </div>
             <div class="card-footer">
                 <input type="submit" class="btn btn-primary" value='Atualizar'>

@@ -23,6 +23,6 @@ class Medico extends Model
     }
     public function consultas()
     {
-        return $this->belongsToMany(Consulta::class, 'consulta_medico')->withTimestamps();
+        return $this->hasMany(Consulta::class);
     }
 }

@@ -21,6 +21,6 @@ class Paciente extends Model
 
     public function consultas()
     {
-        return $this->belongsToMany(Consulta::class, 'consulta_paciente')->withTimestamps();
+        return $this->hasMany(Consulta::class);
     }
 }
