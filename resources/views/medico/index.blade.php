@@ -93,7 +93,7 @@
             event.preventDefault();
 
             Swal.fire({
-                title: 'Tem certeza que deseja excluir o Paciente ' + nome + '?',
+                title: 'Tem certeza que deseja excluir o medico ' + nome + '?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',

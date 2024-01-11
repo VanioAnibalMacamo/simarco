@@ -54,7 +54,7 @@ class MedicoController extends Controller
         $medico = Medico::findOrFail($id);
         $medico->delete();
 
-        return redirect('/medicoIndex')->with('successDelete', 'Paciente excluído com sucesso!');
+        return redirect('/medicoIndex')->with('successDelete', 'Médico excluído com sucesso!');
     }
 
     public function show($id)
@@ -90,6 +90,6 @@ class MedicoController extends Controller
         $medico = Medico::findOrFail($id);
         $medico->update($request->all());
 
-        return redirect('/medicoIndex')->with('success', 'Paciente atualizado com sucesso!');
+        return redirect('/medicoIndex')->with('success', 'Médico atualizado com sucesso!');
     }
 }

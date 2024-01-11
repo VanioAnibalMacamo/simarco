@@ -17,15 +17,16 @@
         <form action="{{ route('pacientes.update', ['id' => $paciente->id]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
-                <div class="form-group">
+                <div class="form-row">
+                <div class="form- col-md-4">
                     <label for="nome">Nome Completo</label>
                     <input type="text" class="form-control" id="nome" name='nome' value="{{ $paciente->nome }}">
                 </div>
-                <div class="form-group">
+                <div class="form-group col-md-4">
                     <label for="data_nascimento">Data de Nascimento</label>
                     <input type="date" class="form-control" id="data_nascimento" name='data_nascimento' value="{{ $paciente->data_nascimento }}">
                 </div>
-                <div class="form-group">
+                <div class="form-group col-md-4">
                     <label for="genero">Gênero</label>
                     <select class="form-control" id="genero" name="genero">
                         <option value="masculino" {{ $paciente->genero == 'masculino' ? 'selected' : '' }}>Masculino</option>
@@ -33,23 +34,24 @@
                         <option value="outro" {{ $paciente->genero == 'outro' ? 'selected' : '' }}>Outro</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group col-md-4">
                     <label for="numero_identificacao">Número de Identificação</label>
                     <input type="text" class="form-control" id="numero_identificacao" name='numero_identificacao' value="{{ $paciente->numero_identificacao }}">
                 </div>
-                <div class="form-group">
+                <div class="form-group col-md-4">
                     <label for="endereco">Endereço</label>
                     <input type="text" class="form-control" id="endereco" name='endereco' value="{{ $paciente->endereco }}">
                 </div>
-                <div class="form-group">
+                <div class="form-group col-md-4">
                     <label for="telefone">Telefone</label>
                     <input type="text" class="form-control" id="telefone" name='telefone' value="{{ $paciente->telefone }}">
                 </div>
-                <div class="form-group">
+                <div class="form-group col-md-4">
                     <label for="email">Email</label>
                     <input type="email" class="form-control" id="email" name='email' value="{{ $paciente->email }}">
                 </div>
-                <!-- Adicione mais campos conforme necessário -->
+            </div>
+              
             </div>
             <div class="card-footer">
                 <input type="submit" class="btn btn-primary" value='Actualizar'>

@@ -32,19 +32,20 @@
                     <label for="numero_identificacao">Número de Identificação</label>
                     <input type="text" class="form-control" id="numero_identificacao" name='numero_identificacao' value="{{ $paciente->numero_identificacao }}" readonly>
                 </div>
-            </div>
-            <div class="form-group">
+            
+            <div class="form-group col-md-4">
                 <label for="endereco">Endereço</label>
                 <input type="text" class="form-control" id="endereco" name='endereco' value="{{ $paciente->endereco }}" readonly>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-4">
                 <label for="telefone">Telefone</label>
                 <input type="text" class="form-control" id="telefone" name='telefone' value="{{ $paciente->telefone }}" readonly>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-4">
                 <label for="email">Email</label>
                 <input type="email" class="form-control" id="email" name='email' value="{{ $paciente->email }}" readonly>
             </div>
+        </div>
         </div>
         <div class="card-footer">
             <a href="{{ url('/pacienteIndex') }}" type="button" class="btn btn-warning">Voltar</a>

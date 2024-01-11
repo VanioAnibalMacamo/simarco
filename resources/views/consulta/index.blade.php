@@ -56,7 +56,8 @@
                                 <form id="form-excluir-{{ $consulta->id }}" action="{{ route('consultas.delete', ['id' => $consulta->id]) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event, '{{ $consulta->numero_identificacao }}', {{ $consulta->id }})"><i class="fas fa-trash"></i></button>
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event, '{{ $consulta->numero_identificacao }}', '{{ $consulta->paciente->nome }}', {{ $consulta->id }})"><i class="fas fa-trash"></i></button>
+
                                 </form>
                             </td>
                         </tr>
@@ -84,11 +85,11 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        function confirmDelete(event, nome, formId) {
+        function confirmDelete(event, nome, paciente, formId) {
             event.preventDefault();
 
             Swal.fire({
-                title: 'Tem certeza que deseja excluir a consulta ' + nome + '?',
+                title: 'Tem certeza que deseja excluir a consulta do paciente ' + paciente + ' ' + nome + '?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',

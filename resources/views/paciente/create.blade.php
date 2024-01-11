@@ -40,18 +40,20 @@
                         <input type="text" class="form-control" id="numero_identificacao" name='numero_identificacao' placeholder="Ex: 123456789">
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-row">
+                <div class="form-group col-md-4">
                     <label for="endereco">Endereço</label>
                     <input type="text" class="form-control" id="endereco" name='endereco' placeholder="Digite o endereço do Paciente...">
                 </div>
-                <div class="form-group">
+                <div class="form-group col-md-4">
                     <label for="telefone">Telefone</label>
                     <input type="text" class="form-control" id="telefone" name='telefone' placeholder="Digite o número de telefone do Paciente...">
                 </div>
-                <div class="form-group">
+                <div class="form-group col-md-4">
                     <label for="email">Email</label>
                     <input type="email" class="form-control" id="email" name='email' placeholder="Digite o email do Paciente...">
                 </div>
+            </div>
             </div>
             <div class="card-footer">
                 <input type="submit" class="btn btn-primary" value='Salvar'>
