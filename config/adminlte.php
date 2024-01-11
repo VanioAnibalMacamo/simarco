@@ -367,11 +367,7 @@ return [
                         //  submenu de Consultas 
                     ],
                 ],
-                [
-                    'text' => 'Cargos',
-                    'url'  => 'cargoIndex',
-                    'icon' => 'fas fa-briefcase',
-                ],
+               
                 // submenu de Parametrização 
             ],
         ],
