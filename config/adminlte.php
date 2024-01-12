@@ -293,7 +293,7 @@ return [
         // Navbar items:
         [
             'type'         => 'navbar-search',
-            'text'         => 'search',
+            'text'         => 'procurar',
             'topnav_right' => true,
         ],
         [
@@ -304,7 +304,7 @@ return [
         // Sidebar items:
         [
             'type' => 'sidebar-menu-search',
-            'text' => 'search',
+            'text' => 'procurar',
         ],
         [
             'text' => 'blog',
@@ -345,7 +345,7 @@ return [
         [
             'text' => 'Fabricantes',
             'url'  => 'fabricanteIndex',
-            'icon' => 'fas fa-fw fa-industry',
+            'icon' => 'fas fa-fw fa-flask'
         ],
 
 
