@@ -13,5 +13,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(ViaAdministracaoSeeder::class);
+        $this->call(FormaFarmaceuticaSeeder::class);
     }
 }

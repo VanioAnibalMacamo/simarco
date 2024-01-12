@@ -381,6 +381,13 @@ return [
                         [
                             'text' => 'Via Administração',
                             'url'  => 'via_administracaoIndex',
+                            'icon' => 'fas fa-syringe',
+                        ],
+
+                        [
+                            'text' => 'Forma Farmaceutica',
+                            'url'  => 'forma_farmaceutica',
+                            'icon' => 'fas fa-capsules',
                         ],
                         //  Medicamentos
                     ],
