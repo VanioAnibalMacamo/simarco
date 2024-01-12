@@ -342,6 +342,11 @@ return [
             'url'  => 'medicamentoIndex',
             'icon' => 'fas fa-fw fa-pills',
         ],
+        [
+            'text' => 'Fabricantes',
+            'url'  => 'fabricanteIndex',
+            'icon' => 'fas fa-fw fa-industry',
+        ],
 
 
 
@@ -394,7 +399,7 @@ return [
                         //  Medicamentos
                     ],
                 ],
-               
+
                 // submenu de Parametrização 
             ],
         ],
