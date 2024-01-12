@@ -6,6 +6,7 @@ use App\Http\Controllers\EspecialidadeController;
 use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\ViaAdministracaoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,3 +68,11 @@ Route::get('/update_status/{id}', [StatusController::class, 'edit'])->name('stat
 Route::post('/update_status/{id}', [StatusController::class, 'update'])->name('status.update');
 Route::get('/visualizar_status/{id}', [StatusController::class, 'show']);
 Route::delete('/status/{id}', [StatusController::class, 'destroy'])->name('status.delete');
+
+Route::get('/via_administracaoIndex', [ViaAdministracaoController::class, 'index'])->name('via_administracaoIndex');
+Route::get('/via_administracao/create', [ViaAdministracaoController::class, 'create'])->name('via_administracao.create');
+Route::post('/via_administracao/store', [ViaAdministracaoController::class, 'store'])->name('via_administracao.store');
+Route::get('/via_administracao/edit/{id}', [ViaAdministracaoController::class, 'edit'])->name('via_administracao.edit');
+Route::post('/via_administracao/update/{id}', [ViaAdministracaoController::class, 'update'])->name('via_administracao.update');
+Route::get('/via_administracao/show/{id}', [ViaAdministracaoController::class, 'show'])->name('via_administracao.show');
+Route::delete('/via_administracao/{id}', [ViaAdministracaoController::class, 'destroy'])->name('via_administracao.delete');

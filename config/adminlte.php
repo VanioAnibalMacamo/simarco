@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'SIMARCO',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>SIMARCO</b>',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -337,6 +337,12 @@ return [
             'icon' => 'fas fa-fw fa-stethoscope',
         ],
 
+        [
+            'text' => 'Medicamentos',
+            'url'  => 'medicamentoIndex',
+            'icon' => 'fas fa-fw fa-pills',
+        ],
+
 
 
         [
@@ -365,6 +371,18 @@ return [
                             'url'  => 'statusIndex',
                         ],
                         //  submenu de Consultas 
+                    ],
+                ],
+                [
+                    'text'    => 'Medicamentos',
+                    'url'     => '#',
+                    'icon' => 'fas fa-fw fa-pills',
+                    'submenu' => [
+                        [
+                            'text' => 'Via Administração',
+                            'url'  => 'via_administracaoIndex',
+                        ],
+                        //  Medicamentos
                     ],
                 ],
                
