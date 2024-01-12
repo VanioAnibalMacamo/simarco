@@ -9,6 +9,7 @@ use App\Http\Controllers\StatusController;
 use App\Http\Controllers\ViaAdministracaoController;
 use App\Http\Controllers\FormaFarmaceuticaController;
 use App\Http\Controllers\FabricanteController;
+use App\Http\Controllers\MedicamentosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,3 +95,11 @@ Route::put('/update_fabricante/{id}', [FabricanteController::class, 'update'])->
 Route::get('/visualizar_fabricante/{id}', [FabricanteController::class, 'show']);
 Route::post('/visualizarFabricante/{id}', [FabricanteController::class, 'visualizar']);
 Route::delete('/fabricante/{id}', [FabricanteController::class, 'delete'])->name('fabricantes.delete');
+
+Route::get('/medicamentoIndex', [MedicamentosController::class, 'index'])->name('medicamentoIndex');
+Route::get('/medicamentoCreate', [MedicamentosController::class, 'create'])->name('medicamentoCreate');
+Route::post('/saveMedicamento', [MedicamentosController::class, 'saveMedicamento']);
+Route::get('/update_medicamento/{id}', [MedicamentosController::class, 'edit'])->name('medicamentos.edit');
+Route::put('/update_medicamento/{id}', [MedicamentosController::class, 'update'])->name('medicamentos.update');
+Route::get('/visualizar_medicamento/{id}', [MedicamentosController::class, 'show']);
+Route::delete('/medicamento/{id}', [MedicamentosController::class, 'delete'])->name('medicamentos.delete');

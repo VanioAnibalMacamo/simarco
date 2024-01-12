@@ -14,4 +14,9 @@ class Fabricante extends Model
         'contacto',
 
     ];
+    // Relacionamento com Medicamentos
+    public function medicamentos()
+    {
+        return $this->hasMany(Medicamento::class);
+    }
 }

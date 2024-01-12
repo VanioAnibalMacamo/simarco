@@ -11,4 +11,9 @@ class FormaFarmaceutica extends Model
     protected $fillable = ['descricao'];
     protected $table = 'formas_farmaceuticas';
 
+    // Relacionamento com Medicamentos
+    public function medicamentos()
+    {
+        return $this->hasMany(Medicamento::class);
+    }
 }

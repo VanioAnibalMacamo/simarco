@@ -9,4 +9,10 @@ class ViaAdministracao extends Model
 {
     use HasFactory;
     protected $fillable = ['descricao'];
+
+    // Relacionamento com Medicamentos
+    public function medicamentos()
+    {
+        return $this->hasMany(Medicamento::class);
+    }
 }
