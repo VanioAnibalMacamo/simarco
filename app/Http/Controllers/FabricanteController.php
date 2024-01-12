@@ -15,16 +15,54 @@ class FabricanteController extends Controller
 
     public function create()
     {
-        //  lógica de criação
         return view('fabricante.create');
     }
 
     public function saveFabricante(Request $request)
     {
-        //  lógica de validação e salvamento
-        Fabricante::create($request->all());
+        $request->validate([
+            'nome' => 'required|string',
+            'endereco' => 'required|string',
+            'contacto' => 'required|string',
+        ]);
 
-        return redirect('/fabricanteIndex')->with('success', 'Fabricante salvo com sucesso!');
+        Fabricante::create([
+            'nome' => $request->input('nome'),
+            'endereco' => $request->input('endereco'),
+            'contacto' => $request->input('contacto'),
+        ]);
+
+        return redirect('/fabricanteIndex')->with('success', 'Fabricante criado com sucesso!');
+    }
+
+    public function edit($id)
+    {
+        $fabricante = Fabricante::findOrFail($id);
+        return view('fabricante.edit', compact('fabricante'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nome' => 'required|string',
+            'endereco' => 'required|string',
+            'contacto' => 'required|string',
+        ]);
+
+        $fabricante = Fabricante::findOrFail($id);
+        $fabricante->update([
+            'nome' => $request->input('nome'),
+            'endereco' => $request->input('endereco'),
+            'contacto' => $request->input('contacto'),
+        ]);
+
+        return redirect('/fabricanteIndex')->with('success', 'Fabricante atualizado com sucesso!');
+    }
+
+    public function show($id)
+    {
+        $fabricante = Fabricante::findOrFail($id);
+        return view('fabricante.view', ['fabricante' => $fabricante]);
     }
 
     public function delete($id)
@@ -33,28 +71,5 @@ class FabricanteController extends Controller
         $fabricante->delete();
 
         return redirect('/fabricanteIndex')->with('successDelete', 'Fabricante excluído com sucesso!');
-    }
-
-    public function show($id)
-    {
-        $fabricante = Fabricante::findOrFail($id);
-
-        return view('fabricante.view', ['fabricante' => $fabricante]);
-    }
-
-    public function edit($id)
-    {
-        $fabricante = Fabricante::findOrFail($id);
-
-        return view('fabricante.edit', ['fabricante' => $fabricante]);
-    }
-
-    public function update(Request $request, $id)
-    {
-        //  lógica de validação e atualização 
-        $fabricante = Fabricante::findOrFail($id);
-        $fabricante->update($request->all());
-
-        return redirect('/fabricanteIndex')->with('success', 'Fabricante atualizado com sucesso!');
     }
 }
