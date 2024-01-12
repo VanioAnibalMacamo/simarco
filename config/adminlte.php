@@ -357,6 +357,7 @@ return [
                         [
                             'text' => 'Especialidade',
                             'url'  => 'especialidadeIndex',
+                            'icon'    => 'fas fa-heartbeat',
                         ],
                         // submenu de Médicos 
                     ],
@@ -369,6 +370,7 @@ return [
                         [
                             'text' => 'Status Consulta',
                             'url'  => 'statusIndex',
+                            'icon' => 'far fa-clock',
                         ],
                         //  submenu de Consultas 
                     ],
