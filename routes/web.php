@@ -7,11 +7,8 @@ use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\ViaAdministracaoController;
-<<<<<<< Updated upstream
 use App\Http\Controllers\FormaFarmaceuticaController;
-=======
 use App\Http\Controllers\FabricanteController;
->>>>>>> Stashed changes
 
 /*
 |--------------------------------------------------------------------------
@@ -82,14 +79,13 @@ Route::post('/via_administracao/update/{id}', [ViaAdministracaoController::class
 Route::get('/via_administracao/show/{id}', [ViaAdministracaoController::class, 'show'])->name('via_administracao.show');
 Route::delete('/via_administracao/{id}', [ViaAdministracaoController::class, 'destroy'])->name('via_administracao.delete');
 
-<<<<<<< Updated upstream
 Route::get('/forma_farmaceutica', [FormaFarmaceuticaController::class, 'index'])->name('forma_farmaceutica.index');
 Route::get('/forma_farmaceutica/create', [FormaFarmaceuticaController::class, 'create'])->name('forma_farmaceutica.create');
 Route::post('/forma_farmaceutica/store', [FormaFarmaceuticaController::class, 'store'])->name('forma_farmaceutica.store');
 Route::get('/forma_farmaceutica/edit/{id}', [FormaFarmaceuticaController::class, 'edit'])->name('forma_farmaceutica.edit');
 Route::post('/forma_farmaceutica/update/{id}', [FormaFarmaceuticaController::class, 'update'])->name('forma_farmaceutica.update');
 Route::delete('/forma_farmaceutica/{id}', [FormaFarmaceuticaController::class, 'destroy'])->name('forma_farmaceutica.delete');
-=======
+
 Route::get('/fabricanteIndex', [FabricanteController::class, 'index'])->name('fabricanteIndex');
 Route::get('/fabricanteCreate', [FabricanteController::class, 'create'])->name('fabricanteCreate');
 Route::post('/saveFabricante', [FabricanteController::class, 'saveFabricante']);
@@ -98,4 +94,3 @@ Route::put('/update_fabricante/{id}', [FabricanteController::class, 'update'])->
 Route::get('/visualizar_fabricante/{id}', [FabricanteController::class, 'show']);
 Route::post('/visualizarFabricante/{id}', [FabricanteController::class, 'visualizar']);
 Route::delete('/fabricante/{id}', [FabricanteController::class, 'delete'])->name('fabricantes.delete');
->>>>>>> Stashed changes
