@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Medico;
+use App\Models\Paciente;
+use App\Models\Consulta;
+//use App\Models\Medicamentos;
 
 class HomeController extends Controller
 {
@@ -23,6 +27,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+       // Contar o número de registros em cada tabela
+       $numMedicos = Medico::count();
+       $numPacientes = Paciente::count();
+       $numConsultas = Consulta::count();
+       $numMedicamentos = 0; //Medicamentos::count();
+
+       // Passar os valores para a view
+       return view('home', compact('numMedicos', 'numPacientes', 'numConsultas', 'numMedicamentos'));
     }
 }
