@@ -33,15 +33,17 @@
                     <label for="nome">Nome</label>
                     <input type="text" class="form-control" id="nome" name='nome' value="{{ $fabricante->nome }}">
                 </div>
-                <div class="form-group">
+                <div class="row">
+                    <div class="form-group col-md-6">
                     <label for="endereco">Endereço</label>
                     <input type="text" class="form-control" id="endereco" name='endereco' value="{{ $fabricante->endereco }}">
                 </div>
-                <div class="form-group">
+                <div class="form-group col-md-6">
                     <label for="contacto">Contacto</label>
                     <input type="text" class="form-control" id="contacto" name='contacto' value="{{ $fabricante->contacto }}">
                 </div>
             </div>
+        </div>
             <div class="card-footer">
                 <input type="submit" class="btn btn-primary" value='Atualizar'>
                 <a href="{{ url('/fabricanteIndex') }}" type="button" class="btn btn-warning">Cancelar</a>

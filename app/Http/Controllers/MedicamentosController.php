@@ -83,8 +83,9 @@ class MedicamentosController extends Controller
         $formasFarmaceuticas = FormaFarmaceutica::all();
         $viasAdministracao = ViaAdministracao::all();
         $fabricantes = Fabricante::all();
+        $disponibilidades = DisponibilidadeEnum::getConstants();
 
-        return view('medicamento.edit', compact('medicamento', 'formasFarmaceuticas', 'viasAdministracao', 'fabricantes'));
+        return view('medicamento.edit', compact('medicamento', 'formasFarmaceuticas', 'viasAdministracao', 'fabricantes', 'disponibilidades'));
     }
 
     public function update(Request $request, $id)
@@ -93,9 +94,9 @@ class MedicamentosController extends Controller
         $request->validate([
             'nome_medicamento' => 'required|string|max:255',
             'substancias_quimicas' => 'required|string',
-            'forma_farmaceutica' => 'required|exists:forma_farmaceuticas,id',
+            'forma_farmaceutica' => 'required|exists:formas_farmaceuticas,id',
             'dosagem' => 'required|string',
-            'via_administracao' => 'required|exists:vias_administracao,id',
+            'via_administracao' => 'required|exists:via_administracaos,id',
             'fabricante_id' => 'required|exists:fabricantes,id',
             'numero_registo' => 'required|string|max:255',
             'data_fabricacao' => 'required|date',
