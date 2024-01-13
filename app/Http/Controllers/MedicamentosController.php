@@ -8,7 +8,7 @@ use App\Models\FormaFarmaceutica;
 use App\Models\ViaAdministracao;
 use App\Models\Fabricante;
 use Illuminate\Support\Facades\Log;
-use App\Enums\DisponibilidadeEnum;
+use App\Enums\Disponibilidade_medicamentos;
 
 class MedicamentosController extends Controller
 {
@@ -23,7 +23,7 @@ class MedicamentosController extends Controller
         $formasFarmaceuticas = FormaFarmaceutica::all();
         $viasAdministracao = ViaAdministracao::all();
         $fabricantes = Fabricante::all();
-        $disponibilidades = DisponibilidadeEnum::getConstants();
+        $disponibilidades = Disponibilidade_medicamentos::getConstants();
 
         return view('medicamento.create', compact('formasFarmaceuticas', 'viasAdministracao', 'fabricantes', 'disponibilidades'));
     }
@@ -83,7 +83,7 @@ class MedicamentosController extends Controller
         $formasFarmaceuticas = FormaFarmaceutica::all();
         $viasAdministracao = ViaAdministracao::all();
         $fabricantes = Fabricante::all();
-        $disponibilidades = DisponibilidadeEnum::getConstants();
+        $disponibilidades = Disponibilidade_medicamentos::getConstants();
 
         return view('medicamento.edit', compact('medicamento', 'formasFarmaceuticas', 'viasAdministracao', 'fabricantes', 'disponibilidades'));
     }
