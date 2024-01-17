@@ -351,13 +351,13 @@ return [
         [
             'text' => 'Diagnósticos',
             'url'  => 'diagnosticoIndex',
-            'icon' => 'fas fa-fw fa-heartbeat'
+            'icon' => 'fas fa-fw fa-notes-medical'
         ],
 
         [
             'text' => 'Prescrições',
             'url'  => 'prescricaoIndex',
-            'icon' => 'fas fa-fw fa-prescription-bottle-alt' // Altere o ícone conforme necessário
+            'icon' => 'fas fa-fw fa-file-medical-alt'
         ],
 
 
