@@ -10,6 +10,10 @@ use App\Http\Controllers\ViaAdministracaoController;
 use App\Http\Controllers\FormaFarmaceuticaController;
 use App\Http\Controllers\FabricanteController;
 use App\Http\Controllers\MedicamentosController;
+use App\Http\Controllers\DiagnosticosController;
+use App\Http\Controllers\PrescricaoController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -103,3 +107,19 @@ Route::get('/update_medicamento/{id}', [MedicamentosController::class, 'edit'])-
 Route::put('/update_medicamento/{id}', [MedicamentosController::class, 'update'])->name('medicamentos.update');
 Route::get('/visualizar_medicamento/{id}', [MedicamentosController::class, 'show']);
 Route::delete('/medicamento/{id}', [MedicamentosController::class, 'delete'])->name('medicamentos.delete');
+
+Route::get('/diagnosticoIndex', [DiagnosticosController::class, 'index'])->name('diagnosticoIndex');
+Route::get('/diagnosticoCreate', [DiagnosticosController::class, 'create'])->name('diagnosticoCreate');
+Route::post('/saveDiagnostico', [DiagnosticosController::class, 'saveDiagnostico']);
+Route::get('/update_diagnostico/{id}', [DiagnosticosController::class, 'edit'])->name('diagnosticos.edit');
+Route::put('/update_diagnostico/{id}', [DiagnosticosController::class, 'update'])->name('diagnosticos.update');
+Route::get('/visualizar_diagnostico/{id}', [DiagnosticosController::class, 'show']);
+Route::delete('/diagnostico/{id}', [DiagnosticosController::class, 'delete'])->name('diagnosticos.delete');
+
+Route::get('/prescricaoIndex', [PrescricaoController::class, 'index'])->name('prescricaoIndex');
+Route::get('/prescricaoCreate', [PrescricaoController::class, 'create'])->name('prescricaoCreate');
+Route::post('/savePrescricao', [PrescricaoController::class, 'savePrescricao']);
+Route::get('/update_prescricao/{id}', [PrescricaoController::class, 'edit'])->name('prescricoes.edit');
+Route::put('/update_prescricao/{id}', [PrescricaoController::class, 'update'])->name('prescricoes.update');
+Route::get('/visualizar_prescricao/{id}', [PrescricaoController::class, 'show']);
+Route::delete('/prescricao/{id}', [PrescricaoController::class, 'delete'])->name('prescricoes.delete');

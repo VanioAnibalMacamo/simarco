@@ -348,6 +348,18 @@ return [
             'icon' => 'fas fa-fw fa-flask'
         ],
 
+        [
+            'text' => 'Diagnósticos',
+            'url'  => 'diagnosticoIndex',
+            'icon' => 'fas fa-fw fa-heartbeat'
+        ],
+
+        [
+            'text' => 'Prescrições',
+            'url'  => 'prescricaoIndex',
+            'icon' => 'fas fa-fw fa-prescription-bottle-alt' // Altere o ícone conforme necessário
+        ],
+
 
 
         [

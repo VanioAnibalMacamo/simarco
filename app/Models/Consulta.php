@@ -58,4 +58,14 @@ class Consulta extends Model
     {
         return $this->belongsTo(Paciente::class, 'paciente_id');
     }
+
+    public function diagnostico()
+    {
+        return $this->hasOne(Diagnostico::class);
+    }
+
+    public function prescricao()
+    {
+        return $this->hasOne(Prescricao::class);
+    }
 }
