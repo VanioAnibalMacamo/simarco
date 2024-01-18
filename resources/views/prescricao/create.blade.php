@@ -37,6 +37,28 @@
                     </select>
                 </div>
             </div>
+
+            <div class="form-group">
+                <label>Medicamentos</label>
+                <div class="row">
+                    @foreach ($medicamentos as $medicamento)
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="medicamentos[]" value="{{ $medicamento->id }}">
+                                <label class="form-check-label">{{ $medicamento->nome_medicamento }}</label>
+                                <input type="text" class="form-control" id="dosagem_{{ $medicamento->id }}" name="dosagens[{{ $medicamento->id }}]" placeholder="Dosagem">
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            
+
+
+
+
+
+
             <div class="form-group">
                 <label for="observacoes">Observações</label>
                 <textarea  class="form-control h-100" id="observacoes" name='observacoes' placeholder="Digite as observações..."></textarea>

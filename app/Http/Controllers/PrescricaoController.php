@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Prescricao;
 use App\Models\Consulta;
+use App\Models\Medicamento;
 
 class PrescricaoController extends Controller
 {
@@ -19,7 +20,8 @@ class PrescricaoController extends Controller
 
         // Buscar todas as consultas para o dropdown
         $consultas = Consulta::all();
-        return view('prescricao.create', compact('consultas'));
+        $medicamentos = Medicamento::all();
+        return view('prescricao.create', compact('consultas','medicamentos'));
     }
 
     public function savePrescricao(Request $request)
@@ -28,16 +30,29 @@ class PrescricaoController extends Controller
             'data_prescricao' => 'required|date',
             'observacoes' => 'nullable|string',
             'consulta_id' => 'required|exists:consultas,id',
+            'medicamentos' => 'required|array', // Validar se a entrada de medicamentos é um array
+            'dosagens' => 'required|array', // Validar se a entrada de dosagens é um array
         ]);
 
-        Prescricao::create([
+        // Crie a instância da Prescricao
+        $prescricao = Prescricao::create([
             'data_prescricao' => $request->input('data_prescricao'),
             'observacoes' => $request->input('observacoes'),
             'consulta_id' => $request->input('consulta_id'),
         ]);
 
+        // Obtenha os medicamentos e dosagens selecionados
+        $medicamentosSelecionados = $request->input('medicamentos');
+        $dosagens = $request->input('dosagens');
+
+        // Associe os medicamentos e dosagens à prescrição
+        foreach ($medicamentosSelecionados as $medicamentoId) {
+            $prescricao->medicamentos()->attach($medicamentoId, ['dosagem' => $dosagens[$medicamentoId]]);
+        }
+
         return redirect('/prescricaoIndex')->with('success', 'Prescrição médica salva com sucesso!');
     }
+
 
     public function edit($id)
     {
