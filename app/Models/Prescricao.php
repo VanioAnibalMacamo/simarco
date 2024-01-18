@@ -12,7 +12,6 @@ class Prescricao extends Model
     protected $fillable = [
         'data_prescricao',
         'observacoes',
-        'dosagem',
         'medicamentos',
         'consulta_id',
     ];

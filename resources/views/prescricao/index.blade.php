@@ -31,7 +31,6 @@
                     <th style="width: 10px">#</th>
                     <th>Data da Prescrição</th>
                     <th>Observações</th>
-                    <th>Dosagem</th>
                     <th>Medicamentos</th>
                     
                 </tr>
@@ -49,7 +48,6 @@
                         <td>{{ $loop->index + 1 }}</td>
                         <td>{{ $prescricao->data_prescricao }}</td>
                         <td>{{ $prescricao->observacoes }}</td>
-                        <td>{{ $prescricao->dosagem }}</td>
                         <td>{{ $prescricao->medicamentos }}</td>
                         <td>
                             <a class="btn btn-primary btn-sm d-inline" href="{{ url('visualizar_prescricao', $prescricao->id) }}"><i class="fas fa-eye"></i></a>

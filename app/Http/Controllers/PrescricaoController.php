@@ -27,7 +27,6 @@ class PrescricaoController extends Controller
         $request->validate([
             'data_prescricao' => 'required|date',
             'observacoes' => 'nullable|string',
-            'dosagem' => 'required|string',
             'medicamentos' => 'required|string',
             'consulta_id' => 'required|exists:consultas,id',
         ]);
@@ -35,7 +34,6 @@ class PrescricaoController extends Controller
         Prescricao::create([
             'data_prescricao' => $request->input('data_prescricao'),
             'observacoes' => $request->input('observacoes'),
-            'dosagem' => $request->input('dosagem'),
             'medicamentos' => $request->input('medicamentos'),
             'consulta_id' => $request->input('consulta_id'),
         ]);
@@ -58,7 +56,6 @@ class PrescricaoController extends Controller
         $request->validate([
             'data_prescricao' => 'required|date',
             'observacoes' => 'nullable|string',
-            'dosagem' => 'required|string',
             'medicamentos' => 'required|string',
             'consulta_id' => 'required|exists:consultas,id',
         ]);
@@ -68,7 +65,6 @@ class PrescricaoController extends Controller
         $prescricao->update([
             'data_prescricao' => $request->input('data_prescricao'),
             'observacoes' => $request->input('observacoes'),
-            'dosagem' => $request->input('dosagem'),
             'medicamentos' => $request->input('medicamentos'),
         ]);
 

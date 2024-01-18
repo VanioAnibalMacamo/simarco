@@ -18,17 +18,14 @@
             @csrf
             <div class="card-body">
                 <div class="row">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                     <label for="data_prescricao">Data da Prescrição</label>
                     <input type="date" class="form-control" id="data_prescricao" name='data_prescricao' required>
                 </div>
                 
-                <div class="form-group col-md-4">
-                    <label for="dosagem">Dosagem</label>
-                    <input type="text" class="form-control" id="dosagem" name='dosagem' placeholder="Ex: 500mg, 1 comprimido, etc." required>
-                </div>
+              
                
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                     <label for="consulta_id">Paciente</label>
                     <select class="form-control" id="consulta_id" name="consulta_id">
                         <option value="">Selecione uma consulta</option>
