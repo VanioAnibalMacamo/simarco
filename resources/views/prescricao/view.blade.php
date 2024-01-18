@@ -17,19 +17,39 @@
         <div class="card-body">
             <div class="row">
                 <div class="form-group col-md-6">
-                <label for="data_prescricao">Data da Prescrição</label>
-                <input type="text" class="form-control" id="data_prescricao" name='data_prescricao' value="{{ $prescricao->data_prescricao }}" readonly>
+                    <label for="data_prescricao">Data da Prescrição</label>
+                    <input type="text" class="form-control" id="data_prescricao" name='data_prescricao' value="{{ $prescricao->data_prescricao }}" readonly>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="consulta_id">Paciente relacionado à Consulta</label>
+                    <input type="text" class="form-control" id="consulta_id" name='consulta_id' value="{{ $prescricao->consulta->data }} - {{ $prescricao->consulta->paciente->nome }}" readonly>
+                </div>
             </div>
-            
-            <div class="form-group col-md-6">
-                <label for="consulta_id">Paciente relacionado à Consulta</label>
-                <input type="text" class="form-control" id="consulta_id" name='consulta_id' value="{{ $prescricao->consulta->data }} - {{ $prescricao->consulta->paciente->nome }}" readonly>
-            </div>
-           </div>
 
             <div class="form-group">
                 <label for="observacoes">Observações</label>
                 <textarea class="form-control" id="observacoes" name='observacoes' readonly>{{ $prescricao->observacoes }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="medicamentos">Medicamentos Prescritos</label>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Comprimido</th>
+                            <th>Dosagem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($prescricao->medicamentos as $medicamento)
+                            <tr>
+                                <td>{{ $medicamento->nome_medicamento }}</td>
+                                <td>{{ $medicamento->pivot->dosagem }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="card-footer">

@@ -58,9 +58,9 @@ class PrescricaoController extends Controller
     {
 
         $prescricao = Prescricao::with('consulta')->findOrFail($id);
-        // Buscar todas as consultas para o dropdown
         $consultas = Consulta::all();
-        return view('prescricao.edit', compact('prescricao', 'consultas'));
+        $medicamentos = Medicamento::all();
+        return view('prescricao.edit', compact('prescricao', 'consultas', 'medicamentos'));
     }
 
 
@@ -70,16 +70,33 @@ class PrescricaoController extends Controller
             'data_prescricao' => 'required|date',
             'observacoes' => 'nullable|string',
             'consulta_id' => 'required|exists:consultas,id',
+            'medicamentos' => 'required|array',
+            'dosagens' => 'required|array',
         ]);
 
-        $prescricao = Prescricao::findOrFail($id);
+        $prescricao = Prescricao::find($id);
+
+        if (!$prescricao) {
+            return redirect('/prescricaoIndex')->with('error', 'Prescrição não encontrada.');
+        }
 
         $prescricao->update([
             'data_prescricao' => $request->input('data_prescricao'),
             'observacoes' => $request->input('observacoes'),
+            'consulta_id' => $request->input('consulta_id'),
         ]);
 
-        return redirect('/prescricaoIndex')->with('success', 'Prescrição médica atualizada com sucesso!');
+        // Sincronize os medicamentos e dosagens na tabela pivot
+        $medicamentosSelecionados = $request->input('medicamentos');
+        $dosagens = $request->input('dosagens');
+
+        $prescricao->medicamentos()->sync([]);
+
+        foreach ($medicamentosSelecionados as $medicamentoId) {
+            $prescricao->medicamentos()->attach($medicamentoId, ['dosagem' => $dosagens[$medicamentoId]]);
+        }
+
+        return redirect('/prescricaoIndex')->with('success', 'Prescrição médica actualizada com sucesso.');
     }
 
     public function show($id)
