@@ -21,4 +21,9 @@ class Prescricao extends Model
     {
         return $this->belongsTo(Consulta::class);
     }
+
+    public function medicamentos()
+    {
+        return $this->belongsToMany(Medicamento::class)->withPivot('dosagem');
+    }
 }
