@@ -54,11 +54,6 @@
                 <label for="observacoes">Observações</label>
                 <textarea class="form-control custom-textarea" id="observacoes" name='observacoes' placeholder="Digite as observações...">{{ $prescricao->observacoes }}</textarea>
             </div>
-
-                <div class="form-group">
-                    <label for="medicamentos">Medicamentos a Tomar</label>
-                    <textarea class="form-contro" id="medicamentos" name='medicamentos' placeholder="Digite os medicamentos a tomar...">{{ $prescricao->medicamentos }}</textarea>
-                </div>
             </div>
         
             <div class="card-footer">

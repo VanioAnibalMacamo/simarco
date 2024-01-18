@@ -41,10 +41,7 @@
                 <label for="observacoes">Observações</label>
                 <textarea  class="form-control h-100" id="observacoes" name='observacoes' placeholder="Digite as observações..."></textarea>
             </div>
-                <div class="form-group">
-                    <label for="medicamentos">Medicamentos a Tomar</label>
-                    <textarea  class="form-control h-100" id="medicamentos" name='medicamentos' placeholder="Digite os medicamentos a tomar..."></textarea>
-                </div>
+               
             </div>
             <div class="card-footer">
                 <input type="submit" class="btn btn-primary" value='Salvar'>

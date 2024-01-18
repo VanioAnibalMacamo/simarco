@@ -31,11 +31,6 @@
                 <label for="observacoes">Observações</label>
                 <textarea class="form-control" id="observacoes" name='observacoes' readonly>{{ $prescricao->observacoes }}</textarea>
             </div>
-
-            <div class="form-group">
-                <label for="medicamentos">Medicamentos a Tomar</label>
-                <textarea class="form-control" id="medicamentos" name='medicamentos' readonly>{{ $prescricao->medicamentos }}</textarea>
-            </div>
         </div>
         <div class="card-footer">
             <a href="{{ url('/prescricaoIndex') }}" type="button" class="btn btn-warning">Voltar</a>
