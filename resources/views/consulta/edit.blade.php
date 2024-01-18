@@ -71,7 +71,8 @@
                     
             </div>
             <div class="card-footer">
-                <input type="submit" class="btn btn-primary" value='Atualizar'>
+                <input type="submit" class="btn btn-primary" value='Actualizar'>
+                <a href="{{ route('diagnostico.createWithPaciente', ['paciente' => $paciente->id]) }}" type="button" class="btn btn-info">Diagnosticar</a>
                 <a href="{{ url('/consultaIndex') }}" type="button" class="btn btn-warning">Cancelar</a>
             </div>
         </form>

@@ -53,12 +53,6 @@
                 </div>
             </div>
             
-
-
-
-
-
-
             <div class="form-group">
                 <label for="observacoes">Observações</label>
                 <textarea  class="form-control h-100" id="observacoes" name='observacoes' placeholder="Digite as observações..."></textarea>

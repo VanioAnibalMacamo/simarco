@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Diagnostico;
 use App\Models\Consulta;
+use App\Models\Paciente;
 use Illuminate\Support\Facades\Log;
 
 class DiagnosticosController extends Controller
@@ -21,7 +22,13 @@ class DiagnosticosController extends Controller
         $consultas = Consulta::all();
         return view('diagnostico.create', compact('consultas'));
     }
+    public function createWithPaciente(Request $request, $pacienteId)
+    {
+        $paciente = Paciente::find($pacienteId);
+        $consultas = Consulta::all();
 
+        return view('diagnostico.create', compact('consultas', 'paciente'));
+    }
     public function saveDiagnostico(Request $request)
     {
         try {

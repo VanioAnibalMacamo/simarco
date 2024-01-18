@@ -115,6 +115,7 @@ Route::get('/update_diagnostico/{id}', [DiagnosticosController::class, 'edit'])-
 Route::put('/update_diagnostico/{id}', [DiagnosticosController::class, 'update'])->name('diagnosticos.update');
 Route::get('/visualizar_diagnostico/{id}', [DiagnosticosController::class, 'show']);
 Route::delete('/diagnostico/{id}', [DiagnosticosController::class, 'delete'])->name('diagnosticos.delete');
+Route::get('/diagnosticoCreateWithPaciente/{paciente}', [DiagnosticosController::class, 'createWithPaciente'])->name('diagnostico.createWithPaciente');
 
 Route::get('/prescricaoIndex', [PrescricaoController::class, 'index'])->name('prescricaoIndex');
 Route::get('/prescricaoCreate', [PrescricaoController::class, 'create'])->name('prescricaoCreate');
