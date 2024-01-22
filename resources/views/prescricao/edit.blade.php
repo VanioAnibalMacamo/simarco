@@ -14,7 +14,8 @@
         </div>
         <!-- /.card-header -->
         <!-- Form start -->
-        <form action="{{ route('prescricoes.update', ['id' => $prescricao->id]) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('prescricoes.update', ['id' => $prescricao->id]) }}" method="POST"
+            enctype="multipart/form-data">
             @method('PUT')
             @csrf
 
@@ -32,7 +33,8 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="data_prescricao">Data da Prescrição</label>
-                        <input type="date" class="form-control" id="data_prescricao" name='data_prescricao' value="{{ $prescricao->data_prescricao }}" required>
+                        <input type="date" class="form-control" id="data_prescricao" name='data_prescricao'
+                            value="{{ $prescricao->data_prescricao }}" required>
                     </div>
 
                     <div class="form-group col-md-6">
@@ -41,7 +43,8 @@
                             <option value="">Selecione uma consulta</option>
                             @foreach ($consultas as $consulta)
                                 @if ($consulta->paciente)
-                                    <option value="{{ $consulta->id }}" {{ $prescricao->consulta_id == $consulta->id ? 'selected' : '' }}>
+                                    <option value="{{ $consulta->id }}"
+                                        {{ $prescricao->consulta_id == $consulta->id ? 'selected' : '' }}>
                                         {{ $consulta->data }} - {{ $consulta->paciente->nome }}
                                     </option>
                                 @endif
@@ -56,18 +59,23 @@
                         @foreach ($medicamentos as $medicamento)
                             <div class="col-md-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="medicamentos[]" value="{{ $medicamento->id }}" {{ in_array($medicamento->id, $prescricao->medicamentos->pluck('id')->toArray()) ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="medicamentos[]"
+                                        value="{{ $medicamento->id }}"
+                                        {{ in_array($medicamento->id, $prescricao->medicamentos->pluck('id')->toArray()) ? 'checked' : '' }}>
                                     <label class="form-check-label">{{ $medicamento->nome_medicamento }}</label>
-                                    <input type="text" class="form-control" id="dosagem_{{ $medicamento->id }}" name="dosagens[{{ $medicamento->id }}]" placeholder="Dosagem" value="{{ $prescricao->medicamentos->where('id', $medicamento->id)->first() ? $prescricao->medicamentos->where('id', $medicamento->id)->first()->pivot->dosagem : '' }}">
+                                    <input type="text" class="form-control" id="dosagem_{{ $medicamento->id }}"
+                                        name="dosagens[{{ $medicamento->id }}]" placeholder="Dosagem"
+                                        value="{{ $prescricao->medicamentos->where('id', $medicamento->id)->first() ? $prescricao->medicamentos->where('id', $medicamento->id)->first()->pivot->dosagem : '' }}">
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="observacoes">Observações</label>
-                    <textarea class="form-control custom-textarea" id="observacoes" name='observacoes' placeholder="Digite as observações...">{{ $prescricao->observacoes }}</textarea>
+                    <textarea class="form-control custom-textarea" id="observacoes" name='observacoes'
+                        placeholder="Digite as observações...">{{ $prescricao->observacoes }}</textarea>
                 </div>
 
             </div>
@@ -86,5 +94,7 @@
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+    <script>
+        console.log('Hi!');
+    </script>
 @stop
