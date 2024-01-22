@@ -16,11 +16,6 @@
 @stop
 
 @section('content')
-    <div class="d-flex flex-row-reverse align-items-end mb-3">
-        <a href="{{ url('diagnosticoCreate') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Adicionar
-        </a>
-    </div>
 
     <div class="card">
         <div class="card-body p-0">
@@ -31,9 +26,6 @@
                         <th>Data do Diagnóstico</th>
                         <th>Paciente Diagnosticado</th>
                         <th>Descrição</th>
-                       
-                        
-                        <!-- Add more columns as necessary -->
                     </tr>
                 </thead>
                 <tbody>
@@ -50,9 +42,7 @@
                             <td>{{ $diagnostico->data_diagnostico }}</td>
                             <td>{{ $diagnostico->consulta->paciente->nome }}</td>
                             <td>{{ $diagnostico->descricao }}</td>
-                            
-                           
-                            <!-- Add more cells as necessary -->
+
                             <td>
                                 <a class="btn btn-primary btn-sm d-inline" href="{{ url('visualizar_diagnostico', $diagnostico->id) }}"><i class="fas fa-eye"></i></a>
                                 <a class="btn btn-info btn-sm d-inline" href="{{ url('update_diagnostico', $diagnostico->id) }}"><i class="fas fa-pencil-alt"></i></a>

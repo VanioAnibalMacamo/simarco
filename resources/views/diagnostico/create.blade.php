@@ -22,28 +22,25 @@
                         <label for="data_diagnostico">Data do Diagnóstico</label>
                         <input type="date" class="form-control" id="data_diagnostico" name='data_diagnostico'>
                     </div>
-                     
+
                     <div class="form-group col-md-6">
                         <label for="consulta_id">Paciente relacionado à Consulta</label>
-                    
-                        @if(isset($paciente))
-                            <input type="text" class="form-control" id="consulta_id" name="consulta_id" value="{{ $paciente->nome}}" readonly>
-                        @else
-                            <select class="form-control" id="consulta_id" name="consulta_id">
-                                <option value="">Selecione uma consulta</option>
-                                @foreach ($consultas as $consulta)
+
+
+                            <input type="text" class="form-control" id="consulta_id" name="consulta_id" value="{{ $consulta->id }}" hidden>
+
+                            <select class="form-control" id="consulta_id" name="consulta_id" disabled>
                                     @if ($consulta->paciente)
                                         <option value="{{ $consulta->id }}">
-                                            {{ $consulta->data }} - {{ $consulta->paciente->nome }}
+                                          {{ $consulta->paciente->nome }}
                                         </option>
                                     @endif
-                                @endforeach
                             </select>
-                        @endif
+
                     </div>
-                    
-                    
-                    
+
+
+
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">

@@ -16,53 +16,40 @@ class DiagnosticosController extends Controller
         return view('diagnostico.index', compact('diagnosticos'));
     }
 
-    public function create()
+    public function create($consultaId)
     {
-        // Buscar todas as consultas para o dropdown
-        $consultas = Consulta::all();
-        return view('diagnostico.create', compact('consultas'));
-    }
-    public function createWithPaciente(Request $request, $pacienteId)
-    {
-        $paciente = Paciente::find($pacienteId);
-        $consultas = Consulta::all();
+        // Buscar a consulta específica pelo ID
+        $consulta = Consulta::find($consultaId);
 
-        return view('diagnostico.create', compact('consultas', 'paciente'));
+        // Verificar se a consulta foi encontrada
+        if (!$consulta) {
+            // Tratar o caso em que a consulta não foi encontrada
+            abort(404, 'Consulta não encontrada');
+        }
+
+        return view('diagnostico.create', compact('consulta'));
     }
+
     public function saveDiagnostico(Request $request)
     {
-        try {
-            $request->validate([
-                'data_diagnostico' => 'required|date',
-                'descricao' => 'required|string',
-                'observacoes' => 'nullable|string',
-                'consulta_id' => 'required|exists:consultas,id',
-            ]);
+           // Validação dos dados do formulário
 
-            Diagnostico::create([
-                'data_diagnostico' => $request->input('data_diagnostico'),
-                'descricao' => $request->input('descricao'),
-                'observacoes' => $request->input('observacoes'),
-                'consulta_id' => $request->input('consulta_id'),
-            ]);
 
-            // Adicionar logs para verificar os dados em caso de erro
-            Log::info('Diagnóstico salvo com sucesso.', [
-                'data_diagnostico' => $request->input('data_diagnostico'),
-                'descricao' => $request->input('descricao'),
-                'observacoes' => $request->input('observacoes'),
-                'consulta_id' => $request->input('consulta_id'),
-            ]);
+        // Criação de um novo diagnóstico com base nos dados do formulário
+        $diagnostico = new Diagnostico([
+            'data_diagnostico' => $request->input('data_diagnostico'),
+            'consulta_id' => $request->input('consulta_id'),
+            'descricao' => $request->input('descricao'),
+            'observacoes' => $request->input('observacoes'),
+        ]);
 
-            return redirect('/diagnosticoIndex')->with('success', 'Diagnóstico salvo com sucesso.');
-        } catch (\Exception $e) {
-            // Registrar mensagens de erro
-            Log::error('Erro ao salvar diagnóstico: ' . $e->getMessage());
+        $diagnostico->save();
 
-            // Lidar com o erro conforme necessário
-            return redirect()->back()->with('error', 'Ocorreu um erro ao salvar o diagnóstico.');
-        }
+        // Redireciona para a página desejada após o salvamento
+        return redirect()->route('diagnosticoIndex')->with('success', 'Diagnóstico cadastrado com sucesso!');
     }
+
+
 
     public function edit($id)
     {
@@ -84,7 +71,7 @@ class DiagnosticosController extends Controller
         $diagnostico = Diagnostico::findOrFail($id);
         $diagnostico->update($request->all());
 
-        return redirect()->route('diagnosticoIndex')->with('success', 'Diagnóstico atualizado com sucesso.');
+        return redirect()->route('diagnosticoIndex')->with('success', 'Diagnóstico actualizado com sucesso.');
     }
 
     public function show($id)

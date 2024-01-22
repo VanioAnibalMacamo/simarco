@@ -46,7 +46,7 @@
                             @endforeach
                         </select>
                     </div>
-                    
+
                     <div class="form-group col-md-4">
                         <label for="id_paciente">Paciente</label>
                         <select class="form-control" id="id_paciente" name="id_paciente">
@@ -57,7 +57,7 @@
                             @endforeach
                         </select>
                     </div>
-                    
+
                     <div class="form-group col-md-4">
                         <label for="id_medico">Médico Responsável</label>
                         <select class="form-control" id="id_medico" name="id_medico">
@@ -68,11 +68,11 @@
                             @endforeach
                         </select>
                     </div>
-                    
+
             </div>
             <div class="card-footer">
                 <input type="submit" class="btn btn-primary" value='Actualizar'>
-                <a href="{{ route('diagnostico.createWithPaciente', ['paciente' => $paciente->id]) }}" type="button" class="btn btn-info">Diagnosticar</a>
+                <a href="{{ route('diagnosticoCreate', ['consultaId' => $consulta->id]) }}" type="button" class="btn btn-info">Diagnosticar</a>
                 <a href="{{ url('/consultaIndex') }}" type="button" class="btn btn-warning">Cancelar</a>
             </div>
         </form>
