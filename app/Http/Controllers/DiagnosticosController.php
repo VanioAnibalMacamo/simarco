@@ -27,6 +27,16 @@ class DiagnosticosController extends Controller
             abort(404, 'Consulta não encontrada');
         }
 
+        // Verificar se a consulta já possui um diagnóstico associado
+        $diagnosticoExistente = Diagnostico::where('consulta_id', $consulta->id)->first();
+
+        // Se já existir um diagnóstico, redirecionar para a página de visualização do diagnóstico existente
+        if ($diagnosticoExistente) {
+            return redirect('/consultaIndex?id=' . $diagnosticoExistente->id)
+                ->with('error', 'Esta consulta já possui um diagnóstico associado.');
+        }
+
+        // Se não existir diagnóstico, continuar com a criação
         return view('diagnostico.create', compact('consulta'));
     }
 
@@ -39,10 +49,7 @@ class DiagnosticosController extends Controller
             'observacoes' => 'nullable|string',
         ]);
 
-        // Verifica se a consulta já possui um diagnóstico associado
-        if (Diagnostico::where('consulta_id', $request->input('consulta_id'))->exists()) {
-            return redirect('/diagnosticoIndex')->with('error', 'Esta consulta já possui um diagnóstico associado.');
-        }
+
 
         // Criação de um novo diagnóstico com base nos dados do formulário
         $diagnostico = new Diagnostico([
@@ -60,9 +67,6 @@ class DiagnosticosController extends Controller
         // Redireciona para a página desejada após o salvamento
         return redirect()->route('prescricaoCreate', ['consultaId' => $consulta->id])->with('success', 'Diagnóstico cadastrado com sucesso!');
     }
-
-
-
 
     public function edit($id)
     {

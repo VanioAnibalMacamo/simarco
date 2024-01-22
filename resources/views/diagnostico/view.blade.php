@@ -16,21 +16,25 @@
         <!-- Form start -->
         <div class="card-body">
             <div class="row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                     <label for="data_diagnostico">Data do Diagnóstico</label>
-                    <input type="text" class="form-control" id="data_diagnostico" name='data_diagnostico' value="{{ $diagnostico->data_diagnostico }}" readonly>
+                    <input type="text" class="form-control" id="data_diagnostico" name='data_diagnostico'
+                        value="{{ $diagnostico->data_diagnostico }}" readonly>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                     <label for="consulta_id">Consulta Relacionada</label>
-                    <input type="text" class="form-control" value="{{ $diagnostico->consulta->data }} - {{ $diagnostico->consulta->paciente->nome }}" readonly>
+                    <input type="text" class="form-control"
+                        value="{{ $diagnostico->consulta->data }} - {{ $diagnostico->consulta->paciente->nome }}" readonly>
                 </div>
-                <div class="form-group col-md-4">
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
                     <label for="descricao">Descrição</label>
-                    <textarea class="form-control h-98" id="descricao" name='descricao' readonly>{{ $diagnostico->descricao }}</textarea>
+                    <textarea class="form-control h-100" id="descricao" name='descricao' readonly>{{ $diagnostico->descricao }}</textarea>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                     <label for="observacoes">Observações</label>
-                    <textarea class="form-control h-98" id="observacoes" name='observacoes' readonly>{{ $diagnostico->observacoes }}</textarea>
+                    <textarea class="form-control h-100" id="observacoes" name='observacoes' readonly>{{ $diagnostico->observacoes }}</textarea>
                 </div>
             </div>
         </div>
@@ -46,5 +50,7 @@
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+    <script>
+        console.log('Hi!');
+    </script>
 @stop

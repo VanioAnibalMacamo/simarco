@@ -14,33 +14,39 @@
         </div>
         <!-- /.card-header -->
         <!-- Form start -->
-        <form action="{{ route('diagnosticos.update', ['id' => $diagnostico->id]) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('diagnosticos.update', ['id' => $diagnostico->id]) }}" method="POST"
+            enctype="multipart/form-data">
             @csrf
             @method('PUT') <!-- Add this line for the PUT request -->
             <div class="card-body">
                 <div class="row">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <label for="data_diagnostico">Data do Diagnóstico</label>
-                        <input type="date" class="form-control" id="data_diagnostico" name='data_diagnostico' value="{{ $diagnostico->data_diagnostico }}">
+                        <input type="date" class="form-control" id="data_diagnostico" name='data_diagnostico'
+                            value="{{ $diagnostico->data_diagnostico }}">
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <label for="consulta_id">Paciente relacionado à Consulta</label>
                         <select class="form-control" id="consulta_id" name="consulta_id" disabled>
                             <option value="">Selecione uma consulta</option>
                             @foreach ($consultas as $consulta)
                                 @if ($consulta->paciente)
-                                    <option value="{{ $consulta->id }}" @if($consulta->id == $diagnostico->consulta_id) selected @endif>{{ $consulta->paciente->nome }}</option>
+                                    <option value="{{ $consulta->id }}" @if ($consulta->id == $diagnostico->consulta_id) selected @endif>
+                                        {{ $consulta->paciente->nome }}</option>
                                 @endif
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group col-md-4">
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
                         <label for="descricao">Descrição</label>
-                        <textarea class="form-control h-98" id="descricao" name='descricao' placeholder="Digite a descrição do diagnóstico...">{{ $diagnostico->descricao }}</textarea>
+                        <textarea class="form-control h-100" id="descricao" name='descricao' placeholder="Digite a descrição do diagnóstico...">{{ $diagnostico->descricao }}</textarea>
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <label for="observacoes">Observações</label>
-                        <textarea class="form-control h-98" id="observacoes" name='observacoes' placeholder="Digite as observações do diagnóstico...">{{ $diagnostico->observacoes }}</textarea>
+                        <textarea class="form-control h-100" id="observacoes" name='observacoes'
+                            placeholder="Digite as observações do diagnóstico...">{{ $diagnostico->observacoes }}</textarea>
                     </div>
                 </div>
             </div>
@@ -58,5 +64,7 @@
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+    <script>
+        console.log('Hi!');
+    </script>
 @stop

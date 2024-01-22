@@ -66,13 +66,19 @@ class ConsultaController extends Controller
 
     public function show($id)
     {
-        $consulta = Consulta::with(['statusConsulta', 'medico', 'paciente'])->findOrFail($id);
+
+        $consulta = Consulta::with(['statusConsulta', 'medico', 'paciente', 'diagnostico', 'prescricao'])->findOrFail($id);
         $statusConsulta = $consulta->statusConsulta;
         $consulta->load('paciente');
         $consulta->load('medico');
 
-        return view('consulta.view', compact('consulta', 'statusConsulta'));
+        // Acessando o diagnóstico e a prescrição associados à consulta
+        $diagnostico = $consulta->diagnostico;
+        $prescricao = $consulta->prescricao;
+
+        return view('consulta.view', compact('consulta', 'statusConsulta', 'diagnostico', 'prescricao'));
     }
+
 
 
 
