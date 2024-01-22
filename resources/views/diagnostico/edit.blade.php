@@ -25,11 +25,11 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label for="consulta_id">Paciente relacionado à Consulta</label>
-                        <select class="form-control" id="consulta_id" name="consulta_id">
+                        <select class="form-control" id="consulta_id" name="consulta_id" disabled>
                             <option value="">Selecione uma consulta</option>
                             @foreach ($consultas as $consulta)
                                 @if ($consulta->paciente)
-                                    <option value="{{ $consulta->id }}" @if($consulta->id == $diagnostico->consulta_id) selected @endif>{{ $consulta->data }} - {{ $consulta->paciente->nome }}</option>
+                                    <option value="{{ $consulta->id }}" @if($consulta->id == $diagnostico->consulta_id) selected @endif>{{ $consulta->paciente->nome }}</option>
                                 @endif
                             @endforeach
                         </select>
