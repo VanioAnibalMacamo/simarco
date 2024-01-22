@@ -15,14 +15,16 @@ class PrescricaoController extends Controller
         return view('prescricao.index', compact('prescricoes'));
     }
 
-    public function create()
+    public function create($consultaId)
     {
 
         // Buscar todas as consultas para o dropdown
-        $consultas = Consulta::all();
+        $consultas = Consulta::find($consultaId);
         $medicamentos = Medicamento::all();
-        return view('prescricao.create', compact('consultas','medicamentos'));
+        return view('prescricao.create', compact('consultas', 'medicamentos'));
     }
+
+
 
     public function savePrescricao(Request $request)
     {
@@ -30,22 +32,27 @@ class PrescricaoController extends Controller
             'data_prescricao' => 'required|date',
             'observacoes' => 'nullable|string',
             'consulta_id' => 'required|exists:consultas,id',
-            'medicamentos' => 'required|array', // Validar se a entrada de medicamentos é um array
-            'dosagens' => 'required|array', // Validar se a entrada de dosagens é um array
+            'medicamentos' => 'required|array',
+            'dosagens' => 'required|array',
         ]);
 
-        // Crie a instância da Prescricao
+        // Verifica se a consulta já possui uma prescrição associada
+        if (Prescricao::where('consulta_id', $request->input('consulta_id'))->exists()) {
+            return redirect('/prescricaoIndex')->with('error', 'Esta consulta já possui uma prescrição associada.');
+        }
+
+        // Cria a instância da Prescricao
         $prescricao = Prescricao::create([
             'data_prescricao' => $request->input('data_prescricao'),
             'observacoes' => $request->input('observacoes'),
             'consulta_id' => $request->input('consulta_id'),
         ]);
 
-        // Obtenha os medicamentos e dosagens selecionados
+        // Obtém os medicamentos e dosagens selecionados
         $medicamentosSelecionados = $request->input('medicamentos');
         $dosagens = $request->input('dosagens');
 
-        // Associe os medicamentos e dosagens à prescrição
+        // Associa os medicamentos e dosagens à prescrição
         foreach ($medicamentosSelecionados as $medicamentoId) {
             $prescricao->medicamentos()->attach($medicamentoId, ['dosagem' => $dosagens[$medicamentoId]]);
         }

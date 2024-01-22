@@ -47,11 +47,13 @@
                                 <a class="btn btn-primary btn-sm d-inline" href="{{ url('visualizar_diagnostico', $diagnostico->id) }}"><i class="fas fa-eye"></i></a>
                                 <a class="btn btn-info btn-sm d-inline" href="{{ url('update_diagnostico', $diagnostico->id) }}"><i class="fas fa-pencil-alt"></i></a>
 
+                            
                                 <form id="form-excluir-{{ $diagnostico->id }}" action="{{ route('diagnosticos.delete', ['id' => $diagnostico->id]) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event, '{{ $diagnostico->descricao }}', {{ $diagnostico->id }})"><i class="fas fa-trash"></i></button>
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event, '{{ $diagnostico->descricao }}', '{{ $diagnostico->data_diagnostico }}', {{ $diagnostico->id }})"><i class="fas fa-trash"></i></button>
                                 </form>
+                                
                             </td>
                         </tr>
                     @endforeach
@@ -78,11 +80,11 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-       function confirmDelete(event, formId) {
+        function confirmDelete(event, descricao,data_diagnostico, formId) {
             event.preventDefault();
-
+    
             Swal.fire({
-                title: 'Tem certeza que deseja excluir o diagnóstico  do paciente"' + '"?',
+                title: 'Tem certeza que deseja excluir o diagnóstico ' + data_diagnostico + '?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
@@ -96,4 +98,7 @@
             });
         }
     </script>
+    
 @stop
+
+

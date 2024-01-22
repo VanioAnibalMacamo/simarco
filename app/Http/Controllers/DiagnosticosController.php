@@ -32,8 +32,19 @@ class DiagnosticosController extends Controller
 
     public function saveDiagnostico(Request $request)
     {
+        $request->validate([
+            'data_diagnostico' => 'required|date',
+            'consulta_id' => 'required|exists:consultas,id',
+            'descricao' => 'required|string',
+            'observacoes' => 'nullable|string',
+        ]);
 
-       // Criação de um novo diagnóstico com base nos dados do formulário
+        // Verifica se a consulta já possui um diagnóstico associado
+        if (Diagnostico::where('consulta_id', $request->input('consulta_id'))->exists()) {
+            return redirect('/diagnosticoIndex')->with('error', 'Esta consulta já possui um diagnóstico associado.');
+        }
+
+        // Criação de um novo diagnóstico com base nos dados do formulário
         $diagnostico = new Diagnostico([
             'data_diagnostico' => $request->input('data_diagnostico'),
             'consulta_id' => $request->input('consulta_id'),
@@ -48,8 +59,8 @@ class DiagnosticosController extends Controller
 
         // Redireciona para a página desejada após o salvamento
         return redirect()->route('prescricaoCreate', ['consultaId' => $consulta->id])->with('success', 'Diagnóstico cadastrado com sucesso!');
-
     }
+
 
 
 

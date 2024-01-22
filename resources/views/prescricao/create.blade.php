@@ -34,24 +34,27 @@
                 </div>
 
                 <div class="form-group col-md-6">
-                    <label for="consulta_id">Paciente</label>
-                    @php
-                        // Obtém o valor de consultaId da query string
-                        $consultaId = request()->query('consultaId');
-                        $consulta = App\Models\Consulta::find($consultaId);
-                    @endphp
-                    <input type="text" class="form-control" id="consulta_id" name="consulta_id" value="{{ $consultaId }}" hidden>
-                    <select class="form-control" id="consulta_id_select" name="consulta_id_select" disabled>
-                        @if ($consulta && $consulta->paciente)
-                            <option value="{{ $consultaId }}">
-                                 {{ $consulta->paciente->nome }}
-                            </option>
-                        @endif
-                    </select>
+                    <label for="consulta_id">Paciente relacionado à Consulta</label>
+                        <!-- Esse input apenas tem a função de guardar o id da consulta,
+                            por isso está com hidden porque o utilizador nao deve ver isso.
+                        -->
+                        <input type="text" class="form-control" id="consulta_id" name="consulta_id" value="{{ $consultas->id }}" hidden>
+
+                        <select class="form-control" id="consulta_id" name="consulta_id" disabled>
+                                @if ($consultas->paciente)
+                                    <option value="{{ $consultas->id }}">
+                                      {{ $consultas->paciente->nome }}
+                                    </option>
+                                @endif
+                        </select>
 
                 </div>
+
+
+                
             </div>
 
+            
             <div class="form-group">
                 <label>Medicamentos</label>
                 <div class="row">
