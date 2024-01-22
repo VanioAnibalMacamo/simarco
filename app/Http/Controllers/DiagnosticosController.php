@@ -32,10 +32,8 @@ class DiagnosticosController extends Controller
 
     public function saveDiagnostico(Request $request)
     {
-           // Validação dos dados do formulário
 
-
-        // Criação de um novo diagnóstico com base nos dados do formulário
+       // Criação de um novo diagnóstico com base nos dados do formulário
         $diagnostico = new Diagnostico([
             'data_diagnostico' => $request->input('data_diagnostico'),
             'consulta_id' => $request->input('consulta_id'),
@@ -45,8 +43,12 @@ class DiagnosticosController extends Controller
 
         $diagnostico->save();
 
+        // Buscar a consulta associada ao diagnóstico
+        $consulta = Consulta::find($request->input('consulta_id'));
+
         // Redireciona para a página desejada após o salvamento
-        return redirect()->route('diagnosticoIndex')->with('success', 'Diagnóstico cadastrado com sucesso!');
+        return redirect()->route('prescricaoCreate', ['consultaId' => $consulta->id])->with('success', 'Diagnóstico cadastrado com sucesso!');
+
     }
 
 

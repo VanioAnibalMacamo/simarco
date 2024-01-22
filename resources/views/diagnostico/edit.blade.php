@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                <input type="submit" class="btn btn-primary" value='Atualizar'>
+                <input type="submit" class="btn btn-primary" value='Actualizar'>
                 <a href="{{ url('/diagnosticoIndex') }}" type="button" class="btn btn-warning">Cancelar</a>
             </div>
         </form>

@@ -119,7 +119,7 @@ Route::delete('/diagnostico/{id}', [DiagnosticosController::class, 'delete'])->n
 //Route::get('/diagnosticoCreateWithPaciente/{paciente}', [DiagnosticosController::class, 'createWithPaciente'])->name('diagnostico.createWithPaciente');
 
 Route::get('/prescricaoIndex', [PrescricaoController::class, 'index'])->name('prescricaoIndex');
-Route::get('/prescricaoCreate', [PrescricaoController::class, 'create'])->name('prescricaoCreate');
+Route::get('/prescricaoCreate/{consultaId}', [PrescricaoController::class, 'create'])->name('prescricaoCreate');
 Route::post('/savePrescricao', [PrescricaoController::class, 'savePrescricao']);
 Route::get('/update_prescricao/{id}', [PrescricaoController::class, 'edit'])->name('prescricoes.edit');
 Route::put('/update_prescricao/{id}', [PrescricaoController::class, 'update'])->name('prescricoes.update');

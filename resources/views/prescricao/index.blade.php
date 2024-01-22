@@ -17,12 +17,6 @@
 
 @section('content')
 
-<div class="d-flex flex-row-reverse align-items-end mb-3">
-    <a href="{{ url('prescricaoCreate') }}" class="btn btn-primary">
-        <i class="fas fa-plus"></i> Adicionar
-    </a>
-</div>
-
 <div class="card">
     <div class="card-body p-0">
         <table class="table table-striped">
@@ -30,7 +24,7 @@
                 <tr>
                     <th style="width: 10px">#</th>
                     <th>Data da Prescrição</th>
-                    <th>Observações</th>                  
+                    <th>Observações</th>
                 </tr>
             </thead>
             <tbody>
