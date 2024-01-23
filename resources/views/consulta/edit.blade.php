@@ -77,31 +77,62 @@
                     </div>
 
                 </div>
-            </div>
-            <div class="card-footer">
-                <input type="submit" class="btn btn-primary" value='Atualizar'>
+                <div class="espacamento" style="margin-top: 30px"></div>
 
-                {{-- Adiciona lógica para exibir botão "Diagnosticar" ou "Prescrever" --}}
-                @if ($consulta->diagnostico)
-                    {{-- Se já possui diagnóstico --}}
-                    @if ($consulta->prescricao)
-                        {{-- Se já possui prescrição --}}
-                        <a href="{{ url('visualizar_diagnostico', $consulta->diagnostico->id) }}"
-                            class="btn btn-warning">Visualizar Diagnóstico</a>
-                    @else
-                        {{-- Se não possui prescrição --}}
-                        <a href="{{ route('prescricaoCreate', ['consultaId' => $consulta->id]) }}"
-                            class="btn btn-success">Prescrever</a>
+                <label for="descricao">Descricao dos diagnósticos</label>
+                <hr>
+                <!-- Se houver diagnóstico, exiba os campos -->
+                <div class="row">
+                    @if (isset($diagnostico))
+                        <div class="form-group col-md-6">
+
+                            <label for="descricao">Descrição do Diagnóstico</label>
+                            <textarea class="form-control" id="descricao" name='descricao' placeholder="Digite a descrição do diagnóstico...">{{ $diagnostico->descricao }}</textarea>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="observacoes_diagnostico">Observações do Diagnóstico</label>
+                            <textarea class="form-control" id="observacoes_diagnostico" name='observacoes_diagnostico'
+                                placeholder="Digite as observações do diagnóstico...">{{ $diagnostico->observacoes }}</textarea>
+                        </div>
                     @endif
-                @else
-                    {{-- Se não possui diagnóstico --}}
-                    <a href="{{ route('diagnosticoCreate', ['consultaId' => $consulta->id]) }}"
-                        class="btn btn-info">Diagnosticar</a>
+                </div>
+                <label for="descricao">Descricao da Prescrição</label>
+                <hr>
+                <!-- Se houver prescrição, exiba os campos -->
+                @if ($prescricao)
+                    <div class="form-group mt-10">
+                        <label for="observacoes_prescricao">Observações da Prescrição</label>
+                        <textarea class="form-control" id="observacoes_prescricao" name='observacoes_prescricao'
+                            placeholder="Digite as observações da prescrição...">{{ $prescricao->observacoes }}</textarea>
+                    </div>
                 @endif
 
-                <a href="{{ url('/consultaIndex') }}" class="btn btn-warning">Cancelar</a>
             </div>
-        </form>
+    </div>
+    <div class="card-footer">
+        <input type="submit" class="btn btn-primary" value='Atualizar'>
+
+        {{-- Adiciona lógica para exibir botão "Diagnosticar" ou "Prescrever" --}}
+        @if ($consulta->diagnostico)
+            {{-- Se já possui diagnóstico --}}
+            @if ($consulta->prescricao)
+                {{-- Se já possui prescrição --}}
+                <a href="{{ url('visualizar_diagnostico', $consulta->diagnostico->id) }}"
+                    class="btn btn-warning">Visualizar Diagnóstico</a>
+            @else
+                {{-- Se não possui prescrição --}}
+                <a href="{{ route('prescricaoCreate', ['consultaId' => $consulta->id]) }}"
+                    class="btn btn-success">Prescrever</a>
+            @endif
+        @else
+            {{-- Se não possui diagnóstico --}}
+            <a href="{{ route('diagnosticoCreate', ['consultaId' => $consulta->id]) }}"
+                class="btn btn-info">Diagnosticar</a>
+        @endif
+
+        <a href="{{ url('/consultaIndex') }}" class="btn btn-warning">Cancelar</a>
+    </div>
+    </form>
     </div>
     <!-- /.card -->
 @stop

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Prescricao;
 use App\Models\Consulta;
 use App\Models\Medicamento;
+use App\Models\Diagnostico;
 
 class PrescricaoController extends Controller
 {
@@ -15,16 +16,18 @@ class PrescricaoController extends Controller
         return view('prescricao.index', compact('prescricoes'));
     }
 
+
     public function create($consultaId)
     {
-
-        // Buscar todas as consultas para o dropdown
+        // Buscar a consulta específica pelo ID
         $consultas = Consulta::find($consultaId);
         $medicamentos = Medicamento::all();
-        return view('prescricao.create', compact('consultas', 'medicamentos'));
+
+        // Se há um diagnóstico associado à consulta, você pode recuperá-lo
+        $diagnostico = Diagnostico::where('consulta_id', $consultaId)->first();
+
+        return view('prescricao.create', compact('consultas', 'medicamentos', 'diagnostico'));
     }
-
-
 
     public function savePrescricao(Request $request)
     {
@@ -110,6 +113,7 @@ class PrescricaoController extends Controller
     {
         $prescricao = Prescricao::with('consulta')->findOrFail($id);
         $consulta = $prescricao->consulta;  // Carrega a consulta associada à prescrição
+
 
         return view('prescricao.view', compact('prescricao', 'consulta'));
     }

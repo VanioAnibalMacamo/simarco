@@ -82,9 +82,6 @@ class ConsultaController extends Controller
     }
 
 
-
-
-
     public function edit($id)
     {
         $consulta = Consulta::findOrFail($id);
@@ -92,7 +89,11 @@ class ConsultaController extends Controller
         $pacientes = Paciente::all();
         $medicos = Medico::all();
 
-        return view('consulta.edit', compact('consulta', 'statusConsultas', 'pacientes', 'medicos'));
+        // Acessando o diagnóstico e a prescrição associados à consulta
+        $diagnostico = $consulta->diagnostico;
+        $prescricao = $consulta->prescricao;
+
+        return view('consulta.edit', compact('consulta', 'statusConsultas', 'pacientes', 'medicos', 'diagnostico', 'prescricao'));
     }
 
     public function update(Request $request, $id)

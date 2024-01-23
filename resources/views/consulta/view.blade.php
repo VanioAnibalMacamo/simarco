@@ -73,12 +73,15 @@
                             <tr>
                                 <th>Descrição do Diagnóstico</th>
                                 <th>Observações do Diagnóstico</th>
+                                <th>Data do Diagnóstico</th>
+
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>{{ $diagnostico->descricao }}</td>
                                 <td>{{ $diagnostico->observacoes }}</td>
+                                <td>{{ $diagnostico->data_diagnostico }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -95,6 +98,9 @@
                             <tr>
                                 <th>Comprimido</th>
                                 <th>Dosagem</th>
+                                <th>Data da Prescrição</th>
+                                <th>Observações da Prescrição</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -102,6 +108,8 @@
                                 <tr>
                                     <td>{{ $medicamento->nome_medicamento }}</td>
                                     <td>{{ $medicamento->pivot->dosagem }}</td>
+                                    <td>{{ $prescricao->data_prescricao }}</td>
+                                    <td>{{ $prescricao->observacoes }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

@@ -27,58 +27,90 @@
         <form action="{{ url('savePrescricao') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="data_prescricao">Data da Prescrição</label>
-                        <input type="date" class="form-control" id="data_prescricao" name='data_prescricao' required>
+
+
+                <label for="descricao">Diagnósticos da consulta</label>
+                <hr>
+                <!-- Se houver diagnóstico, exiba os campos -->
+
+                @if ($diagnostico)
+                    <div class="form-group col-md-3">
+                        <label for="data_diagnostico">Data do Diagnóstico</label>
+                        <input type="text" class="form-control" id="data_diagnostico" name="data_diagnostico" readonly
+                            value="{{ \Carbon\Carbon::parse($diagnostico->data_diagnostico)->format('d/m/Y') }}">
                     </div>
 
-                    <div class="form-group col-md-6">
-                        <label for="consulta_id">Paciente relacionado à Consulta</label>
-                        <!-- Esse input apenas tem a função de guardar o id da consulta,
-                                por isso está com hidden porque o utilizador nao deve ver isso.
-                            -->
-                        <input type="text" class="form-control" id="consulta_id" name="consulta_id"
-                            value="{{ $consultas->id }}" hidden>
-
-                        <select class="form-control" id="consulta_id" name="consulta_id" disabled>
-                            @if ($consultas->paciente)
-                                <option value="{{ $consultas->id }}">
-                                    {{ $consultas->paciente->nome }}
-                                </option>
-                            @endif
-                        </select>
-
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Medicamentos</label>
                     <div class="row">
-                        @foreach ($medicamentos as $medicamento)
-                            <div class="col-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="medicamentos[]"
-                                        value="{{ $medicamento->id }}">
-                                    <label class="form-check-label">{{ $medicamento->nome_medicamento }}</label>
-                                    <input type="text" class="form-control" id="dosagem_{{ $medicamento->id }}"
-                                        name="dosagens[{{ $medicamento->id }}]" placeholder="Dosagem">
-                                </div>
+                        <div class="form-group col-md-6">
+                            <label for="descricao">Descrição do Diagnóstico</label>
+                            <textarea class="form-control" id="descricao" name='descricao' placeholder="Digite a descrição do diagnóstico..."
+                                readonly>{{ $diagnostico->descricao }}</textarea>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="observacoes_diagnostico">Observações do Diagnóstico</label>
+                            <textarea class="form-control" id="observacoes_diagnostico" name='observacoes_diagnostico'
+                                placeholder="Digite as observações do diagnóstico..." readonly>{{ $diagnostico->observacoes }}</textarea>
+                        </div>
+                @endif
+            </div>
+
+
+            <label for="descricao">Prescrição</label>
+            <hr>
+
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="data_prescricao">Data da Prescrição</label>
+                    <input type="date" class="form-control" id="data_prescricao" name='data_prescricao' required>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="consulta_id">Paciente relacionado à Consulta</label>
+                    <!-- Esse input apenas tem a função de guardar o id da consulta,
+                                                                                                    por isso está com hidden porque o utilizador nao deve ver isso.
+                                                                                                -->
+                    <input type="text" class="form-control" id="consulta_id" name="consulta_id"
+                        value="{{ $consultas->id }}" hidden>
+
+                    <select class="form-control" id="consulta_id" name="consulta_id" disabled>
+                        @if ($consultas->paciente)
+                            <option value="{{ $consultas->id }}">
+                                {{ $consultas->paciente->nome }}
+                            </option>
+                        @endif
+                    </select>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Medicamentos</label>
+                <div class="row">
+                    @foreach ($medicamentos as $medicamento)
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="medicamentos[]"
+                                    value="{{ $medicamento->id }}">
+                                <label class="form-check-label">{{ $medicamento->nome_medicamento }}</label>
+                                <input type="text" class="form-control" id="dosagem_{{ $medicamento->id }}"
+                                    name="dosagens[{{ $medicamento->id }}]" placeholder="Dosagem">
                             </div>
-                        @endforeach
-                    </div>
+                        </div>
+                    @endforeach
                 </div>
-
-                <div class="form-group">
-                    <label for="observacoes">Observações</label>
-                    <textarea class="form-control h-100" id="observacoes" name='observacoes' placeholder="Digite as observações..."></textarea>
-                </div>
-
             </div>
-            <div class="card-footer">
-                <input type="submit" class="btn btn-primary" value='Salvar'>
-                <a href="javascript:history.back();" class="btn btn-warning">Cancelar</a>
+
+            <div class="form-group">
+                <label for="observacoes">Observações</label>
+                <textarea class="form-control h-100" id="observacoes" name='observacoes' placeholder="Digite as observações..."></textarea>
             </div>
-        </form>
+
+    </div>
+    <div class="card-footer">
+        <input type="submit" class="btn btn-primary" value='Salvar'>
+        <a href="javascript:history.back();" class="btn btn-warning">Cancelar</a>
+    </div>
+    </form>
     </div>
     <!-- /.card -->
 @stop
