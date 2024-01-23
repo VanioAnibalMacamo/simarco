@@ -108,9 +108,12 @@ class PrescricaoController extends Controller
 
     public function show($id)
     {
-        $prescricao = Prescricao::findOrFail($id);
-        return view('prescricao.view', compact('prescricao'));
+        $prescricao = Prescricao::with('consulta')->findOrFail($id);
+        $consulta = $prescricao->consulta;  // Carrega a consulta associada à prescrição
+
+        return view('prescricao.view', compact('prescricao', 'consulta'));
     }
+
 
     public function delete($id)
     {

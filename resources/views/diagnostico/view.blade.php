@@ -40,7 +40,14 @@
         </div>
         <div class="card-footer">
             <a href="{{ url('/diagnosticoIndex') }}" type="button" class="btn btn-warning">Voltar</a>
+            {{-- Adiciona botão para visualizar prescrição se houver uma --}}
+            @if (isset($consulta) && $consulta->prescricao)
+                <a href="{{ url('visualizar_prescricao', $consulta->prescricao->id) }}" class="btn btn-success">Visualizar
+                    Prescrição</a>
+            @endif
+
         </div>
+
     </div>
     <!-- /.card -->
 @stop

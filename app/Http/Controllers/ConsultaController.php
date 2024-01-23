@@ -64,9 +64,11 @@ class ConsultaController extends Controller
         return redirect('/consultaIndex')->with('successDelete', 'Consulta excluída com sucesso!');
     }
 
+
+    // ConsultaController.php
+
     public function show($id)
     {
-
         $consulta = Consulta::with(['statusConsulta', 'medico', 'paciente', 'diagnostico', 'prescricao'])->findOrFail($id);
         $statusConsulta = $consulta->statusConsulta;
         $consulta->load('paciente');

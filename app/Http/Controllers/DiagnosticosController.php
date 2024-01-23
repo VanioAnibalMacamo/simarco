@@ -94,8 +94,10 @@ class DiagnosticosController extends Controller
     public function show($id)
     {
         $diagnostico = Diagnostico::with('consulta')->findOrFail($id);
-        return view('diagnostico.view', compact('diagnostico'));
+        $consulta = $diagnostico->consulta; // Obtenha a consulta relacionada ao diagnóstico
+        return view('diagnostico.view', compact('diagnostico', 'consulta'));
     }
+
 
     public function delete($id)
     {

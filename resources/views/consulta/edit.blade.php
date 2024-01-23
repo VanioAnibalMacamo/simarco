@@ -20,27 +20,32 @@
                 <div class="row">
                     <div class="form-group col-md-4">
                         <label for="data_consulta">Data da Consulta</label>
-                        <input type="date" class="form-control" id="data_consulta" name='data_consulta' value="{{ $consulta->data_consulta }}">
+                        <input type="date" class="form-control" id="data_consulta" name='data_consulta'
+                            value="{{ $consulta->data_consulta }}">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="hora_inicio">Hora de Início</label>
-                        <input type="time" class="form-control" id="hora_inicio" name="hora_inicio" value="{{ $consulta->hora_inicio }}">
+                        <input type="time" class="form-control" id="hora_inicio" name="hora_inicio"
+                            value="{{ $consulta->hora_inicio }}">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="hora_fim">Hora de Fim</label>
-                        <input type="time" class="form-control" id="hora_fim" name="hora_fim" value="{{ $consulta->hora_fim }}">
+                        <input type="time" class="form-control" id="hora_fim" name="hora_fim"
+                            value="{{ $consulta->hora_fim }}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-4">
                         <label for="observacoes">Observações</label>
-                        <textarea class="form-control h-98" id="observacoes" name='observacoes' placeholder="Digite as observações da consulta...">{{ $consulta->observacoes }}</textarea>
+                        <textarea class="form-control h-98" id="observacoes" name='observacoes'
+                            placeholder="Digite as observações da consulta...">{{ $consulta->observacoes }}</textarea>
                     </div>
                     <div class="form-group col-md-4">
                         <label for="id_status">Status da Consulta</label>
                         <select class="form-control" id="id_status" name="id_status">
                             @foreach ($statusConsultas as $statusConsulta)
-                                <option value="{{ $statusConsulta->id }}" {{ $consulta->statusConsulta && $consulta->statusConsulta->id == $statusConsulta->id ? 'selected' : '' }}>
+                                <option value="{{ $statusConsulta->id }}"
+                                    {{ $consulta->statusConsulta && $consulta->statusConsulta->id == $statusConsulta->id ? 'selected' : '' }}>
                                     {{ $statusConsulta->descricao }}
                                 </option>
                             @endforeach
@@ -51,7 +56,8 @@
                         <label for="id_paciente">Paciente</label>
                         <select class="form-control" id="id_paciente" name="id_paciente">
                             @foreach ($pacientes as $paciente)
-                                <option value="{{ $paciente->id }}" {{ $consulta->paciente && $consulta->paciente->id == $paciente->id ? 'selected' : '' }}>
+                                <option value="{{ $paciente->id }}"
+                                    {{ $consulta->paciente && $consulta->paciente->id == $paciente->id ? 'selected' : '' }}>
                                     {{ $paciente->nome }}
                                 </option>
                             @endforeach
@@ -62,18 +68,38 @@
                         <label for="id_medico">Médico Responsável</label>
                         <select class="form-control" id="id_medico" name="id_medico">
                             @foreach ($medicos as $medico)
-                                <option value="{{ $medico->id }}" {{ $consulta->medico && $consulta->medico->id == $medico->id ? 'selected' : '' }}>
+                                <option value="{{ $medico->id }}"
+                                    {{ $consulta->medico && $consulta->medico->id == $medico->id ? 'selected' : '' }}>
                                     {{ $medico->nome }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
 
+                </div>
             </div>
             <div class="card-footer">
-                <input type="submit" class="btn btn-primary" value='Actualizar'>
-                <a href="{{ route('diagnosticoCreate', ['consultaId' => $consulta->id]) }}" type="button" class="btn btn-info">Diagnosticar</a>
-                <a href="{{ url('/consultaIndex') }}" type="button" class="btn btn-warning">Cancelar</a>
+                <input type="submit" class="btn btn-primary" value='Atualizar'>
+
+                {{-- Adiciona lógica para exibir botão "Diagnosticar" ou "Prescrever" --}}
+                @if ($consulta->diagnostico)
+                    {{-- Se já possui diagnóstico --}}
+                    @if ($consulta->prescricao)
+                        {{-- Se já possui prescrição --}}
+                        <a href="{{ url('visualizar_diagnostico', $consulta->diagnostico->id) }}"
+                            class="btn btn-warning">Visualizar Diagnóstico</a>
+                    @else
+                        {{-- Se não possui prescrição --}}
+                        <a href="{{ route('prescricaoCreate', ['consultaId' => $consulta->id]) }}"
+                            class="btn btn-success">Prescrever</a>
+                    @endif
+                @else
+                    {{-- Se não possui diagnóstico --}}
+                    <a href="{{ route('diagnosticoCreate', ['consultaId' => $consulta->id]) }}"
+                        class="btn btn-info">Diagnosticar</a>
+                @endif
+
+                <a href="{{ url('/consultaIndex') }}" class="btn btn-warning">Cancelar</a>
             </div>
         </form>
     </div>
@@ -85,5 +111,7 @@
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+    <script>
+        console.log('Hi!');
+    </script>
 @stop
