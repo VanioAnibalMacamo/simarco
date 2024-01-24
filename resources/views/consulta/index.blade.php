@@ -45,18 +45,40 @@
                         @endphp
                         <tr>
                             <td>{{ $loop->index + 1 }}</td>
-                            <td>{{ $consulta->data_consulta . ' ' . \Carbon\Carbon::createFromFormat('H:i:s', $consulta->hora_inicio)->format('H:i') }}</td>
-                            <td>{{ $consulta->statusConsulta->descricao }}</td>
+                            <td>{{ $consulta->data_consulta . ' ' . \Carbon\Carbon::createFromFormat('H:i:s', $consulta->hora_inicio)->format('H:i') }}
+                            </td>
+                            @php
+                                // Escolher o status dinamicamente com base na presença ou ausência de diagnóstico e prescrição
+                                if (isset($consulta->diagnostico) && isset($consulta->prescricao)) {
+                                    $statusId = 3;
+                                } elseif (isset($consulta->diagnostico)) {
+                                    $statusId = 2;
+                                } elseif (isset($consulta->prescricao)) {
+                                    $statusId = 3;
+                                } else {
+                                    $statusId = 1;
+                                }
+                                $statusText = \App\Models\StatusConsulta::find($statusId)->descricao;
+                            @endphp
+                            <td>{{ $statusText }}</td>
+
                             <td>{{ $consulta->medico->nome }}</td>
                             <td>{{ $consulta->paciente->nome }}</td>
                             <td>
-                                <a class="btn btn-primary btn-sm d-inline" href="{{ url('visualizar_consulta', $consulta->id) }}"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-info btn-sm d-inline" href="{{ url('update_consulta', $consulta->id) }}"><i class="fas fa-pencil-alt"></i></a>
+                                <a class="btn btn-primary btn-sm d-inline"
+                                    href="{{ url('visualizar_consulta', $consulta->id) }}"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-info btn-sm d-inline"
+                                    href="{{ url('update_consulta', $consulta->id) }}"><i
+                                        class="fas fa-pencil-alt"></i></a>
 
-                                <form id="form-excluir-{{ $consulta->id }}" action="{{ route('consultas.delete', ['id' => $consulta->id]) }}" method="POST" class="d-inline">
+                                <form id="form-excluir-{{ $consulta->id }}"
+                                    action="{{ route('consultas.delete', ['id' => $consulta->id]) }}" method="POST"
+                                    class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event, '{{ $consulta->numero_identificacao }}', '{{ $consulta->paciente->nome }}', {{ $consulta->id }})"><i class="fas fa-trash"></i></button>
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="confirmDelete(event, '{{ $consulta->numero_identificacao }}', '{{ $consulta->paciente->nome }}', {{ $consulta->id }})"><i
+                                            class="fas fa-trash"></i></button>
 
                                 </form>
                             </td>
@@ -77,7 +99,9 @@
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+    <script>
+        console.log('Hi!');
+    </script>
     <script>
         setTimeout(function() {
             document.querySelector('.alert').remove();

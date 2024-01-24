@@ -51,8 +51,13 @@
 
                 <div class="form-group col-md-4">
                     <label for="id_status">Status da Consulta</label>
-                    <input type="text" class="form-control" id="id_status" name='id_status'
-                        value="{{ $consulta->statusConsulta->descricao }}" readonly>
+                    @php
+                        // Escolher o status dinamicamente com base na presença ou ausência de diagnóstico
+                        $statusId = isset($diagnostico) ? 2 : 1;
+                        $statusText = \App\Models\StatusConsulta::find($statusId)->descricao;
+                    @endphp
+                    <input type="text" class="form-control" id="id_status" name='id_status' value="{{ $statusText }}"
+                        readonly>
                 </div>
 
                 <div class="form-group col-md-8">

@@ -11,11 +11,18 @@ class StatusConsulta extends Model
 
     protected $fillable = [
         'descricao',
+        'status_antecessor_id',
     ];
 
     // Relacionamento inverso com Consulta
     public function consultas()
     {
         return $this->hasMany(Consulta::class, 'id_status');
+    }
+
+    // Relacionamento com o status antecessor
+    public function statusAntecessor()
+    {
+        return $this->belongsTo(StatusConsulta::class, 'status_antecessor_id');
     }
 }

@@ -68,4 +68,9 @@ class Consulta extends Model
     {
         return $this->hasOne(Prescricao::class);
     }
+
+    public function status_antecessor()
+    {
+        return $this->belongsTo(StatusConsulta::class, 'status_antecessor_id');
+    }
 }

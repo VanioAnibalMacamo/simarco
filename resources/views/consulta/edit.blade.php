@@ -40,17 +40,22 @@
                         <textarea class="form-control h-98" id="observacoes" name='observacoes'
                             placeholder="Digite as observações da consulta...">{{ $consulta->observacoes }}</textarea>
                     </div>
+
                     <div class="form-group col-md-4">
                         <label for="id_status">Status da Consulta</label>
-                        <select class="form-control" id="id_status" name="id_status">
-                            @foreach ($statusConsultas as $statusConsulta)
-                                <option value="{{ $statusConsulta->id }}"
-                                    {{ $consulta->statusConsulta && $consulta->statusConsulta->id == $statusConsulta->id ? 'selected' : '' }}>
-                                    {{ $statusConsulta->descricao }}
-                                </option>
-                            @endforeach
+                        <select class="form-control" id="id_status" name="id_status" disabled>
+                            @php
+                                // Escolher o status dinamicamente com base na presença ou ausência de diagnóstico e prescrição
+                                $statusId = $consulta->diagnostico && $consulta->prescricao ? 3 : ($consulta->diagnostico ? 2 : 1);
+                                $statusText = \App\Models\StatusConsulta::find($statusId)->descricao;
+                            @endphp
+                            <option value="{{ $statusId }}" selected>
+                                {{ $statusText }}
+                            </option>
                         </select>
                     </div>
+
+
 
                     <div class="form-group col-md-4">
                         <label for="id_paciente">Paciente</label>
@@ -142,6 +147,26 @@
 @stop
 
 @section('js')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var statusSelect = document.getElementById('id_status');
+            var hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'id_status';
+
+            // Defina o valor inicial com base na opção selecionada no carregamento da página
+            hiddenInput.value = statusSelect.value;
+
+            // Adicione o campo oculto ao formulário
+            statusSelect.form.appendChild(hiddenInput);
+
+            // Atualize o valor do campo oculto sempre que a seleção do dropdown for alterada
+            statusSelect.addEventListener('change', function() {
+                hiddenInput.value = this.value;
+            });
+        });
+    </script>
+
     <script>
         console.log('Hi!');
     </script>

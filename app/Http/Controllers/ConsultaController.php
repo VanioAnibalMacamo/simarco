@@ -8,6 +8,7 @@ use App\Models\StatusConsulta;
 use App\Models\Paciente;
 use App\Models\Medico;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class ConsultaController extends Controller
 {
@@ -29,31 +30,46 @@ class ConsultaController extends Controller
 
     public function saveConsulta(Request $request)
     {
+        Log::info('Valor de $id_status: ' . $request->input('id_status'));
+
         $request->validate([
             'data_consulta' => 'required|date',
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fim' => 'required|date_format:H:i|after:hora_inicio',
-            'id_status' => 'required|exists:status_consultas,id',
             'observacoes' => 'nullable|string',
             'id_medico' => 'required|exists:medicos,id',
             'id_paciente' => 'required|exists:pacientes,id',
+            'id_status' => 'required|exists:status_consultas,id', // Certifique-se de validar o id_status
         ]);
 
-        $horaInicio = \Carbon\Carbon::createFromFormat('H:i', $request->input('hora_inicio'))->format('H:i');
-        $horaFim = \Carbon\Carbon::createFromFormat('H:i', $request->input('hora_fim'))->format('H:i');
+        try {
+            DB::beginTransaction();
 
-        $consulta = Consulta::create([
-            'data_consulta' => $request->input('data_consulta'),
-            'hora_inicio' => $horaInicio,
-            'hora_fim' => $horaFim,
-            'id_status' => $request->input('id_status'),
-            'observacoes' => $request->input('observacoes'),
-            'medico_id' => $request->input('id_medico'),
-            'paciente_id' => $request->input('id_paciente'),
-        ]);
+            $horaInicio = \Carbon\Carbon::createFromFormat('H:i', $request->input('hora_inicio'))->format('H:i');
+            $horaFim = \Carbon\Carbon::createFromFormat('H:i', $request->input('hora_fim'))->format('H:i');
 
-        return redirect('/consultaIndex')->with('success', 'Consulta salva com sucesso!');
+            $consulta = Consulta::create([
+                'data_consulta' => $request->input('data_consulta'),
+                'hora_inicio' => $horaInicio,
+                'hora_fim' => $horaFim,
+                'observacoes' => $request->input('observacoes'),
+                'medico_id' => $request->input('id_medico'),
+                'paciente_id' => $request->input('id_paciente'),
+                'id_status' => $request->input('id_status'), // Associe o status diretamente aqui
+            ]);
+
+            DB::commit();
+
+            return redirect('/consultaIndex')->with('success', 'Consulta salva com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            Log::error('Erro ao salvar a consulta. ' . $e->getMessage());
+
+            return redirect('/consultaIndex')->with('error', 'Erro ao salvar a consulta. Por favor, tente novamente.');
+        }
     }
+
 
 
     public function delete($id)
