@@ -73,4 +73,9 @@ class Consulta extends Model
     {
         return $this->belongsTo(StatusConsulta::class, 'status_antecessor_id');
     }
+
+    public function sintoma()
+    {
+        return $this->hasOne(Sintoma::class, 'consulta_id');
+    }
 }

@@ -12,7 +12,8 @@ use App\Http\Controllers\FabricanteController;
 use App\Http\Controllers\MedicamentosController;
 use App\Http\Controllers\DiagnosticosController;
 use App\Http\Controllers\PrescricaoController;
-
+use App\Http\Controllers\SintomaController;
+use App\Http\Controllers\GravidadeController;
 
 
 /*
@@ -125,3 +126,21 @@ Route::get('/update_prescricao/{id}', [PrescricaoController::class, 'edit'])->na
 Route::put('/update_prescricao/{id}', [PrescricaoController::class, 'update'])->name('prescricoes.update');
 Route::get('/visualizar_prescricao/{id}', [PrescricaoController::class, 'show']);
 Route::delete('/prescricao/{id}', [PrescricaoController::class, 'delete'])->name('prescricoes.delete');
+
+
+Route::get('/sintomasIndex', [SintomaController::class, 'index'])->name('sintoma.index');
+Route::get('/sintomaCreate', [SintomaController::class, 'create'])->name('sintoma.create');
+Route::post('/sintoma/store', [SintomaController::class, 'store'])->name('sintoma.store');
+Route::get('/sintoma/edit/{id}', [SintomaController::class, 'edit'])->name('sintoma.edit');
+Route::put('/sintoma/update/{id}', [SintomaController::class, 'update'])->name('sintoma.update');
+Route::get('/sintoma/view/{id}', [SintomaController::class, 'show'])->name('sintoma.show');
+Route::delete('/sintoma/delete/{id}', [SintomaController::class, 'delete'])->name('sintoma.delete');
+
+
+Route::get('/gravidadeIndex', [GravidadeController::class, 'index'])->name('gravidadeIndex');
+Route::get('/gravidadeCreate', [GravidadeController::class, 'create'])->name('gravidadeCreate');
+Route::post('/saveGravidade', [GravidadeController::class, 'store'])->name('saveGravidade');
+Route::get('/update_gravidade/{id}', [GravidadeController::class, 'edit'])->name('gravidade.edit');
+Route::post('/update_gravidade/{id}', [GravidadeController::class, 'update'])->name('gravidade.update');
+Route::get('/visualizar_gravidade/{id}', [GravidadeController::class, 'show'])->name('gravidade.show');
+Route::delete('/gravidade/{id}', [GravidadeController::class, 'destroy'])->name('gravidade.delete');

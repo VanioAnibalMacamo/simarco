@@ -359,6 +359,11 @@ return [
             'url'  => 'prescricaoIndex',
             'icon' => 'fas fa-fw fa-file-medical-alt'
         ],
+        [
+            'text' => 'Sintomas e Queixas',
+            'url'  => 'sintomasIndex',
+            'icon' => 'fas fa-fw fa-thermometer-half'
+        ],
 
 
 
@@ -379,6 +384,7 @@ return [
                         // submenu de Médicos 
                     ],
                 ],
+
                 [
                     'text'    => 'Consultas',
                     'url'     => '#',
@@ -390,6 +396,27 @@ return [
                             'icon' => 'far fa-clock',
                         ],
                         //  submenu de Consultas 
+                    ],
+                ],
+
+
+                [
+                    'text' => 'Sintomas e Queixas',
+                    'url'  => '#',
+                    'icon' => 'fas fa-fw fa-thermometer-half',
+                    'submenu' => [
+                        [
+
+                            'text' => 'Gravidade Sintomas',
+                            'url'  => 'gravidadeIndex',
+                            'icon' => 'fas fa-microscope',
+
+
+
+
+
+
+                        ],
                     ],
                 ],
                 [

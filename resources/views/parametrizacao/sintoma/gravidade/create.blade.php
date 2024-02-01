@@ -1,20 +1,20 @@
 @extends('adminlte::page')
 
-@section('title', 'Cadastrar Forma Farmacêutica')
+@section('title', 'Cadastrar Gravidade')
 
 @section('content_header')
-    <h1>Cadastrar Forma Farmacêutica</h1>
+    <h1>Cadastrar Gravidade</h1>
 @stop
 
 @section('content')
-    <!-- general form elements -->
+    <!-- General form elements -->
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Forma Farmacêutica</h3>
+            <h3 class="card-title">Dados da Gravidade</h3>
         </div>
         <!-- /.card-header -->
-        <!-- form start -->
-        <form action="{{ url('forma_farmaceutica/store') }}" method="POST" enctype="multipart/form-data">
+        <!-- Form start -->
+        <form action="{{ url('saveGravidade') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
                 <div class="form-group">
@@ -25,7 +25,7 @@
             </div>
             <div class="card-footer">
                 <input type="submit" class="btn btn-primary" value='Salvar'>
-                <a href="{{ url('/forma_farmaceutica') }}" type="button" class="btn btn-warning">Cancelar</a>
+                <a href="{{ url('/gravidadeIndex') }}" type="button" class="btn btn-warning">Cancelar</a>
             </div>
         </form>
     </div>
