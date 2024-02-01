@@ -16,6 +16,8 @@
         <!-- form start -->
         <form action="{{ route('gravidade.update', $gravidade->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
+            @method('PUT') <!-- Adicione esta linha -->
+
             <div class="card-body">
                 <div class="form-group">
                     <label for="descricao">Descrição</label>

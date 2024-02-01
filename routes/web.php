@@ -136,11 +136,10 @@ Route::put('/sintoma/update/{id}', [SintomaController::class, 'update'])->name('
 Route::get('/sintoma/view/{id}', [SintomaController::class, 'show'])->name('sintoma.show');
 Route::delete('/sintoma/delete/{id}', [SintomaController::class, 'delete'])->name('sintoma.delete');
 
-
 Route::get('/gravidadeIndex', [GravidadeController::class, 'index'])->name('gravidadeIndex');
 Route::get('/gravidadeCreate', [GravidadeController::class, 'create'])->name('gravidadeCreate');
 Route::post('/saveGravidade', [GravidadeController::class, 'store'])->name('saveGravidade');
 Route::get('/update_gravidade/{id}', [GravidadeController::class, 'edit'])->name('gravidade.edit');
-Route::post('/update_gravidade/{id}', [GravidadeController::class, 'update'])->name('gravidade.update');
+Route::put('/update_gravidade/{id}', [GravidadeController::class, 'update'])->name('gravidade.update');
 Route::get('/visualizar_gravidade/{id}', [GravidadeController::class, 'show'])->name('gravidade.show');
 Route::delete('/gravidade/{id}', [GravidadeController::class, 'destroy'])->name('gravidade.delete');
