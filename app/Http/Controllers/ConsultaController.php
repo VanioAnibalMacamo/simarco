@@ -9,12 +9,13 @@ use App\Models\Paciente;
 use App\Models\Medico;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ConsultaMarcadaMail; // Importa a classe de e-mail
 
 class ConsultaController extends Controller
 {
     public function index()
     {
-
         $consultas = Consulta::with('statusConsulta', 'medico', 'paciente')->paginate(8);
         return view('consulta.index', compact('consultas'));
     }
@@ -30,8 +31,6 @@ class ConsultaController extends Controller
 
     public function saveConsulta(Request $request)
     {
-        Log::info('Valor de $id_status: ' . $request->input('id_status'));
-
         $request->validate([
             'data_consulta' => 'required|date',
             'hora_inicio' => 'required|date_format:H:i',
@@ -39,7 +38,7 @@ class ConsultaController extends Controller
             'observacoes' => 'nullable|string',
             'id_medico' => 'required|exists:medicos,id',
             'id_paciente' => 'required|exists:pacientes,id',
-            'id_status' => 'required|exists:status_consultas,id', // Certifique-se de validar o id_status
+            'id_status' => 'required|exists:status_consultas,id',
         ]);
 
         try {
@@ -55,8 +54,33 @@ class ConsultaController extends Controller
                 'observacoes' => $request->input('observacoes'),
                 'medico_id' => $request->input('id_medico'),
                 'paciente_id' => $request->input('id_paciente'),
-                'id_status' => $request->input('id_status'), // Associe o status diretamente aqui
+                'id_status' => $request->input('id_status'),
             ]);
+
+            // Log das informações da consulta e do paciente
+            Log::info('Consulta criada com sucesso.', [
+                'consulta_id' => $consulta->id,
+                'data_consulta' => $consulta->data_consulta,
+                'hora_inicio' => $consulta->hora_inicio,
+                'hora_fim' => $consulta->hora_fim,
+                'observacoes' => $consulta->observacoes,
+                'medico_id' => $consulta->medico_id,
+                'paciente_id' => $consulta->paciente_id,
+                'id_status' => $consulta->id_status,
+                'paciente_email' => $consulta->paciente->email,
+            ]);
+
+            // Obtém o paciente associado à consulta
+            $paciente = Paciente::find($request->input('id_paciente'));
+
+            // Envia o e-mail de notificação de consulta marcada para o paciente
+            if ($paciente) {
+                Mail::to($paciente->email)->send(new ConsultaMarcadaMail($consulta));
+
+                // Log para verificar se o e-mail foi enviado
+                Log::info('E-mail de consulta marcada enviado para: ' . $paciente->email);
+            }
+
 
             DB::commit();
 
@@ -71,7 +95,6 @@ class ConsultaController extends Controller
     }
 
 
-
     public function delete($id)
     {
         $consulta = Consulta::findOrFail($id);
@@ -80,23 +103,17 @@ class ConsultaController extends Controller
         return redirect('/consultaIndex')->with('successDelete', 'Consulta excluída com sucesso!');
     }
 
-
-    // ConsultaController.php
-
     public function show($id)
     {
         $consulta = Consulta::with(['statusConsulta', 'medico', 'paciente', 'diagnostico', 'prescricao'])->findOrFail($id);
         $statusConsulta = $consulta->statusConsulta;
         $consulta->load('paciente');
         $consulta->load('medico');
-
-        // Acessando o diagnóstico e a prescrição associados à consulta
         $diagnostico = $consulta->diagnostico;
         $prescricao = $consulta->prescricao;
 
         return view('consulta.view', compact('consulta', 'statusConsulta', 'diagnostico', 'prescricao'));
     }
-
 
     public function edit($id)
     {
@@ -104,8 +121,6 @@ class ConsultaController extends Controller
         $statusConsultas = StatusConsulta::all();
         $pacientes = Paciente::all();
         $medicos = Medico::all();
-
-        // Acessando o diagnóstico e a prescrição associados à consulta
         $diagnostico = $consulta->diagnostico;
         $prescricao = $consulta->prescricao;
 
@@ -130,12 +145,8 @@ class ConsultaController extends Controller
             }
 
             $consulta = Consulta::findOrFail($id);
-
-            // Remover os médicos e pacientes atuais
             $consulta->medico()->dissociate();
             $consulta->paciente()->dissociate();
-
-            // Associar os novos médicos e pacientes
             $consulta->medico()->associate($request->input('id_medico'));
             $consulta->paciente()->associate($request->input('id_paciente'));
 
@@ -150,10 +161,8 @@ class ConsultaController extends Controller
                 'observacoes' => $request->input('observacoes'),
             ]);
 
-            // Adicione um log de sucesso
             Log::info('Consulta atualizada com sucesso.', ['consulta_id' => $consulta->id]);
         } catch (\Exception $e) {
-            // Adicione um log de erro
             Log::error('Erro ao atualizar a consulta.', [
                 'consulta_id' => $id,
                 'error_message' => $e->getMessage(),
