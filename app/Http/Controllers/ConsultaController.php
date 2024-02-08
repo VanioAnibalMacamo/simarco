@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ConsultaMarcadaMail; // Importa a classe de e-mail
 use App\Notifications\ConsultaMarcadaSMS;
+use Twilio\Rest\Client; // Importa a classe Client do Twilio
 
 
 class ConsultaController extends Controller
@@ -83,9 +84,20 @@ class ConsultaController extends Controller
                 Log::info('E-mail de consulta marcada enviado para: ' . $paciente->email);
             }
 
-            $paciente = Paciente::find($request->input('id_paciente'));
-            if ($paciente) {
-                $paciente->notify(new ConsultaMarcadaSMS($consulta));
+            // Enviar SMS para o paciente
+            if ($paciente && $paciente->telefone) {
+                $twilio = new Client(
+                    env('TWILIO_SID'),
+                    env('TWILIO_AUTH_TOKEN')
+                );
+
+                $twilio->messages->create($paciente->telefone, [
+                    'from' => env('TWILIO_FROM'),
+                    'body' => 'Sua consulta foi marcada com sucesso. Data: ' . $consulta->data_consulta,
+                ]);
+
+
+                Log::info('SMS de consulta marcada enviado para: ' . $paciente->telefone);
             }
 
 
