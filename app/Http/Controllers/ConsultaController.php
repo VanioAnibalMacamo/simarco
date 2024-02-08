@@ -93,7 +93,20 @@ class ConsultaController extends Controller
 
                 $twilio->messages->create($paciente->telefone, [
                     'from' => env('TWILIO_FROM'),
-                    'body' => 'Sua consulta foi marcada com sucesso. Data: ' . $consulta->data_consulta,
+
+
+
+                    'body' => '
+Olá ' . $consulta->paciente->nome . ',
+Sua consulta foi marcada com sucesso. Abaixo estão os detalhes:
+Data da Consulta: ' . $consulta->data_consulta . '
+Hora de Início: ' . $consulta->hora_inicio . '
+Hora de Fim: ' . $consulta->hora_fim . '
+Médico: ' . $consulta->medico->nome . '
+Observações: ' . $consulta->observacoes . '
+Obrigado por usar nosso serviço!
+',
+
                 ]);
 
 
