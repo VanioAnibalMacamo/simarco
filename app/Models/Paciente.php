@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable; // Importe a trait Notifiable
 
 class Paciente extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable; // Adicione a trait Notifiable aqui
 
     protected $fillable = [
         'nome',

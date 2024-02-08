@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ConsultaMarcadaMail; // Importa a classe de e-mail
+use App\Notifications\ConsultaMarcadaSMS;
+
 
 class ConsultaController extends Controller
 {
@@ -79,6 +81,11 @@ class ConsultaController extends Controller
 
                 // Log para verificar se o e-mail foi enviado
                 Log::info('E-mail de consulta marcada enviado para: ' . $paciente->email);
+            }
+
+            $paciente = Paciente::find($request->input('id_paciente'));
+            if ($paciente) {
+                $paciente->notify(new ConsultaMarcadaSMS($consulta));
             }
 
 
