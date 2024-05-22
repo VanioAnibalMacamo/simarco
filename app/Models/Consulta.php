@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\FormaPagamentoEnum;
 
 class Consulta extends Model
 {
@@ -15,8 +16,13 @@ class Consulta extends Model
         'hora_fim',
         'id_status',
         'observacoes',
-        'medico_id', // Adicione estas linhas para refletir as alterações nas migrações
-        'paciente_id', // Adicione estas linhas para refletir as alterações nas migrações
+        'medico_id',
+        'paciente_id',
+        'forma_pagamento',
+    ];
+
+    protected $casts = [
+        'forma_pagamento' => FormaPagamentoEnum::class, // Configuração do casting do Enum
     ];
 
     public function getDuracaoFormatadaAttribute()
@@ -38,8 +44,6 @@ class Consulta extends Model
                 $duracaoFormatada .= ($duracao->i == 1) ? '1 minuto' : $duracao->i . ' minutos';
             }
         }
-
-        // Não inclui os segundos na formatação
 
         return $duracaoFormatada;
     }
