@@ -7,10 +7,24 @@ use App\Models\Especialidade;
 
 class EspecialidadeController extends Controller
 {
+    /*
     public function index()
     {
         $especialidades = Especialidade::paginate(8);
         return view('parametrizacao.medico.especialidade.index',['especialidades' => $especialidades]);
+    }
+        */
+
+    public function index()
+    {
+        $especialidades = Especialidade::paginate(8);
+        return view('parametrizacao.medico.especialidade.index', ['especialidades' => $especialidades]);
+    }
+
+    public function showModal()
+    {
+        $especialidades = Especialidade::all();
+        return view('modals.modal_especialidades', ['especialidades' => $especialidades]);
     }
 
     public function create()
@@ -66,5 +80,5 @@ class EspecialidadeController extends Controller
     }
 
 }
-    
+
 

@@ -92,4 +92,37 @@ class MedicoController extends Controller
 
         return redirect('/medicoIndex')->with('success', 'Médico atualizado com sucesso!');
     }
+
+
+    public function especialidades()
+    {
+        $especialidades = Especialidade::all(); // Obtém todas as especialidades do banco de dados
+
+        return view('medico.especialidades', ['especialidades' => $especialidades]);
+    }
+
+    public function medicos($idEspecialidade)
+    {
+        // Lógica para obter os médicos da especialidade com o ID fornecido
+        $medicos = Medico::where('especialidade_id', $idEspecialidade)->get();
+
+        return view('medico.medicos', ['medicos' => $medicos]);
+    }
+
+    public function showDisponibilidade($id)
+    {
+        $medico = Medico::findOrFail($id);
+        // Por enquanto, apenas simule as disponibilidades
+        $disponibilidades = [
+            (object)[
+                'data' => '01/01/2024',
+                'horario' => '10:00 - 12:00'
+            ],
+            (object)[
+                'data' => '02/01/2024',
+                'horario' => '14:00 - 16:00'
+            ]
+        ];
+        return view('medico.disponibilidades', compact('medico', 'disponibilidades'));
+    }
 }

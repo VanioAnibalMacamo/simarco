@@ -14,6 +14,7 @@ use App\Http\Controllers\DiagnosticosController;
 use App\Http\Controllers\PrescricaoController;
 use App\Http\Controllers\SintomaController;
 use App\Http\Controllers\GravidadeController;
+use App\Http\Controllers\PaginasController;
 
 
 /*
@@ -143,3 +144,11 @@ Route::get('/update_gravidade/{id}', [GravidadeController::class, 'edit'])->name
 Route::put('/update_gravidade/{id}', [GravidadeController::class, 'update'])->name('gravidade.update');
 Route::get('/visualizar_gravidade/{id}', [GravidadeController::class, 'show'])->name('gravidade.show');
 Route::delete('/gravidade/{id}', [GravidadeController::class, 'destroy'])->name('gravidade.delete');
+
+Route::get('/pacienteTipoConsulta', [PaginasController::class, 'pacienteTipoConsulta'])->name('pacienteTipoConsulta');
+
+
+Route::get('/medico/especialidades', [MedicoController::class, 'especialidades'])->name('medico.especialidades');
+Route::get('/medico/medicos/{idEspecialidade}', [MedicoController::class, 'medicos'])->name('medico.medicos');
+
+Route::get('/medicos/{id}/disponibilidade', [MedicoController::class, 'showDisponibilidade'])->name('medicos.disponibilidade');

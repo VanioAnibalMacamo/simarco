@@ -9,9 +9,9 @@ class Especialidade extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'descricao',
-    ];
+    use HasFactory;
+
+    protected $fillable = ['descricao', 'preco'];
 
     public $timestamps = false;
 
