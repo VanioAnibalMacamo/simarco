@@ -29,26 +29,31 @@ class MedicoController extends Controller
 
     public function saveMedico(Request $request)
     {
-
         $request->validate([
             'nome' => 'required|string|max:255',
             'especialidade_id' => 'required|exists:especialidades,id',
             'numero_identificacao' => 'required|string|max:50',
             'disponibilidade' => 'required|string|max:255',
             'genero' => 'required|in:' . implode(',', GeneroEnum::getConstants()),
+            'imagem' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validar a imagem
         ]);
 
+        // Salvar a imagem
+        $imagemNome = $request->file('imagem')->getClientOriginalName();
+        $request->file('imagem')->storeAs('public/images/medicos', $imagemNome);
+
+        // Criar o médico com os dados
         Medico::create([
             'nome' => $request->input('nome'),
             'especialidade_id' => $request->input('especialidade_id'),
             'numero_identificacao' => $request->input('numero_identificacao'),
             'disponibilidade' => $request->input('disponibilidade'),
             'genero' => $request->input('genero'),
+            'imagem' => $imagemNome, // Salvar o nome da imagem
         ]);
 
         return redirect('/medicoIndex')->with('success', 'Médico salvo com sucesso!');
     }
-
     public function delete($id)
     {
         $medico = Medico::findOrFail($id);
