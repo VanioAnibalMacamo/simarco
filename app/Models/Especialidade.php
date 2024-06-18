@@ -11,7 +11,7 @@ class Especialidade extends Model
 
     use HasFactory;
 
-    protected $fillable = ['descricao', 'preco'];
+    protected $fillable = ['descricao', 'preco', 'imagem'];
 
     public $timestamps = false;
 

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Paciente')
+@section('title', 'Especialidades')
 
 @section('content_header')
     @if (session('success'))
@@ -30,6 +30,7 @@
                 <tr>
                     <th style="width: 10px">#</th>
                     <th>Descrição</th>
+                    <th>Preço</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,8 +45,9 @@
                     <tr>
                         <td>{{ $loop->index + 1 }}</td>
                         <td>{{ $especialidade->descricao }}</td>
+                        <td>{{ $especialidade->preco }}</td>
                         <td>
-            
+
                             <a class="btn btn-info btn-sm d-inline" href="{{ url('update_especialidade', $especialidade->id) }}"><i class="fas fa-pencil-alt"></i></a>
 
                             <form id="form-excluir-{{ $especialidade->id }}" action="{{ route('especialidades.delete', ['id' => $especialidade->id]) }}" method="POST" class="d-inline">

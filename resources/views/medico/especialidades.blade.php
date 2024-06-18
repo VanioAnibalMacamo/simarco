@@ -13,7 +13,7 @@
                 @forelse($especialidades as $especialidade)
                     <div class="col-md-4">
                         <div class="card">
-                            <img class="card-img-top" src="{{ asset('images/medicos/especialidades.jpg') }}" alt="{{ $especialidade->descricao }}">
+                            <img class="card-img-top" src="{{ asset('images/especialidades/' . $especialidade->imagem) }}" alt="{{ $especialidade->descricao }}">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $especialidade->descricao }}</h5>
                                 <p class="card-text">Preço: {{ $especialidade->preco }}mts</p>

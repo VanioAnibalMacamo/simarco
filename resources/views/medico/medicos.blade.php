@@ -17,7 +17,6 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $medico->nome }}</h5>
                                 <p class="card-text">Especialidade: {{ $medico->especialidade->descricao }}</p>
-                                <p class="card-text">Preço: ${{ $medico->preco }}</p>
                                 <a href="{{ route('medicos.disponibilidade', ['id' => $medico->id]) }}" class="btn btn-primary">Ver Disponibilidade</a>
                             </div>
                         </div>
