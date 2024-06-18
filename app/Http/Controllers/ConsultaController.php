@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ConsultaMarcadaMail; // Importa a classe de e-mail
 use App\Notifications\ConsultaMarcadaSMS;
-use Twilio\Rest\Client; // Importa a classe Client do Twilio
+use App\Enums\FormaPagamentoEnum;
 
 
 class ConsultaController extends Controller
@@ -28,12 +28,15 @@ class ConsultaController extends Controller
         $statusConsultas = StatusConsulta::all();
         $medicos = Medico::all();
         $pacientes = Paciente::all();
+        $formasPagamento = FormaPagamentoEnum::getConstants();
 
-        return view('consulta.create', compact('statusConsultas', 'medicos', 'pacientes'));
+        return view('consulta.create', compact('statusConsultas', 'medicos', 'pacientes', 'formasPagamento'));
     }
+
 
     public function saveConsulta(Request $request)
     {
+        /*
         $request->validate([
             'data_consulta' => 'required|date',
             'hora_inicio' => 'required|date_format:H:i',
@@ -41,91 +44,26 @@ class ConsultaController extends Controller
             'observacoes' => 'nullable|string',
             'id_medico' => 'required|exists:medicos,id',
             'id_paciente' => 'required|exists:pacientes,id',
-            'id_status' => 'required|exists:status_consultas,id',
+            'id_status' => 'required|integer', // Validação para campo inteiro
+            //'forma_pagamento' => 'required|in:' . implode(',', FormaPagamentoEnum::getConstants()), // Validação de forma de pagamento usando a enumeração
+        ]);
+        */
+
+
+
+        Consulta::create([
+            'data_consulta' => $request->input('data_consulta'),
+            'hora_inicio' => $request->input('hora_inicio'),
+            'hora_fim' => $request->input('hora_fim'),
+            'observacoes' => $request->input('observacoes'),
+            'medico_id' => $request->input('id_medico'),
+            'paciente_id' => $request->input('id_paciente'),
+            'id_status' => $request->input('id_status'),
+            //consulta->forma_pagamento = FormaPagamentoEnum::fromValue($request->input('forma_pagamento'));
         ]);
 
-        try {
-            DB::beginTransaction();
-
-            $horaInicio = \Carbon\Carbon::createFromFormat('H:i', $request->input('hora_inicio'))->format('H:i');
-            $horaFim = \Carbon\Carbon::createFromFormat('H:i', $request->input('hora_fim'))->format('H:i');
-
-            $consulta = Consulta::create([
-                'data_consulta' => $request->input('data_consulta'),
-                'hora_inicio' => $horaInicio,
-                'hora_fim' => $horaFim,
-                'observacoes' => $request->input('observacoes'),
-                'medico_id' => $request->input('id_medico'),
-                'paciente_id' => $request->input('id_paciente'),
-                'id_status' => $request->input('id_status'),
-            ]);
-
-            // Log das informações da consulta e do paciente
-            Log::info('Consulta criada com sucesso.', [
-                'consulta_id' => $consulta->id,
-                'data_consulta' => $consulta->data_consulta,
-                'hora_inicio' => $consulta->hora_inicio,
-                'hora_fim' => $consulta->hora_fim,
-                'observacoes' => $consulta->observacoes,
-                'medico_id' => $consulta->medico_id,
-                'paciente_id' => $consulta->paciente_id,
-                'id_status' => $consulta->id_status,
-                'paciente_email' => $consulta->paciente->email,
-            ]);
-
-            // Obtém o paciente associado à consulta
-            $paciente = Paciente::find($request->input('id_paciente'));
-
-            // Envia o e-mail de notificação de consulta marcada para o paciente
-            if ($paciente) {
-                Mail::to($paciente->email)->send(new ConsultaMarcadaMail($consulta));
-
-                // Log para verificar se o e-mail foi enviado
-                Log::info('E-mail de consulta marcada enviado para: ' . $paciente->email);
-            }
-
-            // Enviar SMS para o paciente
-            if ($paciente && $paciente->telefone) {
-                $twilio = new Client(
-                    env('TWILIO_SID'),
-                    env('TWILIO_AUTH_TOKEN')
-                );
-
-                $twilio->messages->create($paciente->telefone, [
-                    'from' => env('TWILIO_FROM'),
-
-
-
-                    'body' => '
-Olá ' . $consulta->paciente->nome . ',
-Sua consulta foi marcada com sucesso. Abaixo estão os detalhes:
-Data da Consulta: ' . $consulta->data_consulta . '
-Hora de Início: ' . $consulta->hora_inicio . '
-Hora de Fim: ' . $consulta->hora_fim . '
-Médico: ' . $consulta->medico->nome . '
-Observações: ' . $consulta->observacoes . '
-Obrigado por usar nosso serviço!
-',
-
-                ]);
-
-
-                Log::info('SMS de consulta marcada enviado para: ' . $paciente->telefone);
-            }
-
-
-            DB::commit();
-
-            return redirect('/consultaIndex')->with('success', 'Consulta salva com sucesso!');
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            Log::error('Erro ao salvar a consulta. ' . $e->getMessage());
-
-            return redirect('/consultaIndex')->with('error', 'Erro ao salvar a consulta. Por favor, tente novamente.');
-        }
+        return redirect('/consultaIndex')->with('success', 'Consulta salva com sucesso!');
     }
-
 
     public function delete($id)
     {

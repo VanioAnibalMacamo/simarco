@@ -320,6 +320,11 @@ return [
         ],
         ['header' => 'account_settings'],
         [
+            'text' => 'Pagina Principal Paciente',
+            'url'  => 'pacienteTipoConsulta',
+            //'icon' => 'fas fa-fw fa-user-injured',
+        ],
+        [
             'text' => 'Pacientes',
             'url'  => 'pacienteIndex',
             'icon' => 'fas fa-fw fa-user-injured',
@@ -381,7 +386,7 @@ return [
                             'url'  => 'especialidadeIndex',
                             'icon'    => 'fas fa-heartbeat',
                         ],
-                        // submenu de Médicos 
+                        // submenu de Médicos
                     ],
                 ],
 
@@ -395,7 +400,7 @@ return [
                             'url'  => 'statusIndex',
                             'icon' => 'far fa-clock',
                         ],
-                        //  submenu de Consultas 
+                        //  submenu de Consultas
                     ],
                 ],
 
@@ -439,7 +444,7 @@ return [
                     ],
                 ],
 
-                // submenu de Parametrização 
+                // submenu de Parametrização
             ],
         ],
 

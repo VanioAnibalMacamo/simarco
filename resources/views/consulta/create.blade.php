@@ -7,13 +7,10 @@
 @stop
 
 @section('content')
-    <!-- general form elements -->
     <div class="card card-primary">
         <div class="card-header">
             <h3 class="card-title">Dados da Consulta</h3>
         </div>
-        <!-- /.card-header -->
-        <!-- form start -->
         <form action="{{ url('saveConsulta') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
@@ -26,7 +23,6 @@
                         <label for="hora_inicio">Hora de Início</label>
                         <input type="time" class="form-control" id="hora_inicio" name="hora_inicio">
                     </div>
-
                     <div class="form-group col-md-4">
                         <label for="observacoes">Observações</label>
                         <textarea class="form-control h-98" id="observacoes" name='observacoes'
@@ -44,13 +40,10 @@
                             @endforeach
                         </select>
                     </div>
-
-
                     <div class="form-group col-md-4">
                         <label for="hora_fim">Hora de Fim</label>
                         <input type="time" class="form-control" id="hora_fim" name="hora_fim">
                     </div>
-
                     <div class="form-group col-md-4">
                         <label for="id_paciente">Paciente</label>
                         <select class="form-control" id="id_paciente" name="id_paciente">
@@ -60,18 +53,44 @@
                             @endforeach
                         </select>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="id_medico">Médico Responsável</label>
+                        <select class="form-control" id="id_medico" name="id_medico">
+                            <option value="">Selecione um médico</option>
+                            @foreach ($medicos as $medico)
+                                <option value="{{ $medico->id }}">{{ $medico->nome }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="formaPagamento">Forma de Pagamento</label>
+                        <select class="form-control" id="formaPagamento" name="formaPagamento">
+                            <option value="">Selecione a Forma de Pagamento</option>
+                            @foreach ($formasPagamento as $formaPagamento)
+                                <option value="{{ $formaPagamento }}">{{ ucfirst($formaPagamento) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label for="empresa">Empresa</label>
+                        <input type="text" class="form-control" id="empresa" name="empresa" placeholder="Digite o nome da empresa">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="codigoFuncionario">Código do Funcionário</label>
+                        <input type="text" class="form-control" id="codigoFuncionario" name="codigoFuncionario" placeholder="Digite o código do funcionário">
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="cartaoSeguro">Cartão de Seguro de Saúde</label>
+                        <input type="file" class="form-control-file" id="cartaoSeguro" name="cartaoSeguro">
+                    </div>
 
                 </div>
-                <div class="form-group col-md-4">
-                    <label for="id_medico">Médico Responsavel</label>
-                    <select class="form-control" id="id_medico" name="id_medico">
-                        <option value="">Selecione um médico</option>
-                        @foreach ($medicos as $medico)
-                            <option value="{{ $medico->id }}">{{ $medico->nome }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
             </div>
             <div class="card-footer">
                 <input type="submit" class="btn btn-primary" value='Salvar'>
@@ -79,7 +98,6 @@
             </div>
         </form>
     </div>
-    <!-- /.card -->
 @stop
 
 @section('css')
