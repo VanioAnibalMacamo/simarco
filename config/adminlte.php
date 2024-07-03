@@ -388,7 +388,7 @@ return [
                         ],
                         [
                             'text' => 'Disponibilidades',
-                            'url'  => 'especialidadeIndex',
+                            'url'  => 'disponibilidadeIndex',
                             'icon'    => 'fas fa-clock',
                         ],
                         // submenu de Médicos
