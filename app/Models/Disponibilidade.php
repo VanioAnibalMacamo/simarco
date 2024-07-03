@@ -23,5 +23,11 @@ class Disponibilidade extends Model
         return $this->belongsTo(Medico::class);
     }
 
-    // Métodos adicionais, como validações ou outros relacionamentos, podem ser adicionados aqui
+    // Relacionamento muitos para muitos com Agendamento
+    public function agendamentos()
+    {
+        return $this->belongsToMany(Agendamento::class)
+                    ->withTimestamps();
+    }
+
 }
