@@ -1,4 +1,3 @@
-<!-- resources/views/medicos/disponibilidade.blade.php -->
 @extends('adminlte::page')
 
 @section('title', 'Disponibilidade do Médico')
@@ -15,20 +14,28 @@
                     <h5>{{ $medico->nome }}</h5>
                     <p>Especialidade: {{ $medico->especialidade->descricao }}</p>
                 </div>
-                @foreach($disponibilidades as $disponibilidade)
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Dia: {{ $disponibilidade->data }}</h5>
-                                <p class="card-text">Horários: {{ $disponibilidade->horario }}</p>
-                                <button type="button" class="btn btn-primary">Agendar</button>
-                            </div>
+                @if(empty($proximasDisponibilidades))
+                    <div class="col-md-12">
+                        <div class="alert alert-info" role="alert">
+                            O médico não está disponível nos próximos 30 dias.
                         </div>
                     </div>
-                @endforeach
+                @else
+                    @foreach($proximasDisponibilidades as $disponibilidade)
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Dia: {{ $disponibilidade->data }}</h5>
+                                    <p class="card-text">Horários: {{ $disponibilidade->hora_inicio }} - {{ $disponibilidade->hora_fim }}</p>
+                                    <button type="button" class="btn btn-primary">Agendar</button>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
             </div>
             <div class="card-footer text-right">
-                <a href="{{ url('/pacienteTipoConsulta') }}" type="button" class="btn btn-warning">Voltar</a>
+                <a href="{{ url()->previous() }}" type="button" class="btn btn-warning">Voltar</a>
             </div>
         </div>
     </div>
