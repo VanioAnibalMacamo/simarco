@@ -26,4 +26,9 @@ class Medico extends Model
     {
         return $this->hasMany(Consulta::class);
     }
+
+    public function disponibilidades()
+    {
+        return $this->hasMany(Disponibilidade::class);
+    }
 }
