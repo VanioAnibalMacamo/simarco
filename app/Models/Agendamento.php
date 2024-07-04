@@ -15,19 +15,17 @@ class Agendamento extends Model
     ];
 
     protected $casts = [
-        'dia' => 'datetime', // Garante que o campo 'dia' seja tratado como um objeto DateTime
+        'dia' => 'datetime',
     ];
 
-    // Relacionamento com Paciente
     public function paciente()
     {
         return $this->belongsTo(Paciente::class);
     }
 
-    // Relacionamento muitos para muitos com Disponibilidade
     public function disponibilidades()
     {
-        return $this->belongsToMany(Disponibilidade::class)
+        return $this->belongsToMany(Disponibilidade::class, 'agendamento_disponibilidade')
                     ->withTimestamps();
     }
 }
