@@ -11,10 +11,11 @@ class Medico extends Model
 
     protected $fillable = [
         'nome',
-        'especialidade_id', // Corrigido para refletir a chave estrangeira
+        'especialidade_id',
         'numero_identificacao',
         'disponibilidade',
         'genero',
+        'imagem', // novo campo para armazenar o nome da imagem
     ];
 
     public function especialidade()
@@ -24,5 +25,10 @@ class Medico extends Model
     public function consultas()
     {
         return $this->hasMany(Consulta::class);
+    }
+
+    public function disponibilidades()
+    {
+        return $this->hasMany(Disponibilidade::class);
     }
 }

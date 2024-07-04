@@ -24,7 +24,7 @@
                     <label for="especialidade_id">Especialidade</label>
                     <input type="text" class="form-control" id="especialidade_id" name='especialidade_id' value="{{ $medico->especialidade->descricao }}" readonly>
                 </div>
-                
+
                 <div class="form-group col-md-4">
                     <label for="numero_identificacao">Número de Identificação</label>
                     <input type="text" class="form-control" id="numero_identificacao" name='numero_identificacao' value="{{ $medico->numero_identificacao }}" readonly>
@@ -37,6 +37,11 @@
             <div class="form-group col-md-4">
                 <label for="genero">Gênero</label>
                 <input type="text" class="form-control" id="genero" name="genero" value="{{ $medico->genero }}" readonly>
+            </div>
+            <!-- Exibir a imagem do médico -->
+            <div class="form-group col-md-4">
+                <label for="imagem">Imagem</label><br>
+                <img src="{{ asset('storage/images/medicos/' . $medico->imagem) }}" alt="Imagem do Médico" style="max-width: 200px;">
             </div>
         </div>
         <div class="card-footer">

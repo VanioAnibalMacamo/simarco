@@ -15,6 +15,8 @@ use App\Http\Controllers\PrescricaoController;
 use App\Http\Controllers\SintomaController;
 use App\Http\Controllers\GravidadeController;
 use App\Http\Controllers\PaginasController;
+use App\Http\Controllers\DisponibilidadeController;
+use App\Http\Controllers\AgendamentosController;
 
 
 /*
@@ -152,3 +154,15 @@ Route::get('/medico/especialidades', [MedicoController::class, 'especialidades']
 Route::get('/medico/medicos/{idEspecialidade}', [MedicoController::class, 'medicos'])->name('medico.medicos');
 
 Route::get('/medicos/{id}/disponibilidade', [MedicoController::class, 'showDisponibilidade'])->name('medicos.disponibilidade');
+
+
+Route::get('/disponibilidadeIndex', [DisponibilidadeController::class, 'index'])->name('disponibilidadeIndex');
+Route::get('disponibilidadeCreate/{medico_id}', [DisponibilidadeController::class, 'create'])->name('disponibilidade.create');
+Route::post('/disponibilidade/store', [DisponibilidadeController::class, 'store'])->name('disponibilidade.store');
+Route::get('/disponibilidade/{id}/edit', [DisponibilidadeController::class, 'edit'])->name('disponibilidade.edit');
+Route::put('/disponibilidade/{id}/update', [DisponibilidadeController::class, 'update'])->name('disponibilidade.update');
+Route::delete('/disponibilidade/{id}/delete', [DisponibilidadeController::class, 'destroy'])->name('disponibilidade.delete');
+
+Route::get('visualizar_disponibilidades/{id}',[DisponibilidadeController::class,'visualizarDisponibilidades'])->name('visualizar_disponibilidades');
+
+Route::post('agendamentos', [AgendamentosController::class, 'store'])->name('agendamentos.store');

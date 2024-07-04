@@ -386,6 +386,11 @@ return [
                             'url'  => 'especialidadeIndex',
                             'icon'    => 'fas fa-heartbeat',
                         ],
+                        [
+                            'text' => 'Disponibilidades',
+                            'url'  => 'disponibilidadeIndex',
+                            'icon'    => 'fas fa-clock',
+                        ],
                         // submenu de Médicos
                     ],
                 ],

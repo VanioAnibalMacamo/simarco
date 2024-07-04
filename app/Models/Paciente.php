@@ -24,4 +24,10 @@ class Paciente extends Model
     {
         return $this->hasMany(Consulta::class);
     }
+
+     // Relacionamento um para muitos com Agendamento
+     public function agendamentos()
+     {
+         return $this->hasMany(Agendamento::class);
+     }
 }
