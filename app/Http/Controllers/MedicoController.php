@@ -7,8 +7,10 @@ use App\Enums\GeneroEnum;
 use App\Models\Especialidade;
 use App\Models\Medico;
 use App\Models\Disponibilidade;
+use App\Models\Paciente;
+use App\Models\Agendamento;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 
 
 class MedicoController extends Controller
@@ -117,6 +119,7 @@ class MedicoController extends Controller
 
     public function showDisponibilidade($id)
     {
+        // Busca o médico pelo ID
         $medico = Medico::findOrFail($id);
 
         // Buscar disponibilidades ativas do médico
@@ -129,33 +132,63 @@ class MedicoController extends Controller
 
         foreach ($disponibilidades as $disponibilidade) {
             $datas = $this->gerarProximasDatas($disponibilidade->dia_semana);
+
             foreach ($datas as $data) {
-                $proximasDisponibilidades[] = (object)[
-                    'dia_semana' => $disponibilidade->dia_semana,
-                    'data' => $data->format('d/m/Y'),
-                    'data_raw' => $data, // Adiciona a data em formato DateTime para ordenação
-                    'hora_inicio' => $disponibilidade->hora_inicio,
-                    'hora_fim' => $disponibilidade->hora_fim,
-                    'estado' => $disponibilidade->estado
-                ];
+                // Formatar a data para o formato adequado para comparação
+                $dataFormatada = $data->format('Y-m-d');
+
+                // Verifica se já existe um agendamento para esta data e disponibilidade
+                $existeAgendamento = Agendamento::whereHas('disponibilidades', function($query) use ($disponibilidade) {
+                    $query->where('disponibilidade_id', $disponibilidade->id);
+                })
+                ->whereDate('dia', $dataFormatada)
+                ->exists();
+
+                // Se não existe um agendamento para esta data e disponibilidade, adiciona à lista
+                if (!$existeAgendamento) {
+                    $proximasDisponibilidades[] = (object) [
+                        'id' => $disponibilidade->id,
+                        'dia_semana' => $disponibilidade->dia_semana,
+                        'data' => $data->format('d/m/Y'),
+                        'data_raw' => $data,
+                        'hora_inicio' => $disponibilidade->hora_inicio,
+                        'hora_fim' => $disponibilidade->hora_fim,
+                        'estado' => $disponibilidade->estado
+                    ];
+                }
             }
         }
 
-        // Ordenar as disponibilidades convertendo data_raw e hora_inicio para timestamps
+        // Ordenar as disponibilidades
         usort($proximasDisponibilidades, function($a, $b) {
-            $dataA = $a->data_raw->timestamp;
-            $dataB = $b->data_raw->timestamp;
-            $horaA = strtotime($a->hora_inicio);
-            $horaB = strtotime($b->hora_inicio);
+            $dataA = $a->data_raw->getTimestamp();  // Obtém o timestamp da data
+            $dataB = $b->data_raw->getTimestamp(); // Obtém o timestamp da data
+            $horaA = strtotime($a->hora_inicio);  // Converte hora_inicio para timestamp
+            $horaB = strtotime($b->hora_inicio); // Converte hora_inicio para timestamp
 
             if ($dataA === $dataB) {
-                return $horaA - $horaB;
+                return $horaA - $horaB; // Compara as horas se as datas forem iguais
             }
-            return $dataA - $dataB;
+            return $dataA - $dataB; // Compara as datas
         });
 
-        return view('medico.disponibilidades', compact('medico', 'proximasDisponibilidades'));
+        // Busca todos os pacientes
+        $pacientes = Paciente::all();
+
+        // Retorna a view com os dados necessários
+        return view('medico.disponibilidades', compact('medico', 'proximasDisponibilidades', 'pacientes'));
     }
+
+
+
+
+
+
+
+
+
+
+
 
     private function gerarProximasDatas($diaSemana)
     {
