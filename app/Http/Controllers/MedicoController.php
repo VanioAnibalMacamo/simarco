@@ -43,7 +43,10 @@ class MedicoController extends Controller
 
         // Salvar a imagem
         $imagemNome = $request->file('imagem')->getClientOriginalName();
-        $request->file('imagem')->storeAs('public/images/medicos', $imagemNome);
+        // Salvar a imagem no diretório de imagens
+        $request->file('imagem')->move(public_path('images/medicos'), $imagemNome);
+
+      //  $request->file('imagem')->storeAs('public/images/medicos', $imagemNome);
 
         // Criar o médico com os dados
         Medico::create([
@@ -55,7 +58,8 @@ class MedicoController extends Controller
             'imagem' => $imagemNome, // Salvar o nome da imagem
         ]);
 
-        return redirect('/medicoIndex')->with('success', 'Médico salvo com sucesso!');
+        return redirect('/medicoIndex')->with('success', 'Médico salvo com sucesso!'.
+        $imagemNome);
     }
     public function delete($id)
     {
@@ -93,10 +97,32 @@ class MedicoController extends Controller
             'numero_identificacao' => 'required|string|max:255',
             'disponibilidade' => 'required|string|max:255',
             'genero' => 'required|in:' . implode(',', GeneroEnum::getConstants()),
+            'imagem' => 'nullable|image|mimes:jpeg,png|max:2048', // Novas regras para a imagem
         ]);
+        
 
         $medico = Medico::findOrFail($id);
         $medico->update($request->all());
+       
+         // Verifica se foi enviada uma nova imagem
+         if ($request->hasFile('imagem')) {
+            // Remove a imagem atual, se existir
+            if ($medico->imagem) {
+                $caminhoImagemAtual = public_path('images/medicos/') . $medico->imagem;
+                if (file_exists($caminhoImagemAtual)) {
+                    unlink($caminhoImagemAtual);
+                }
+            }
+
+            // Obtém e salva a nova imagem
+            $novaImagem = $request->file('imagem');
+            $nomeImagem = $novaImagem->getClientOriginalName();
+            $novaImagem->move(public_path('images/medicos/'), $nomeImagem);
+            $medico->imagem = $nomeImagem;
+        }
+
+       
+        $medico->save();
 
         return redirect('/medicoIndex')->with('success', 'Médico atualizado com sucesso!');
     }

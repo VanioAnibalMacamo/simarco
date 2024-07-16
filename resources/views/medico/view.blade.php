@@ -41,7 +41,7 @@
             <!-- Exibir a imagem do médico -->
             <div class="form-group col-md-4">
                 <label for="imagem">Imagem</label><br>
-                <img src="{{ asset('storage/images/medicos/' . $medico->imagem) }}" alt="Imagem do Médico" style="max-width: 200px;">
+                <img src="{{ asset('images/medicos/' . $medico->imagem) }}" alt="Imagem do Médico" style="max-width: 200px;">
             </div>
         </div>
         <div class="card-footer">
@@ -57,4 +57,5 @@
 
 @section('js')
     <script> console.log('Hi!'); </script>
+    
 @stop
