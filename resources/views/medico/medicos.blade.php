@@ -13,7 +13,12 @@
                 @forelse($medicos as $medico)
                     <div class="col-md-4">
                         <div class="card">
-                            <img class="card-img-top" src="{{ asset('images/medicos/medico.jpg') }}" alt="{{ $medico->nome }}">
+                        @php
+                        $imagemMedico = $medico->imagem ? asset('images/medicos/' . $medico->imagem) : asset('images/medicos/medico.jpg');
+                        @endphp
+                        
+                        <img class="card-img-top" src="{{ $imagemMedico }}" alt="{{ $medico->nome }}" style="max-width: 200px;">
+
                             <div class="card-body">
                                 <h5 class="card-title">{{ $medico->nome }}</h5>
                                 <p class="card-text">Especialidade: {{ $medico->especialidade->descricao }}</p>
