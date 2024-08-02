@@ -17,6 +17,7 @@ use App\Http\Controllers\GravidadeController;
 use App\Http\Controllers\PaginasController;
 use App\Http\Controllers\DisponibilidadeController;
 use App\Http\Controllers\AgendamentosController;
+use App\Http\Controllers\VideoConferenciaController;
 
 
 /*
@@ -166,3 +167,6 @@ Route::delete('/disponibilidade/{id}/delete', [DisponibilidadeController::class,
 Route::get('visualizar_disponibilidades/{id}',[DisponibilidadeController::class,'visualizarDisponibilidades'])->name('visualizar_disponibilidades');
 
 Route::post('agendamentos', [AgendamentosController::class, 'store'])->name('agendamentos.store');
+
+
+Route::get('/videoconferencia', [VideoConferenciaController::class, 'index']);
