@@ -169,9 +169,6 @@ Route::get('visualizar_disponibilidades/{id}',[DisponibilidadeController::class,
 
 Route::post('agendamentos', [AgendamentosController::class, 'store'])->name('agendamentos.store');
 
-<<<<<<< HEAD
-Route::get('/horarios/{disponibilidade}', [HorariosController::class, 'index'])->name('horarios.index');
-=======
 
-Route::get('/videoconferencia', [VideoConferenciaController::class, 'index']);
->>>>>>> cfbdb744224a92eb55ec7591920f8626c5840747
+Route::get('/horarios/{disponibilidade}', [HorariosController::class, 'index'])->name('horarios.index');
+
