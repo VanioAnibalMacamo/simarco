@@ -31,14 +31,27 @@
                         <option value="Quinta">Quinta</option>
                         <option value="Sexta">Sexta</option>
                     </select>
-                </div>
+                    
+                    <div class="form-group mt-3">
+                        <label for="medico_id">Médico:</label>
+                        <strong><p>{{ $medico->nome }}</p></strong>
+                        <input type="hidden" name="medico_id_hidden" value="{{ $medico->id }}">
+                    </div>
 
-                <div class="col-md-6">
+
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <a href="{{ route('disponibilidade.create', ['medico_id' => $medico_id]) }}" class="btn btn-warning">Voltar</a>
+                    </div>
+                </div>
+                <!--
+                    <div class="col-md-6">
                     <label for="hora_inicio">Hora de Início:</label>
                     <input type="time" id="hora_inicio" name="hora_inicio" class="form-control">
                 </div>
             </div>
-
+-->
+<!--
             <div class="form-group row">
                 <div class="col-md-6">
                     <label for="hora_fim">Hora de Fim:</label>
@@ -53,19 +66,10 @@
                     </select>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label for="medico_id">Médico:</label>
-                <strong><p>{{ $medico->nome }}</p></strong>
-                <input type="hidden" name="medico_id_hidden" value="{{ $medico->id }}">
-            </div>
+-->
 
 
 
-            <div class="col-md-6">
-                <button type="submit" class="btn btn-primary">Salvar</button>
-                <a href="{{ route('disponibilidade.create', ['medico_id' => $medico_id]) }}" class="btn btn-warning">Voltar</a>
-            </div>
         </form>
     </div>
 </div>

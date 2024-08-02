@@ -11,9 +11,6 @@ class Disponibilidade extends Model
 
     protected $fillable = [
         'dia_semana',
-        'hora_inicio',
-        'hora_fim',
-        'estado',
         'medico_id',
     ];
 

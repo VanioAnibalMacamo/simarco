@@ -149,8 +149,8 @@ class MedicoController extends Controller
         $medico = Medico::findOrFail($id);
 
         // Buscar disponibilidades ativas do médico
-        $disponibilidades = Disponibilidade::where('medico_id', $medico->id)
-            ->where('estado', 'Activa')
+       $disponibilidades = Disponibilidade::where('medico_id', $medico->id)
+           // ->where('estado', 'Activa')
             ->get();
 
         // Gerar datas para os próximos 30 dias

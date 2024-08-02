@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HorariosController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\EspecialidadeController;
@@ -166,3 +167,5 @@ Route::delete('/disponibilidade/{id}/delete', [DisponibilidadeController::class,
 Route::get('visualizar_disponibilidades/{id}',[DisponibilidadeController::class,'visualizarDisponibilidades'])->name('visualizar_disponibilidades');
 
 Route::post('agendamentos', [AgendamentosController::class, 'store'])->name('agendamentos.store');
+
+Route::get('/horarios/{disponibilidade}', [HorariosController::class, 'index'])->name('horarios.index');
