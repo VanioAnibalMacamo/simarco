@@ -9,6 +9,20 @@
 @section('content')
     <div class="card card-primary">
         <div class="card-body">
+
+            <!-- Alertas de Sucesso e Erro -->
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="row">
                 @if(empty($horarios))
                     <div class="col-md-12">
