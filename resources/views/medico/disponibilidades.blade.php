@@ -47,7 +47,7 @@
                                     <!-- Formulário de redirecionamento para escolher horários -->
                                     <form action="{{ route('horarios.index', ['disponibilidade' => $disponibilidade->id]) }}" method="GET" class="availability-form">
                                         @csrf
-                                        <input type="hidden" name="paciente_id" id="paciente_id" value="">
+                                        <input type="hidden" name="paciente_id" id="paciente_id_{{ $disponibilidade->id }}" value="">
                                         <input type="hidden" name="disponibilidade_id" value="{{ $disponibilidade->id }}">
                                         <input type="hidden" name="dia" value="{{ $disponibilidade->data }}">
                                         <button type="submit" class="btn btn-success agendar-btn">Selecionar</button>
@@ -70,7 +70,9 @@
         $(document).ready(function() {
             $('#paciente').change(function() {
                 var selectedPacienteId = $(this).val();
-                $('#paciente_id').val(selectedPacienteId);
+                $('.availability-form').each(function() {
+                    $(this).find('input[name="paciente_id"]').val(selectedPacienteId);
+                });
             });
         });
 

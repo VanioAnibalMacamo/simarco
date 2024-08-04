@@ -5,39 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Disponibilidade;
 use App\Models\Medico;
+use Illuminate\Http\RedirectResponse;
 
 class DisponibilidadeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $disponibilidades = Disponibilidade::paginate(8);
         $medicos = Medico::paginate(8);
-        return view('parametrizacao.medico.disponibilidade.index', compact('disponibilidades','medicos'));
+        return view('parametrizacao.medico.disponibilidade.index', compact('disponibilidades', 'medicos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create($medico_id)
     {
         $medico = Medico::find($medico_id);
         return view('parametrizacao.medico.disponibilidade.create', compact('medico_id', 'medico'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'dia_semana' => 'required',
@@ -50,7 +35,7 @@ class DisponibilidadeController extends Controller
                 ->exists();
 
             if ($existente) {
-                return redirect()->back()
+                return redirect()->route('disponibilidade.create', ['medico_id' => $request->medico_id_hidden])
                     ->with('error', 'Já existe uma disponibilidade cadastrada para este médico neste dia da semana.');
             }
 
@@ -62,31 +47,18 @@ class DisponibilidadeController extends Controller
             return redirect()->route('visualizar_disponibilidades', ['id' => $request->medico_id_hidden])
                 ->with('success', 'Disponibilidade criada com sucesso.');
         } catch (\Exception $e) {
-            return redirect()->back()
+            return redirect()->route('disponibilidade.create', ['medico_id' => $request->medico_id_hidden])
                 ->with('error', 'Ocorreu um erro ao criar a disponibilidade: ' . $e->getMessage());
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Disponibilidade  $disponibilidade
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $disponibilidade = Disponibilidade::findOrFail($id);
         return view('parametrizacao.medico.disponibilidade.edit', compact('disponibilidade'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Disponibilidade  $disponibilidade
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         $request->validate([
             'dia_semana' => 'required',
@@ -99,13 +71,7 @@ class DisponibilidadeController extends Controller
             ->with('success', 'Disponibilidade atualizada com sucesso.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Disponibilidade  $disponibilidade
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $disponibilidade = Disponibilidade::findOrFail($id);
         $disponibilidade->delete();
