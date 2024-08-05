@@ -11,13 +11,20 @@ use Carbon\Carbon;
 
 class AgendamentosController extends Controller
 {
-
+    public function index()
+    {
+        $agendamentos = Agendamento::with('disponibilidades.medico.especialidade')->get();
+        return view('consultas.index', compact('agendamentos'));
+    }
+    
     public function agendamentosMarcados()
     {
-
-        return view('agendamentos.marcados');
+        $agendamentos = Agendamento::with('paciente', 'disponibilidades.medico')
+            ->paginate(10); // Ajuste o número de itens por página conforme necessário
+    
+        return view('agendamentos.marcados', compact('agendamentos'));
     }
-
+    
     public function store(Request $request)
     {
         \Log::info('Dados recebidos para agendamento: ', $request->all());
@@ -72,4 +79,10 @@ class AgendamentosController extends Controller
             return redirect()->back()->with('error', 'Erro ao criar o agendamento.');
         }
     }
+    public function show($id)
+{
+    $agendamento = Agendamento::with(['paciente', 'disponibilidades.medico.especialidade'])->findOrFail($id);
+    return view('agendamentos.view', compact('agendamento'));
+}
+
 }

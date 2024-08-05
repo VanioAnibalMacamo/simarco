@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Disponibilidade;
@@ -16,7 +17,9 @@ class HorariosController extends Controller
             return redirect()->back()->with('error', 'Paciente não selecionado.');
         }
 
-        $disponibilidade = Disponibilidade::findOrFail($disponibilidadeId);
+        // Buscar a disponibilidade com o médico e sua especialidade
+        $disponibilidade = Disponibilidade::with('medico.especialidade')->findOrFail($disponibilidadeId);
+
         $dia = $request->input('dia');
         if (!$dia) {
             return redirect()->back()->with('error', 'Dia não especificado.');
@@ -55,8 +58,14 @@ class HorariosController extends Controller
             }
         }
 
-        return view('horarios.index', compact('disponibilidade', 'pacienteId', 'horarios', 'dia'));
+        return view('horarios.index', [
+            'disponibilidade' => $disponibilidade,
+            'pacienteId' => $pacienteId,
+            'horarios' => $horarios,
+            'dia' => $dia
+        ]);
     }
+
     public function store(Request $request)
     {
         Log::info('Dados recebidos para agendamento: ', $request->all());

@@ -170,6 +170,9 @@ Route::get('visualizar_disponibilidades/{id}',[DisponibilidadeController::class,
 Route::post('agendamentos', [AgendamentosController::class, 'store'])->name('agendamentos.store');
 Route::get('/agendamentosMarcados', [AgendamentosController::class, 'agendamentosMarcados'])->name('agendamentosMarcados');
 
-Route::get('/videoconferencia', [VideoConferenciaController::class, 'index']);
+Route::get('/videoconferencia', [VideoConferenciaController::class, 'index'])->name('videoconferencia');
+
 Route::get('/horarios/{disponibilidade}', [HorariosController::class, 'index'])->name('horarios.index');
 
+
+Route::get('/visualizar_agendamento/{id}', [AgendamentosController::class, 'show'])->name('agendamentos.show');
