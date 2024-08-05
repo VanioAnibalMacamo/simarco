@@ -60,7 +60,6 @@
                 class="btn btn-warning">Voltar</a>
         </div>
 
-
     </div>
 </div>
 @stop

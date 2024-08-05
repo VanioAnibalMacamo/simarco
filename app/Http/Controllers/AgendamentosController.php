@@ -33,7 +33,8 @@ class AgendamentosController extends Controller
         $request->validate([
             'paciente_id' => 'required|exists:pacientes,id',
             'dia' => 'required|date_format:d/m/Y', // Ajustado para o formato recebido
-            'horario' => 'required|date_format:H:i' // Validação do formato da hora
+            'horario' => 'required|date_format:H:i', // Validação do formato da hora
+            'disponibilidade_id' => 'required|exists:disponibilidades,id' // Validação da disponibilidade
         ]);
 
         try {
@@ -46,7 +47,7 @@ class AgendamentosController extends Controller
             \Log::info('Data convertida: ' . $data);
             \Log::info('Horário convertido: ' . $horario);
 
-            // Crie o agendamento
+            // Cria o agendamento
             $agendamento = Agendamento::create([
                 'dia' => $data,
                 'paciente_id' => $request->paciente_id,
@@ -54,11 +55,23 @@ class AgendamentosController extends Controller
             ]);
 
             \Log::info('Agendamento criado com sucesso.', ['agendamento_id' => $agendamento->id, 'horario' => $agendamento->horario]);
+
+            // Associa a disponibilidade ao agendamento
+            $disponibilidadeId = $request->input('disponibilidade_id');
+            if ($disponibilidadeId) {
+                $agendamento->disponibilidades()->attach($disponibilidadeId);
+                \Log::info('Associação com a tabela pivot realizada com sucesso.', [
+                    'agendamento_id' => $agendamento->id,
+                    'disponibilidade_id' => $disponibilidadeId,
+                ]);
+            } else {
+                \Log::warning('Nenhuma disponibilidade selecionada para associar ao agendamento.');
+            }
+
             return redirect()->back()->with('success', 'Agendamento criado com sucesso!');
         } catch (\Exception $e) {
             \Log::error('Erro ao criar agendamento: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Erro ao criar o agendamento.');
         }
     }
-
 }

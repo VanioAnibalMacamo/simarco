@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,17 +13,14 @@ class Disponibilidade extends Model
         'medico_id',
     ];
 
-    // Relacionamento com o modelo Medico
     public function medico()
     {
         return $this->belongsTo(Medico::class);
     }
 
-    // Relacionamento muitos para muitos com Agendamento
     public function agendamentos()
     {
-        return $this->belongsToMany(Agendamento::class)
+        return $this->belongsToMany(Agendamento::class, 'agendamento_disponibilidade')
                     ->withTimestamps();
     }
-
 }
