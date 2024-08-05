@@ -149,11 +149,7 @@ class MedicoController extends Controller
         $medico = Medico::findOrFail($id);
 
         // Buscar disponibilidades ativas do médico
-<<<<<<< Updated upstream
        $disponibilidades = Disponibilidade::where('medico_id', $medico->id)
-=======
-        $disponibilidades = Disponibilidade::where('medico_id', $medico->id)
->>>>>>> Stashed changes
            // ->where('estado', 'Activa')
             ->get();
 
