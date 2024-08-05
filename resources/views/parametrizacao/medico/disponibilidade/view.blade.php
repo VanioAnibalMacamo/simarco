@@ -38,9 +38,6 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Dia da Semana: {{ $disponibilidade->dia_semana }}</h5>
-                                    <p class="card-text">Hora Início: {{ $disponibilidade->hora_inicio }}</p>
-                                    <p class="card-text">Hora Fim: {{ $disponibilidade->hora_fim }}</p>
-                                    <p class="card-text">Estado: {{ $disponibilidade->estado }}</p>
                                     <div class="mt-3">
                                         <a href="{{ route('disponibilidade.edit', ['id' => $disponibilidade->id]) }}" class="btn btn-primary btn-sm">
                                             <i class="fas fa-edit"></i> Editar

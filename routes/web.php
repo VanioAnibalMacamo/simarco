@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HorariosController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\EspecialidadeController;
@@ -168,5 +169,6 @@ Route::get('visualizar_disponibilidades/{id}',[DisponibilidadeController::class,
 
 Route::post('agendamentos', [AgendamentosController::class, 'store'])->name('agendamentos.store');
 
-
 Route::get('/videoconferencia', [VideoConferenciaController::class, 'index']);
+Route::get('/horarios/{disponibilidade}', [HorariosController::class, 'index'])->name('horarios.index');
+

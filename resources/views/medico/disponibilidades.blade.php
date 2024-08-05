@@ -20,7 +20,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="paciente">Selecionar Paciente:</label>
-                        <select class="form-control" id="paciente" name="paciente">
+                        <select class="form-control" id="paciente">
                             <option value="" disabled selected>Selecione o paciente</option>
                             @foreach($pacientes as $paciente)
                                 <option value="{{ $paciente->id }}">{{ $paciente->nome }}</option>
@@ -43,14 +43,14 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Dia: {{ $disponibilidade->data }}</h5>
-                                    <p class="card-text">Horários: {{ $disponibilidade->hora_inicio }} - {{ $disponibilidade->hora_fim }}</p>
-                                    <!-- Formulário de agendamento -->
-                                    <form action="{{ route('agendamentos.store') }}" method="POST">
+                                    <p class="card-text"></p>
+                                    <!-- Formulário de redirecionamento para escolher horários -->
+                                    <form action="{{ route('horarios.index', ['disponibilidade' => $disponibilidade->id]) }}" method="GET" class="availability-form">
                                         @csrf
-                                        <input type="hidden" name="dia" value="{{ $disponibilidade->data }}">
+                                        <input type="hidden" name="paciente_id" id="paciente_id_{{ $disponibilidade->id }}" value="">
                                         <input type="hidden" name="disponibilidade_id" value="{{ $disponibilidade->id }}">
-                                        <input type="hidden" name="paciente_id" class="selected-paciente-id" value="">
-                                        <button type="submit" class="btn btn-primary agendar-btn">Agendar</button>
+                                        <input type="hidden" name="dia" value="{{ $disponibilidade->data }}">
+                                        <button type="submit" class="btn btn-success agendar-btn">Selecionar</button>
                                     </form>
                                 </div>
                             </div>
@@ -70,12 +70,16 @@
         $(document).ready(function() {
             $('#paciente').change(function() {
                 var selectedPacienteId = $(this).val();
-                $('.selected-paciente-id').val(selectedPacienteId);
+                $('.availability-form').each(function() {
+                    $(this).find('input[name="paciente_id"]').val(selectedPacienteId);
+                });
             });
         });
 
         setTimeout(function() {
-            document.querySelector('.alert').remove();
+            document.querySelectorAll('.alert').forEach(function (alert) {
+                alert.remove();
+            });
         }, 5000);
     </script>
 @stop
