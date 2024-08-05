@@ -27,6 +27,6 @@ class Agendamento extends Model
     public function disponibilidades()
     {
         return $this->belongsToMany(Disponibilidade::class, 'agendamento_disponibilidade')
-                    ->withTimestamps();
+            ->withTimestamps();
     }
 }

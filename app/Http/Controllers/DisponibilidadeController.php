@@ -84,8 +84,8 @@ class DisponibilidadeController extends Controller
     {
         $medico = Medico::findOrFail($id);
         $disponibilidades = $medico->disponibilidades()
-                                    ->orderBy('dia_semana')
-                                    ->get();
+            ->orderBy('dia_semana')
+            ->get();
 
         return view('parametrizacao.medico.disponibilidade.view', compact('medico', 'disponibilidades'));
     }

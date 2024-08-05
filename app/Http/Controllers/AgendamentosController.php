@@ -15,9 +15,9 @@ class AgendamentosController extends Controller
     public function agendamentosMarcados()
     {
 
-       // return view('consulta.index', compact('consultas'));
+        // return view('consulta.index', compact('consultas'));
 
-       return view('agendamentos.marcados');
+        return view('agendamentos.marcados');
     }
 
     public function store(Request $request)
