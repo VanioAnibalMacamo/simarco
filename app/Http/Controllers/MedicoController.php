@@ -99,11 +99,11 @@ class MedicoController extends Controller
             'genero' => 'required|in:' . implode(',', GeneroEnum::getConstants()),
             'imagem' => 'nullable|image|mimes:jpeg,png|max:2048', // Novas regras para a imagem
         ]);
-        
+
 
         $medico = Medico::findOrFail($id);
         $medico->update($request->all());
-       
+
          // Verifica se foi enviada uma nova imagem
          if ($request->hasFile('imagem')) {
             // Remove a imagem atual, se existir
@@ -121,7 +121,7 @@ class MedicoController extends Controller
             $medico->imagem = $nomeImagem;
         }
 
-       
+
         $medico->save();
 
         return redirect('/medicoIndex')->with('success', 'Médico atualizado com sucesso!');
@@ -204,17 +204,6 @@ class MedicoController extends Controller
         // Retorna a view com os dados necessários
         return view('medico.disponibilidades', compact('medico', 'proximasDisponibilidades', 'pacientes'));
     }
-
-
-
-
-
-
-
-
-
-
-
 
     private function gerarProximasDatas($diaSemana)
     {

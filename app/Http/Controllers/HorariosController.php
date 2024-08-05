@@ -35,14 +35,14 @@ class HorariosController extends Controller
         while ($horaInicio < $horaFim) {
             $horaFimIntervalo = $horaInicio->copy()->addMinutes(30)->format('H:i');
             $inicioIntervalo = $horaInicio->format('H:i');
-            
+
             // Ajusta o horário final para começar 1 minuto após o horário de início do intervalo
-            $horaInicio = $horaInicio->copy()->addMinutes(31); 
+            $horaInicio = $horaInicio->copy()->addMinutes(31);
 
             if ($horaInicio > $horaFim) {
                 break; // Para se ultrapassar o horário limite
             }
-            
+
             $horarios[] = [
                 'start' => $inicioIntervalo,
                 'end' => $horaFimIntervalo,

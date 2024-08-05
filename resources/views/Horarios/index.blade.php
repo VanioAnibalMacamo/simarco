@@ -3,7 +3,7 @@
 @section('title', 'Escolher Horário')
 
 @section('content_header')
-<h1>Escolher Horário para Disponibilidade em {{ $disponibilidade->dia_semana }}</h1>
+<h1>Escolher Horário para Disponibilidade na {{ $disponibilidade->dia_semana }} Dia: {{ $dia }}</h1>
 @stop
 
 @section('content')
