@@ -168,6 +168,7 @@ Route::delete('/disponibilidade/{id}/delete', [DisponibilidadeController::class,
 Route::get('visualizar_disponibilidades/{id}',[DisponibilidadeController::class,'visualizarDisponibilidades'])->name('visualizar_disponibilidades');
 
 Route::post('agendamentos', [AgendamentosController::class, 'store'])->name('agendamentos.store');
+Route::get('/agendamentosMarcados', [AgendamentosController::class, 'agendamentosMarcados'])->name('agendamentosMarcados');
 
 Route::get('/videoconferencia', [VideoConferenciaController::class, 'index']);
 Route::get('/horarios/{disponibilidade}', [HorariosController::class, 'index'])->name('horarios.index');
