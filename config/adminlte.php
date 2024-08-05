@@ -325,6 +325,11 @@ return [
             //'icon' => 'fas fa-fw fa-user-injured',
         ],
         [
+            'text' => 'Video Conferencia',
+            'url'  => 'videoconferencia',
+            'icon' => 'fas fa-video',
+        ],
+        [
             'text' => 'Consultas Agendadas',
             'url'  => 'agendamentosMarcados',
             'icon' => 'fas fa-calendar-alt',
