@@ -15,7 +15,7 @@
 @section('content')
 <div class="d-flex flex-row-reverse align-items-end mb-3">
     <a href="{{ route('medico.especialidades') }}" class="btn btn-primary">
-        <i class="fas fa-plus"></i> Adicionar
+        <i class="fas fa-plus"></i> Agendar
     </a>
 </div>
 
@@ -52,10 +52,8 @@
                                 {{ \Carbon\Carbon::createFromFormat('H:i:s', $agendamento->horario)->format('H:i') }}
                             </td>
                             <td>
-                                <!-- Ícone de visualizar detalhes com margem à direita -->
-                                    <a class="btn btn-success btn-sm d-inline mr-2" href="{{ route('agendamentos.show', $agendamento->id) }}" title="Visualizar Detalhes"><i class="fas fa-eye"></i></a>
-                                <!-- Ícone de iniciar videoconferência com cor verde -->
-                                <a class="btn btn-primary btn-sm d-inline" href="{{ route('videoconferencia') }}" title="Iniciar teleconsulta"><i class="fas fa-video"></i></a>
+                                <a class="btn btn-success btn-sm d-inline mr-2" href="{{ route('agendamentos.show', $agendamento->id) }}" title="Visualizar Detalhes"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-primary btn-sm d-inline" href="{{ route('videoconferencia', $agendamento->id) }}" title="Iniciar teleconsulta"><i class="fas fa-video"></i></a>
                             </td>
 
                         </tr>

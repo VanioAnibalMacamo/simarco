@@ -168,6 +168,8 @@ Route::post('agendamentos', [AgendamentosController::class, 'store'])->name('age
 Route::get('/agendamentosMarcados', [AgendamentosController::class, 'agendamentosMarcados'])->name('agendamentosMarcados');
 
 Route::get('/videoconferencia', [VideoConferenciaController::class, 'index'])->name('videoconferencia');
+Route::get('/videoconferencia/{id}', [VideoConferenciaController::class, 'videoconferencia'])->name('videoconferencia');
+
 
 Route::get('/horarios/{disponibilidade}', [HorariosController::class, 'index'])->name('horarios.index');
 
