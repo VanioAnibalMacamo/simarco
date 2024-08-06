@@ -101,7 +101,7 @@ class DiagnosticosController extends Controller
             'data_diagnostico' => 'required|date',
             'descricao' => 'required|string',
             'observacoes' => 'nullable|string',
-            'consulta_id' => 'required|exists:consultas,id',
+           // 'consulta_id' => 'required|exists:consultas,id',
         ]);
 
         $diagnostico = Diagnostico::findOrFail($id);
