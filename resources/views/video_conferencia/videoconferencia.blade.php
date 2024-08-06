@@ -44,6 +44,9 @@
                 const api = new JitsiMeetExternalAPI(domain, options);
             </script>
         </div>
+        <div class="card-footer">
+            <a href="{{ route('agendamentosMarcados') }}" type="button" class="btn btn-warning">Voltar</a>
+        </div>
     </div>
 
 @stop
