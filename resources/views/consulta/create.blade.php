@@ -11,22 +11,21 @@
         <div class="card-header">
             <h3 class="card-title">Dados da Consulta</h3>
         </div>
-        <form action="{{ url('saveConsulta') }}" method="POST" enctype="multipart/form-data">
+        <form  id="consultaForm"  action="{{ url('saveConsulta') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
                 <div class="row">
                     <div class="form-group col-md-4">
                         <label for="data_consulta">Data da Consulta</label>
-                        <input type="date" class="form-control" id="data_consulta" name='data_consulta'>
+                        <input type="text" class="form-control" id="data_consulta" name="data_consulta" value="{{ old('data_consulta', $data_consulta) }}">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="hora_inicio">Hora de Início</label>
-                        <input type="time" class="form-control" id="hora_inicio" name="hora_inicio">
+                        <input type="time" class="form-control" id="hora_inicio" name="hora_inicio" value="{{ old('hora_inicio', $hora_inicio) }}">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="observacoes">Observações</label>
-                        <textarea class="form-control h-98" id="observacoes" name='observacoes'
-                            placeholder="Digite as observações da consulta..."></textarea>
+                        <textarea class="form-control h-98" id="observacoes" name="observacoes" placeholder="Digite as observações da consulta...">{{ old('observacoes') }}</textarea>
                     </div>
                 </div>
                 <div class="row">
@@ -34,7 +33,7 @@
                         <label for="id_status">Status da Consulta</label>
                         <select class="form-control" id="id_status" name="id_status">
                             @foreach ($statusConsultas as $status)
-                                <option value="{{ $status->id }}" {{ $status->id == 1 ? 'selected' : '' }}>
+                                <option value="{{ $status->id }}" {{ $status->id == old('id_status') ? 'selected' : '' }}>
                                     {{ $status->descricao }}
                                 </option>
                             @endforeach
@@ -42,14 +41,16 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label for="hora_fim">Hora de Fim</label>
-                        <input type="time" class="form-control" id="hora_fim" name="hora_fim">
+                        <input type="time" class="form-control" id="hora_fim" name="hora_fim" value="{{ old('hora_fim') }}">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="id_paciente">Paciente</label>
                         <select class="form-control" id="id_paciente" name="id_paciente">
                             <option value="">Selecione um paciente</option>
                             @foreach ($pacientes as $paciente)
-                                <option value="{{ $paciente->id }}">{{ $paciente->nome }}</option>
+                                <option value="{{ $paciente->id }}" {{ $paciente->id == old('id_paciente', $paciente_id) ? 'selected' : '' }}>
+                                    {{ $paciente->nome }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -60,7 +61,9 @@
                         <select class="form-control" id="id_medico" name="id_medico">
                             <option value="">Selecione um médico</option>
                             @foreach ($medicos as $medico)
-                                <option value="{{ $medico->id }}">{{ $medico->nome }}</option>
+                                <option value="{{ $medico->id }}" {{ $medico->id == old('id_medico', $medico_id) ? 'selected' : '' }}>
+                                    {{ $medico->nome }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -69,28 +72,33 @@
                         <select class="form-control" id="formaPagamento" name="formaPagamento">
                             <option value="">Selecione a Forma de Pagamento</option>
                             @foreach ($formasPagamento as $formaPagamento)
-                                <option value="{{ $formaPagamento }}">{{ ucfirst($formaPagamento) }}</option>
+                                <option value="{{ $formaPagamento }}" {{ old('formaPagamento') == $formaPagamento ? 'selected' : '' }}>
+                                    {{ ucfirst($formaPagamento) }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="form-group col-md-4">
                         <label for="empresa">Empresa</label>
-                        <input type="text" class="form-control" id="empresa" name="empresa" placeholder="Digite o nome da empresa">
+                        <input type="text" class="form-control" id="empresa" name="empresa" placeholder="Digite o nome da empresa" value="{{ old('empresa') }}">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="codigoFuncionario">Código do Funcionário</label>
-                        <input type="text" class="form-control" id="codigoFuncionario" name="codigoFuncionario" placeholder="Digite o código do funcionário">
+                        <input type="text" class="form-control" id="codigoFuncionario" name="codigoFuncionario" placeholder="Digite o código do funcionário" value="{{ old('codigoFuncionario') }}">
                     </div>
-
                     <div class="form-group col-md-4">
                         <label for="cartaoSeguro">Cartão de Seguro de Saúde</label>
                         <input type="file" class="form-control-file" id="cartaoSeguro" name="cartaoSeguro">
                     </div>
-
                 </div>
+                <!-- Campos ocultos para dados desativados -->
+                <input type="hidden" id="hidden_data_consulta" name="hidden_data_consulta" value="{{ old('hidden_data_consulta') }}">
+                <input type="hidden" id="hidden_hora_inicio" name="hidden_hora_inicio" value="{{ old('hidden_hora_inicio') }}">
+                <input type="hidden" id="hidden_hora_fim" name="hidden_hora_fim" value="{{ old('hidden_hora_fim') }}">
+                <input type="hidden" id="hidden_id_paciente" name="hidden_id_paciente" value="{{ old('hidden_id_paciente') }}">
+                <input type="hidden" id="hidden_id_medico" name="hidden_id_medico" value="{{ old('hidden_id_medico') }}">
             </div>
             <div class="card-footer">
                 <input type="submit" class="btn btn-primary" value='Salvar'>
@@ -103,38 +111,43 @@
 @section('css')
     <link rel="stylesheet" href="/css/admin_custom.css">
 @stop
-
 @section('js')
     <script>
-        // Selecionar automaticamente o status com id 1 ao carregar a página
-        document.addEventListener("DOMContentLoaded", function() {
-            var statusSelect = document.getElementById('id_status');
-            if (statusSelect.options.length > 0) {
-                statusSelect.value = '1'; // Definir automaticamente o valor do status com id 1
-                statusSelect.disabled = true; // Desativar o dropdown visualmente
-            }
-        });
+document.addEventListener("DOMContentLoaded", function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const pacienteId = urlParams.get('paciente_id');
+    const medicoId = urlParams.get('medico_id');
+    const dataConsulta = urlParams.get('data_consulta');
+    const horaInicio = urlParams.get('hora_inicio');
 
-        // Adicionar um campo oculto para enviar o ID do status com o formulário
-        document.addEventListener("submit", function() {
-            var statusSelect = document.getElementById('id_status');
-            if (statusSelect.options.length > 0) {
-                // Remover o campo oculto existente antes de adicionar um novo
-                var hiddenInput = document.querySelector('input[name="id_status"]');
-                if (hiddenInput) {
-                    hiddenInput.parentNode.removeChild(hiddenInput);
-                }
+    if (pacienteId && medicoId && dataConsulta && horaInicio) {
+        // Preencher os campos com os valores da URL
+        document.getElementById('data_consulta').value = dataConsulta;
+        document.getElementById('hora_inicio').value = horaInicio;
 
-                // Criar um novo campo oculto com o valor selecionado
-                hiddenInput = document.createElement('input');
-                hiddenInput.type = 'hidden';
-                hiddenInput.name = 'id_status';
-                hiddenInput.value = statusSelect.value;
-                statusSelect.parentNode.appendChild(hiddenInput);
-            }
-        });
-    </script>
-    <script>
-        console.log('Hi!');
+        // Calcular e preencher a hora de fim
+        const [hora, minuto] = horaInicio.split(':').map(Number);
+        const horaInicioObj = new Date();
+        horaInicioObj.setHours(hora, minuto, 0, 0); // Define hora e minuto
+        const horaFimObj = new Date(horaInicioObj.getTime() + 30 * 60 * 1000); // Adiciona 30 minutos
+        const horaFim = `${horaFimObj.getHours().toString().padStart(2, '0')}:${horaFimObj.getMinutes().toString().padStart(2, '0')}`; // Formata para HH:mm
+
+        document.getElementById('hora_fim').value = horaFim;
+
+       
+
+        // Selecionar os pacientes e médicos corretos
+        document.getElementById('id_paciente').value = pacienteId;
+        document.getElementById('id_medico').value = medicoId;
+
+        // Preencher os campos ocultos
+        document.getElementById('hidden_data_consulta').value = dataConsulta;
+        document.getElementById('hidden_hora_inicio').value = horaInicio;
+        document.getElementById('hidden_hora_fim').value = horaFim;
+        document.getElementById('hidden_id_paciente').value = pacienteId;
+        document.getElementById('hidden_id_medico').value = medicoId;
+    }
+});
+
     </script>
 @stop
