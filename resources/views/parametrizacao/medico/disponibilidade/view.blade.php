@@ -19,10 +19,12 @@
 @section('content')
 
 <div class="d-flex flex-row-reverse align-items-end mb-3">
-    <a href="{{ route('disponibilidade.create', ['medico_id' => $medico->id]) }}" class="btn btn-primary">
+    <a href="{{ route('disponibilidade.create', ['medico_id' => $medico->id]) }}"
+       class="btn btn-primary {{ $todosDiasPreenchidos ? 'disabled' : '' }}">
         <i class="fas fa-plus"></i> Adicionar
     </a>
 </div>
+
 <div class="card card-primary">
     <div class="card-body">
         @if ($disponibilidades->isEmpty())

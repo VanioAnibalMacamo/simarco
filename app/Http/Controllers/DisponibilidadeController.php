@@ -102,7 +102,6 @@ class DisponibilidadeController extends Controller
             ->with('successDelete', 'Disponibilidade excluída com sucesso.');
     }
 
-
     public function visualizarDisponibilidades($id)
     {
         $medico = Medico::findOrFail($id);
@@ -110,6 +109,16 @@ class DisponibilidadeController extends Controller
             ->orderBy('dia_semana')
             ->get();
 
-        return view('parametrizacao.medico.disponibilidade.view', compact('medico', 'disponibilidades'));
+        // Todos os dias da semana
+        $diasSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
+
+        // Dias da semana já associados ao médico
+        $diasIndisponiveis = $disponibilidades->pluck('dia_semana')->toArray();
+
+        // Verificar se todos os dias da semana estão preenchidos
+        $todosDiasPreenchidos = empty(array_diff($diasSemana, $diasIndisponiveis));
+
+        return view('parametrizacao.medico.disponibilidade.view', compact('medico', 'disponibilidades', 'todosDiasPreenchidos'));
     }
+
 }

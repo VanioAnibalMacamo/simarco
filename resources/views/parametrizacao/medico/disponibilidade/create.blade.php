@@ -26,12 +26,11 @@
                     <label for="dia_semana">Dia da Semana:</label>
                     <select name="dia_semana" id="dia_semana" class="form-control">
                         <option value="" disabled selected>Selecione o dia da semana</option>
-                        <option value="Segunda">Segunda</option>
-                        <option value="Terça">Terça</option>
-                        <option value="Quarta">Quarta</option>
-                        <option value="Quinta">Quinta</option>
-                        <option value="Sexta">Sexta</option>
+                        @foreach($diasDisponiveis as $dia)
+                            <option value="{{ $dia }}">{{ $dia }}</option>
+                        @endforeach
                     </select>
+
 
                     <div class="form-group mt-3">
                         <label for="medico_id">Médico:</label>
@@ -44,8 +43,8 @@
 
                     <div class="col-md-6">
                         <button type="submit" class="btn btn-primary">Salvar</button>
-                        <a href="{{ route('disponibilidade.create', ['medico_id' => $medico_id]) }}"
-                            class="btn btn-warning">Voltar</a>
+                        <a href="{{ route('visualizar_disponibilidades', ['id' => $medico_id]) }}" class="btn btn-warning">Voltar</a>
+
                     </div>
                 </div>
                 <!--
