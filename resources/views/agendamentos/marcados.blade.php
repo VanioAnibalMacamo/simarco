@@ -29,7 +29,6 @@
                     <th>Médico</th>
                     <th>Especialidade</th>
                     <th>Data</th>
-                    <th>Hora</th>
 
                 </tr>
             </thead>
@@ -39,34 +38,28 @@
                 @endphp
 
                 @foreach($agendamentos as $agendamento)
-                                    @foreach($agendamento->disponibilidades as $disponibilidade)
-                                                        @php
-                                                            $count++;
-                                                        @endphp
-                                                        <tr>
-                                                            <td>{{ $count }}</td>
-                                                            <td>{{ $agendamento->paciente->nome }}</td>
-                                                            <td>{{ $disponibilidade->medico->nome }}</td>
-                                                            <td>{{ $disponibilidade->medico->especialidade->descricao ?? 'Não definida' }}</td>
-                                                            <td>{{ \Carbon\Carbon::parse($agendamento->dia)->format('d/m/Y') }}</td>
+                    @foreach($agendamento->disponibilidades as $disponibilidade)
+                         @php
+                            $count++;
+                        @endphp
+                        <tr>
+                            <td>{{ $count }}</td>
+                            <td>{{ $agendamento->paciente->nome }}</td>
+                            <td>{{ $disponibilidade->medico->nome }}</td>
+                            <td>{{ $disponibilidade->medico->especialidade->descricao ?? 'Não definida' }}</td>
+                            <td>
+                                {{ \Carbon\Carbon::parse($agendamento->dia)->format('d/m/Y') }}
+                                {{ \Carbon\Carbon::createFromFormat('H:i:s', $agendamento->horario)->format('H:i') }}
+                            </td>
+                            <td>
+                                <!-- Ícone de visualizar detalhes com margem à direita -->
+                                    <a class="btn btn-success btn-sm d-inline mr-2" href="{{ route('agendamentos.show', $agendamento->id) }}" title="Visualizar Detalhes"><i class="fas fa-eye"></i></a>
+                                <!-- Ícone de iniciar videoconferência com cor verde -->
+                                <a class="btn btn-primary btn-sm d-inline" href="{{ route('videoconferencia') }}" title="Iniciar teleconsulta"><i class="fas fa-video"></i></a>
+                            </td>
 
-                                                            <td>{{ \Carbon\Carbon::createFromFormat('H:i:s', $agendamento->horario)->format('H:i') }}</td>
-                                           
-                                                            <td>
-                                                                <!-- Ícone de visualizar detalhes com margem à direita -->
-                                                                <a class="btn btn-success btn-sm d-inline mr-2" href="{{ route('agendamentos.show', $agendamento->id) }}" title="Visualizar Detalhes">
-        <i class="fas fa-eye"></i>
-    </a>
-
-                                                                <!-- Ícone de iniciar videoconferência com cor verde -->
-                                                                <a class="btn btn-primary btn-sm d-inline" href="{{ route('videoconferencia') }}"
-                                                                    title="Iniciar Videoconferência">
-                                                                    <i class="fas fa-video"></i>
-                                                                </a>
-                                                            </td>
-
-                                                        </tr>
-                                    @endforeach
+                        </tr>
+                    @endforeach
                 @endforeach
             </tbody>
         </table>

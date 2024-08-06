@@ -40,7 +40,9 @@
         </div>
         <div class="card-footer">
             <a href="{{ route('agendamentosMarcados') }}" type="button" class="btn btn-warning">Voltar</a>
+            <a href="{{ route('videoconferencia') }}" type="button" class="btn btn-primary">Iniciar Teleconsulta</a>
         </div>
+
     </div>
     <!-- /.card -->
 @stop
