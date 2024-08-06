@@ -20,6 +20,8 @@ class AgendamentosController extends Controller
     public function agendamentosMarcados()
     {
         $agendamentos = Agendamento::with('paciente', 'disponibilidades.medico')
+            ->orderBy('dia')
+            ->orderBy('horario')
             ->paginate(10); // Ajuste o número de itens por página conforme necessário
 
         return view('agendamentos.marcados', compact('agendamentos'));
@@ -74,7 +76,7 @@ class AgendamentosController extends Controller
             }
 
             //return redirect()->back()->with('success', 'Agendamento criado com sucesso!');
-            return redirect()->route('agendamentosMarcados')->with('success', 'Agendamento criado com sucesso!');
+              return redirect()->route('agendamentosMarcados')->with('success', 'Agendamento criado com sucesso!');
         } catch (\Exception $e) {
             \Log::error('Erro ao criar agendamento: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Erro ao criar o agendamento.');

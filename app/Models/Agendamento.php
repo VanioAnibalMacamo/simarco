@@ -16,7 +16,7 @@ class Agendamento extends Model
 
     protected $casts = [
         'dia' => 'datetime',
-        // 'horario' => 'time', 
+        'horario' => 'string',
     ];
 
     public function paciente()
