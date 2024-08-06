@@ -79,7 +79,7 @@ class PrescricaoController extends Controller
         $request->validate([
             'data_prescricao' => 'required|date',
             'observacoes' => 'nullable|string',
-            'consulta_id' => 'required|exists:consultas,id',
+            //'consulta_id' => 'required|exists:consultas,id',
             'medicamentos' => 'required|array',
             'dosagens' => 'required|array',
         ]);
@@ -93,7 +93,7 @@ class PrescricaoController extends Controller
         $prescricao->update([
             'data_prescricao' => $request->input('data_prescricao'),
             'observacoes' => $request->input('observacoes'),
-            'consulta_id' => $request->input('consulta_id'),
+           // 'consulta_id' => $request->input('consulta_id'),
         ]);
 
         // Sincronize os medicamentos e dosagens na tabela pivot
