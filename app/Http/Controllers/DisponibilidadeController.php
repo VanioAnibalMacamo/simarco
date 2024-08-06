@@ -19,8 +19,18 @@ class DisponibilidadeController extends Controller
     public function create($medico_id)
     {
         $medico = Medico::find($medico_id);
-        return view('parametrizacao.medico.disponibilidade.create', compact('medico_id', 'medico'));
+
+        $diasSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
+
+        // Dias da semana já associados ao médico
+        $diasIndisponiveis = $medico->disponibilidades()->pluck('dia_semana')->toArray();
+
+        // Dias da semana ainda disponíveis
+        $diasDisponiveis = array_diff($diasSemana, $diasIndisponiveis);
+
+        return view('parametrizacao.medico.disponibilidade.create', compact('medico_id', 'medico', 'diasDisponiveis'));
     }
+
 
     public function store(Request $request): RedirectResponse
     {
