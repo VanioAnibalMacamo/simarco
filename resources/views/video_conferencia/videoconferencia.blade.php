@@ -44,9 +44,15 @@
                 const api = new JitsiMeetExternalAPI(domain, options);
             </script>
         </div>
+        <div class="card-footer">
+            <a href="{{ url()->previous() }}" class="btn btn-warning">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </a>
+        </div>
     </div>
 
 @stop
+
 
 @section('css')
     <link rel="stylesheet" href="/css/admin_custom.css">
