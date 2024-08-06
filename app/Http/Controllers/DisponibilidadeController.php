@@ -54,31 +54,52 @@ class DisponibilidadeController extends Controller
 
     public function edit($id)
     {
+        // Encontrar a disponibilidade pelo ID
         $disponibilidade = Disponibilidade::findOrFail($id);
-        return view('parametrizacao.medico.disponibilidade.edit', compact('disponibilidade'));
+        
+        // Encontrar o médico associado a esta disponibilidade
+        $medico = Medico::findOrFail($disponibilidade->medico_id);
+    
+        // Retornar a view com as variáveis necessárias
+        return view('parametrizacao.medico.disponibilidade.edit', compact('disponibilidade', 'medico'));
     }
+    
 
     public function update(Request $request, $id): RedirectResponse
     {
         $request->validate([
             'dia_semana' => 'required',
         ]);
-
+    
+        // Encontre a disponibilidade pelo ID
         $disponibilidade = Disponibilidade::findOrFail($id);
+    
+        // Atualize a disponibilidade
         $disponibilidade->update($request->only('dia_semana'));
-
-        return redirect()->route('disponibilidade.index')
+    
+        // Redirecione para a rota `disponibilidadeIndex`
+        return redirect()->route('disponibilidadeIndex')
             ->with('success', 'Disponibilidade atualizada com sucesso.');
     }
+    
+    
 
     public function destroy($id): RedirectResponse
     {
+        // Encontrar a disponibilidade que será excluída
         $disponibilidade = Disponibilidade::findOrFail($id);
+        
+        // Obter o ID do médico associado à disponibilidade
+        $medicoId = $disponibilidade->medico_id;
+    
+        // Excluir a disponibilidade
         $disponibilidade->delete();
-
-        return redirect()->route('disponibilidade.index')
+    
+        // Redirecionar para a rota `visualizar_disponibilidades` com o ID do médico
+        return redirect()->route('visualizar_disponibilidades', ['id' => $medicoId])
             ->with('successDelete', 'Disponibilidade excluída com sucesso.');
     }
+    
 
     public function visualizarDisponibilidades($id)
     {

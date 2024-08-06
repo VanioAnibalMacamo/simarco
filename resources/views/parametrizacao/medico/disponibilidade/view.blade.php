@@ -37,7 +37,10 @@
                         <div class="col-md-3 mb-3">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Dia da Semana: {{ $disponibilidade->dia_semana }}</h5>
+                                <h5 class="card-title">Dia da Semana: <strong>{{ $disponibilidade->dia_semana }}</strong></h5>
+
+                                    <br>
+                                    <br>
                                     <div class="mt-3">
                                         <a href="{{ route('disponibilidade.edit', ['id' => $disponibilidade->id]) }}" class="btn btn-primary btn-sm">
                                             <i class="fas fa-edit"></i> Editar
