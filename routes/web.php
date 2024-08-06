@@ -132,7 +132,6 @@ Route::put('/update_prescricao/{id}', [PrescricaoController::class, 'update'])->
 Route::get('/visualizar_prescricao/{id}', [PrescricaoController::class, 'show']);
 Route::delete('/prescricao/{id}', [PrescricaoController::class, 'delete'])->name('prescricoes.delete');
 
-
 Route::get('/sintomasIndex', [SintomaController::class, 'index'])->name('sintoma.index');
 Route::get('/sintomaCreate', [SintomaController::class, 'create'])->name('sintoma.create');
 Route::post('/sintoma/store', [SintomaController::class, 'store'])->name('sintoma.store');
@@ -151,12 +150,10 @@ Route::delete('/gravidade/{id}', [GravidadeController::class, 'destroy'])->name(
 
 Route::get('/pacienteTipoConsulta', [PaginasController::class, 'pacienteTipoConsulta'])->name('pacienteTipoConsulta');
 
-
 Route::get('/medico/especialidades', [MedicoController::class, 'especialidades'])->name('medico.especialidades');
 Route::get('/medico/medicos/{idEspecialidade}', [MedicoController::class, 'medicos'])->name('medico.medicos');
 
 Route::get('/medicos/{id}/disponibilidade', [MedicoController::class, 'showDisponibilidade'])->name('medicos.disponibilidade');
-
 
 Route::get('/disponibilidadeIndex', [DisponibilidadeController::class, 'index'])->name('disponibilidadeIndex');
 Route::get('disponibilidadeCreate/{medico_id}', [DisponibilidadeController::class, 'create'])->name('disponibilidade.create');
@@ -173,6 +170,5 @@ Route::get('/agendamentosMarcados', [AgendamentosController::class, 'agendamento
 Route::get('/videoconferencia', [VideoConferenciaController::class, 'index'])->name('videoconferencia');
 
 Route::get('/horarios/{disponibilidade}', [HorariosController::class, 'index'])->name('horarios.index');
-
 
 Route::get('/visualizar_agendamento/{id}', [AgendamentosController::class, 'show'])->name('agendamentos.show');
