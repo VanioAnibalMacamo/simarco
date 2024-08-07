@@ -18,6 +18,8 @@ class Consulta extends Model
         'paciente_id',
         'forma_pagamento',
         'agendamento_id',
+        'empresa',
+        'codigo_funcionario'
     ];
 
     protected $casts = [
@@ -75,5 +77,17 @@ class Consulta extends Model
     public function agendamento()
     {
         return $this->belongsTo(Agendamento::class, 'agendamento_id');
+    }
+
+    // Método para definir o valor de forma_pagamento
+    public function setFormaPagamentoAttribute($value)
+    {
+        $this->attributes['forma_pagamento'] = FormaPagamentoEnum::from($value)->value;
+    }
+
+    // Método para obter o valor de forma_pagamento
+    public function getFormaPagamentoAttribute($value)
+    {
+        return FormaPagamentoEnum::from($value);
     }
 }

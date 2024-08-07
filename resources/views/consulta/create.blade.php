@@ -11,15 +11,14 @@
         <div class="card-header">
             <h3 class="card-title">Dados da Consulta</h3>
         </div>
-        <form  id="consultaForm"  action="{{ url('saveConsulta') }}" method="POST" enctype="multipart/form-data">
+        <form id="consultaForm" action="{{ url('saveConsulta') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
 
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="id_medico">Médico Responsável</label>
-                        <select class="form-control" id="id_medico" name="id_medico"
-                            {{ old('id_medico', $medico_id) ? 'disabled' : '' }}>
+                        <select class="form-control" id="id_medico" name="id_medico" {{ old('id_medico', $medico_id) ? 'disabled' : '' }}>
                             <option value="">Selecione um médico</option>
                             @foreach ($medicos as $medico)
                                 <option value="{{ $medico->id }}" {{ $medico->id == old('id_medico', $medico_id) ? 'selected' : '' }}>
@@ -32,8 +31,7 @@
 
                     <div class="form-group col-md-6">
                         <label for="id_paciente">Paciente</label>
-                        <select class="form-control" id="id_paciente" name="id_paciente"
-                            {{ old('id_paciente', $paciente_id) ? 'disabled' : '' }}>
+                        <select class="form-control" id="id_paciente" name="id_paciente" {{ old('id_paciente', $paciente_id) ? 'disabled' : '' }}>
                             <option value="">Selecione um paciente</option>
                             @foreach ($pacientes as $paciente)
                                 <option value="{{ $paciente->id }}" {{ $paciente->id == old('id_paciente', $paciente_id) ? 'selected' : '' }}>
@@ -48,27 +46,21 @@
                 <div class="row">
                     <div class="form-group col-md-4">
                         <label for="data_consulta">Data da Consulta</label>
-                        <input type="text" class="form-control" id="data_consulta" name="data_consulta"
-                            value="{{ old('data_consulta', $data_consulta) }}"
-                            {{ old('data_consulta', $data_consulta) ? 'readonly' : '' }}>
+                        <input type="text" class="form-control" id="data_consulta" name="data_consulta" value="{{ old('data_consulta', $data_consulta) }}" {{ old('data_consulta', $data_consulta) ? 'readonly' : '' }}>
                         @if (old('data_consulta', $data_consulta))
                             <input type="hidden" name="data_consulta" value="{{ old('data_consulta', $data_consulta) }}">
                         @endif
                     </div>
                     <div class="form-group col-md-4">
                         <label for="hora_inicio">Hora de Início</label>
-                        <input type="time" class="form-control" id="hora_inicio" name="hora_inicio"
-                            value="{{ old('hora_inicio', $hora_inicio) }}"
-                            {{ old('hora_inicio', $hora_inicio) ? 'readonly' : '' }}>
+                        <input type="time" class="form-control" id="hora_inicio" name="hora_inicio" value="{{ old('hora_inicio', $hora_inicio) }}" {{ old('hora_inicio', $hora_inicio) ? 'readonly' : '' }}>
                         @if (old('hora_inicio', $hora_inicio))
                             <input type="hidden" name="hora_inicio" value="{{ old('hora_inicio', $hora_inicio) }}">
                         @endif
                     </div>
                     <div class="form-group col-md-4">
                         <label for="hora_fim">Hora de Fim</label>
-                        <input type="time" class="form-control" id="hora_fim" name="hora_fim"
-                            value="{{ old('hora_fim', $hora_fim) }}"
-                            {{ old('hora_fim', $hora_fim) ? 'readonly' : '' }}>
+                        <input type="time" class="form-control" id="hora_fim" name="hora_fim" value="{{ old('hora_fim', $hora_fim) }}" {{ old('hora_fim', $hora_fim) ? 'readonly' : '' }}>
                         @if (old('hora_fim', $hora_fim))
                             <input type="hidden" name="hora_fim" value="{{ old('hora_fim', $hora_fim) }}">
                         @endif
@@ -87,13 +79,15 @@
                         <label for="formaPagamento">Forma de Pagamento</label>
                         <select class="form-control" id="formaPagamento" name="formaPagamento">
                             <option value="">Selecione a Forma de Pagamento</option>
-                            @foreach ($formasPagamento as $formaPagamento)
+                            @foreach(\App\Enums\FormaPagamentoEnum::getValues() as $formaPagamento)
                                 <option value="{{ $formaPagamento }}" {{ old('formaPagamento') == $formaPagamento ? 'selected' : '' }}>
-                                    {{ ucfirst($formaPagamento) }}
+                                    {{ $formaPagamento }}
                                 </option>
                             @endforeach
                         </select>
+
                     </div>
+
                     <div class="form-group col-md-4">
                         <label for="empresa">Empresa</label>
                         <input type="text" class="form-control" id="empresa" name="empresa" placeholder="Digite o nome da empresa" value="{{ old('empresa') }}">
@@ -103,7 +97,7 @@
                         <input type="text" class="form-control" id="codigoFuncionario" name="codigoFuncionario" placeholder="Digite o código do funcionário" value="{{ old('codigoFuncionario') }}">
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="form-group col-md-12">
                         <label for="cartaoSeguro">Cartão de Seguro de Saúde</label>
@@ -164,6 +158,13 @@
                 document.getElementById('hidden_hora_fim').value = horaFim;
                 document.getElementById('hidden_id_paciente').value = pacienteId;
                 document.getElementById('hidden_id_medico').value = medicoId;
+
+                // Desabilitar os campos
+                document.getElementById('data_consulta').disabled = true;
+                document.getElementById('hora_inicio').disabled = true;
+                document.getElementById('hora_fim').disabled = true;
+                document.getElementById('id_paciente').disabled = true;
+                document.getElementById('id_medico').disabled = true;
             }
         });
     </script>
