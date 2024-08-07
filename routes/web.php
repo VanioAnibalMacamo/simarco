@@ -19,6 +19,7 @@ use App\Http\Controllers\PaginasController;
 use App\Http\Controllers\DisponibilidadeController;
 use App\Http\Controllers\AgendamentosController;
 use App\Http\Controllers\VideoConferenciaController;
+use App\Http\Controllers\EmpresaController;
 
 
 /*
@@ -174,3 +175,5 @@ Route::get('/videoconferencia/{id}', [VideoConferenciaController::class, 'videoc
 Route::get('/horarios/{disponibilidade}', [HorariosController::class, 'index'])->name('horarios.index');
 
 Route::get('/visualizar_agendamento/{id}', [AgendamentosController::class, 'show'])->name('agendamentos.show');
+
+Route::resource('empresas', EmpresaController::class);

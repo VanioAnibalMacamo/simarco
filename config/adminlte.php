@@ -349,6 +349,8 @@ return [
             'icon' => 'fas fa-fw fa-user-md',
         ],
 
+
+
 /*
         [
             'text' => ' Consultas',
@@ -408,6 +410,12 @@ return [
                         // submenu de Médicos
                     ],
                 ],
+                [
+                    'text' => 'Empresas',
+                    'url'  => 'empresas',
+                    'icon' => 'fas fa-fw fa-building', // Ícone de empresa
+                ],
+
 
                 [
                     'text'    => 'Consultas',
