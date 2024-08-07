@@ -20,7 +20,8 @@ class Consulta extends Model
         'forma_pagamento',
         'agendamento_id',
         'empresa',
-        'codigo_funcionario'
+        'codigo_funcionario',
+        'cartao_seguro_saude',
     ];
 
     protected $casts = [
