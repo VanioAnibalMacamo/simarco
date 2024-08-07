@@ -332,9 +332,11 @@ return [
         ],
         */
         [
-            'text' => 'Consultas Agendadas',
+            //'text' => 'Consultas Agendadas',
+            'text' => ' Consultas',
             'url'  => 'agendamentosMarcados',
-            'icon' => 'fas fa-calendar-alt',
+           // 'icon' => 'fas fa-calendar-alt',
+           'icon' => 'fas fa-fw fa-stethoscope',
         ],
         [
             'text' => 'Pacientes',
@@ -347,13 +349,13 @@ return [
             'icon' => 'fas fa-fw fa-user-md',
         ],
 
-
+/*
         [
             'text' => ' Consultas',
             'url'  => 'consultaIndex',
             'icon' => 'fas fa-fw fa-stethoscope',
         ],
-
+*/
         [
             'text' => 'Medicamentos',
             'url'  => 'medicamentoIndex',
