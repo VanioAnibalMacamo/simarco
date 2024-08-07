@@ -13,6 +13,7 @@
 @stop
 
 @section('content')
+
 <div class="d-flex flex-row-reverse align-items-end mb-3">
     <a href="{{ route('medico.especialidades') }}" class="btn btn-primary">
         <i class="fas fa-plus"></i> Agendar
@@ -29,36 +30,49 @@
                     <th>Médico</th>
                     <th>Especialidade</th>
                     <th>Data</th>
+                    <th>Estado</th>
 
                 </tr>
             </thead>
             <tbody>
                 @php
-                    $count = 0;
-                @endphp
+                $count = 0;
+            @endphp
 
-                @foreach($agendamentos as $agendamento)
-                    @foreach($agendamento->disponibilidades as $disponibilidade)
-                         @php
-                            $count++;
-                        @endphp
-                        <tr>
-                            <td>{{ $count }}</td>
-                            <td>{{ $agendamento->paciente->nome }}</td>
-                            <td>{{ $disponibilidade->medico->nome }}</td>
-                            <td>{{ $disponibilidade->medico->especialidade->descricao ?? 'Não definida' }}</td>
-                            <td>
-                                {{ \Carbon\Carbon::parse($agendamento->dia)->format('d/m/Y') }}
-                                {{ \Carbon\Carbon::createFromFormat('H:i:s', $agendamento->horario)->format('H:i') }}
-                            </td>
-                            <td>
-                                <a class="btn btn-success btn-sm d-inline mr-2" href="{{ route('agendamentos.show', $agendamento->id) }}" title="Visualizar Detalhes"><i class="fas fa-eye"></i></a>
+            @foreach($agendamentos as $agendamento)
+                @foreach($agendamento->disponibilidades as $disponibilidade)
+                    @php
+                        $count++;
+                        // Verifique se a consulta está associada e se foi realizada
+                        $consultaRealizada = $agendamento->consulta && $agendamento->consulta->exists;
+                        $estado = $consultaRealizada ? 'Realizada' : 'Agendada';
+                        $estadoClass = $estado === 'Realizada' ? 'bg-success' : 'bg-warning';
+                    @endphp
+                    <tr>
+                        <td>{{ $count }}</td>
+                        <td>{{ $agendamento->paciente->nome }}</td>
+                        <td>{{ $disponibilidade->medico->nome }}</td>
+                        <td>{{ $disponibilidade->medico->especialidade->descricao ?? 'Não definida' }}</td>
+                        <td>
+                            {{ \Carbon\Carbon::parse($agendamento->dia)->format('d/m/Y') }}
+                            {{ \Carbon\Carbon::parse($agendamento->horario)->format('H:i') }}
+                        </td>
+                        <td>
+                            <!-- Estado da consulta -->
+                            <span class="badge {{ $estadoClass }}">{{ $estado }}</span>
+                        </td>
+                        <td>
+                            <a class="btn btn-success btn-sm d-inline mr-2" href="{{ route('agendamentos.show', $agendamento->id) }}" title="Visualizar Detalhes"><i class="fas fa-eye"></i></a>
+                            @if (!$consultaRealizada)
                                 <a class="btn btn-primary btn-sm d-inline" href="{{ route('videoconferencia', $agendamento->id) }}" title="Iniciar teleconsulta"><i class="fas fa-video"></i></a>
-                            </td>
-
-                        </tr>
-                    @endforeach
+                            @endif
+                        </td>
+                    </tr>
                 @endforeach
+            @endforeach
+
+
+
             </tbody>
         </table>
 
@@ -75,6 +89,9 @@
 
 @section('css')
 <link rel="stylesheet" href="/css/admin_custom.css">
+
+
+
 @stop
 
 @section('js')

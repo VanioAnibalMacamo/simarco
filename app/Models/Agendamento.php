@@ -33,6 +33,6 @@ class Agendamento extends Model
 
     public function consulta()
     {
-        return $this->hasOne(Consulta::class, 'consulta_id');
+        return $this->hasOne(Consulta::class, 'agendamento_id');
     }
 }

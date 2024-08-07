@@ -82,10 +82,29 @@ class AgendamentosController extends Controller
             return redirect()->back()->with('error', 'Erro ao criar o agendamento.');
         }
     }
+
     public function show($id)
     {
-        $agendamento = Agendamento::with(['paciente', 'disponibilidades.medico.especialidade'])->findOrFail($id);
-        return view('agendamentos.view', compact('agendamento'));
+        // Carrega o agendamento com paciente, disponibilidades, médico, especialidade e consulta relacionada
+        $agendamento = Agendamento::with([
+            'paciente',
+            'disponibilidades.medico.especialidade',
+            'consulta.statusConsulta',
+            'consulta.medico',
+            'consulta.paciente',
+            'consulta.diagnostico',
+            'consulta.prescricao'
+        ])->findOrFail($id);
+
+        // Passa o agendamento e a consulta com todos os relacionamentos carregados para a view
+        return view('agendamentos.view', [
+            'agendamento' => $agendamento,
+            'consulta' => $agendamento->consulta, // Passa a consulta para a view
+            'diagnostico' => $agendamento->consulta ? $agendamento->consulta->diagnostico : null,
+            'prescricao' => $agendamento->consulta ? $agendamento->consulta->prescricao : null,
+        ]);
     }
+
+
 
 }
