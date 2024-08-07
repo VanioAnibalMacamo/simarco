@@ -57,10 +57,16 @@
             
             <hr>
             <div class="row">
-    <div class="form-group col-md-6">
-        <label for="empresa">Empresa</label>
-        <input type="text" class="form-control" id="empresa" name="empresa" placeholder="Digite o nome da empresa" value="{{ old('empresa') }}">
-    </div>
+            <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="empresa_id">Empresa</label>
+                        <select class="form-control" id="empresa_id" name="empresa_id">
+                            <option value="">Selecione uma Empresa</option>
+                            @foreach ($empresas as $empresa)
+                                <option value="{{ $empresa->id }}">{{ $empresa->nome }}</option>
+                            @endforeach
+                        </select>
+                    </div>
     <div class="form-group col-md-6">
         <label for="codigoFuncionario">Código do Funcionário</label>
         <input type="text" class="form-control" id="codigoFuncionario" name="codigoFuncionario" placeholder="Digite o código do funcionário" value="{{ old('codigoFuncionario') }}">

@@ -18,4 +18,8 @@ class Empresa extends Model
         'contacto2',
         'localizacao'
     ];
+    public function pacientes()
+    {
+        return $this->hasMany(Paciente::class);
+    }
 }

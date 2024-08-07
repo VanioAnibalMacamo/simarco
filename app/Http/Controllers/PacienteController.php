@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Empresa;
 use Illuminate\Http\Request;
 use App\Models\Paciente;
 use App\Enums\GeneroEnum;
@@ -17,9 +18,13 @@ class PacienteController extends Controller
     
     public function create()
     {
-        $generos = GeneroEnum::getConstants();
-        return view('paciente.create', compact('generos')); 
+        $empresas = Empresa::all(); // Obtém todas as empresas cadastradas
+        $generos = GeneroEnum::getConstants(); // Obtém os gêneros
+    
+        // Passa as empresas e gêneros para a view
+        return view('paciente.create', compact('empresas', 'generos')); 
     }
+    
 
     public function savePaciente(Request $request)
     {
@@ -32,7 +37,7 @@ class PacienteController extends Controller
             'endereco' => 'required|string|max:255',
             'telefone' => 'required|string|max:20',
             'email' => 'required|email|max:255',
-            'empresa' => 'nullable|string',
+            'empresa_id' => 'nullable|exists:empresas,id', 
             'codigoFuncionario' => 'nullable|string',
             'cartao_seguro_saude' => 'nullable|file|mimes:pdf,jpg,jpeg,png' // Validação para o arquivo
         ]);
@@ -46,7 +51,7 @@ class PacienteController extends Controller
             'endereco' => $request->input('endereco'),
             'telefone' => $request->input('telefone'),
             'email' => $request->input('email'),
-            'empresa' => $request->input('empresa'),
+            'empresa_id' => $request->input('empresa_id'), 
             'codigo_funcionario' => $request->input('codigoFuncionario'),
             'agendamento_id' => $request->input('agendamento_id')
         ]);

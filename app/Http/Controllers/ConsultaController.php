@@ -80,7 +80,7 @@ class ConsultaController extends Controller
     public function saveConsulta(Request $request)
     {
         $validPaymentOptions = FormaPagamentoEnum::getValues();
-
+    
         $request->validate([
             'data_consulta' => 'required|date_format:d/m/Y',
             'hora_inicio' => 'required|date_format:H:i',
@@ -90,29 +90,33 @@ class ConsultaController extends Controller
             'id_paciente' => 'required|exists:pacientes,id',
             'agendamento_id' => 'required|exists:agendamentos,id',
             'formaPagamento' => 'nullable|in:' . implode(',', $validPaymentOptions),
-           
         ]);
-
-       // Verifica a forma de pagamento
-    $formaPagamento = $request->input('formaPagamento');
-    $paciente = Paciente::find($request->input('id_paciente'));
-
-    if ($formaPagamento == 'Via Seguro de Saude') {
-        // Verifica se o paciente já possui um cartão de seguro de saúde registrado
-        if (!$paciente->cartao_seguro_saude) {
-            // Se o paciente não tiver um cartão registrado, exige o upload
-            if (!$request->hasFile('cartao_seguro_saude')) {
-                return back()->with(['error' => 'O Paciente nao fez upload do cartao seguro saude e é obrigatório para "Via Seguro de Saude".'])->withInput();
+    
+        $formaPagamento = $request->input('formaPagamento');
+        $paciente = Paciente::find($request->input('id_paciente'));
+    
+        // Verifica a forma de pagamento
+        if ($formaPagamento == 'Via Seguro de Saude') {
+            // Verifica se o paciente já possui um cartão de seguro de saúde registrado
+            if (!$paciente->cartao_seguro_saude) {
+                // Se o paciente não tiver um cartão registrado, exige o upload
+                if (!$request->hasFile('cartao_seguro_saude')) {
+                    return back()->with(['error' => 'O Paciente nao fez upload do cartao seguro saude e é obrigatório para "Via Seguro de Saude".'])->withInput();
+                }
+            }
+        } elseif ($formaPagamento == 'Via Empresa') {
+            // Verifica se o paciente tem uma empresa cadastrada
+            if (!$paciente->empresa) {
+                return back()->with(['error' => 'O Paciente nao possui uma empresa cadastrada e é obrigatório para "Via Empresa".'])->withInput();
             }
         }
-    }
-
+    
         try {
             // Formata os dados
             $data_consulta = Carbon::createFromFormat('d/m/Y', $request->input('data_consulta'))->format('Y-m-d');
             $hora_inicio = Carbon::createFromFormat('H:i', $request->input('hora_inicio'))->format('H:i:s');
             $hora_fim = Carbon::createFromFormat('H:i', $request->input('hora_fim'))->format('H:i:s');
-
+    
             // Cria a consulta
             $consulta = Consulta::create([
                 'data_consulta' => $data_consulta,
@@ -122,26 +126,41 @@ class ConsultaController extends Controller
                 'medico_id' => $request->input('id_medico'),
                 'paciente_id' => $request->input('id_paciente'),
                 'forma_pagamento' => FormaPagamentoEnum::from($request->input('formaPagamento'))->value,
-               
             ]);
-            
-
+    
             // Atualiza o agendamento
             $agendamento = Agendamento::find($request->input('agendamento_id'));
             $agendamento->update([
                 'consulta_id' => $consulta->id
             ]);
-
+    
+            // Verifica se é necessário fazer upload de um cartão de seguro de saúde
+            if ($request->hasFile('cartao_seguro_saude')) {
+                $pathPrincipal = storage_path('app/public/consultas/cartao_saude');
+                $originalFileName = $request->file('cartao_seguro_saude')->getClientOriginalName();
+                $nomePaciente = $paciente->nome;
+                $dataConsulta = $request->input('data_consulta');
+                $horaInicio = $request->input('hora_inicio');
+                $horaFim = $request->input('hora_fim');
+                $nomeArquivo = "{$nomePaciente}_{$dataConsulta}_{$horaInicio}_{$horaFim}_{$originalFileName}";
+    
+                $request->file('cartao_seguro_saude')->storeAs('public/consultas/cartao_saude', $nomeArquivo);
+    
+                // Atualiza o nome do arquivo na consulta
+                $consulta->update(['cartao_seguro_saude' => $nomeArquivo]);
+            }
+    
             return redirect('/agendamentosMarcados')->with('success', 'Consulta salva com sucesso!');
         } catch (\Exception $e) {
             \Log::error('Erro ao salvar a consulta.', [
                 'error_message' => $e->getMessage(),
                 'error_trace' => $e->getTraceAsString(),
             ]);
-
+    
             return redirect('/agendamentosMarcados')->with('error', 'Erro ao salvar a consulta. Por favor, verifique os dados e tente novamente.');
         }
     }
+    
 
     public function delete($id)
     {
