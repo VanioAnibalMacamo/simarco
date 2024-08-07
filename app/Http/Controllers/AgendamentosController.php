@@ -97,7 +97,6 @@ class AgendamentosController extends Controller
         $agendamento = Agendamento::with([
             'paciente',
             'disponibilidades.medico.especialidade',
-            'consulta.statusConsulta',
             'consulta.medico',
             'consulta.paciente',
             'consulta.diagnostico',
