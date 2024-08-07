@@ -1,70 +1,101 @@
-@extends('layouts.app')
+@extends('adminlte::page')
+
+@section('title', 'Cadastrar Empresa')
+
+@section('content_header')
+    <h1>Cadastrar Nova Empresa</h1>
+@stop
 
 @section('content')
-    <div class="container">
-        <h1>Criar Nova Empresa</h1>
-
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <strong>Erro!</strong> Existem alguns problemas com os dados inseridos.<br><br>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
+    <!-- General form elements -->
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Dados da Empresa</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- Form start -->
         <form action="{{ route('empresas.store') }}" method="POST">
             @csrf
 
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>Nome:</strong>
-                        <input type="text" name="nome" class="form-control" placeholder="Nome">
+            <div class="card-body">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <strong>Erro!</strong> Existem alguns problemas com os dados inseridos.<br><br>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nome">Nome</label>
+                            <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="sigla">Sigla</label>
+                            <input type="text" class="form-control" id="sigla" name="sigla" placeholder="Sigla">
+                        </div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>Sigla:</strong>
-                        <input type="text" name="sigla" class="form-control" placeholder="Sigla">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nuit">NUIT</label>
+                            <input type="text" class="form-control" id="nuit" name="nuit" placeholder="NUIT">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                        </div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>NUIT:</strong>
-                        <input type="text" name="nuit" class="form-control" placeholder="NUIT">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="contacto1">Contacto 1</label>
+                            <input type="text" class="form-control" id="contacto1" name="contacto1" placeholder="Contacto 1">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="contacto2">Contacto 2</label>
+                            <input type="text" class="form-control" id="contacto2" name="contacto2" placeholder="Contacto 2">
+                        </div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>Email:</strong>
-                        <input type="email" name="email" class="form-control" placeholder="Email">
-                    </div>
+
+                <div class="form-group">
+                    <label for="localizacao">Localização</label>
+                    <input type="text" class="form-control" id="localizacao" name="localizacao" placeholder="Localização">
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>Contacto 1:</strong>
-                        <input type="text" name="contacto1" class="form-control" placeholder="Contacto 1">
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>Contacto 2:</strong>
-                        <input type="text" name="contacto2" class="form-control" placeholder="Contacto 2">
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>Localização:</strong>
-                        <input type="text" name="localizacao" class="form-control" placeholder="Localização">
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                    <button type="submit" class="btn btn-primary">Enviar</button>
-                </div>
+            </div>
+            <!-- /.card-body -->
+
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a href="{{ url('/empresas') }}" type="button" class="btn btn-warning">Cancelar</a>
             </div>
         </form>
     </div>
-@endsection
+    <!-- /.card -->
+@stop
+
+@section('css')
+    <link rel="stylesheet" href="/css/admin_custom.css">
+@stop
+
+@section('js')
+    <script>
+        console.log('Página de criação de empresa carregada!');
+    </script>
+@stop

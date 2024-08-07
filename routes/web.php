@@ -177,3 +177,4 @@ Route::get('/horarios/{disponibilidade}', [HorariosController::class, 'index'])-
 Route::get('/visualizar_agendamento/{id}', [AgendamentosController::class, 'show'])->name('agendamentos.show');
 
 Route::resource('empresas', EmpresaController::class);
+Route::get('empresasIndex', [EmpresaController::class, 'index'])->name('empresasIndex');

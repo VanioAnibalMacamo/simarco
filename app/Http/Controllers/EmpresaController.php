@@ -10,7 +10,8 @@ class EmpresaController extends Controller
 {
     public function index()
     {
-        $empresas = Empresa::all();
+        //$consultas = Consulta::with('medico', 'paciente')->paginate(8);
+        $empresas = Empresa::paginate(8);
         return view('parametrizacao.empresas.index', compact('empresas'));
     }
 
@@ -33,7 +34,7 @@ class EmpresaController extends Controller
 
         Empresa::create($request->all());
 
-        return redirect()->route('parametrizacao.empresas.index')->with('success', 'Empresa criada com sucesso.');
+        return redirect()->route('/empresasIndex')->with('success', 'Empresa criada com sucesso.');
     }
 
     public function show(Empresa $empresa)
@@ -60,13 +61,13 @@ class EmpresaController extends Controller
 
         $empresa->update($request->all());
 
-        return redirect()->route('parametrizacao.empresas.index')->with('success', 'Empresa atualizada com sucesso.');
+        return redirect()->route('/empresasIndex')->with('success', 'Empresa atualizada com sucesso.');
     }
 
     public function destroy(Empresa $empresa)
     {
         $empresa->delete();
 
-        return redirect()->route('parametrizacao.empresas.index')->with('success', 'Empresa deletada com sucesso.');
+        return redirect()->route('/empresasIndex')->with('successDelete', 'Empresa deletada com sucesso.');
     }
 }
