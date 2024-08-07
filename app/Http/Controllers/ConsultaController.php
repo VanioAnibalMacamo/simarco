@@ -79,7 +79,7 @@ class ConsultaController extends Controller
     public function saveConsulta(Request $request)
     {
         $validPaymentOptions = FormaPagamentoEnum::getValues();
-    
+
         $request->validate([
             'data_consulta' => 'required|date_format:d/m/Y',
             'hora_inicio' => 'required|date_format:H:i',
@@ -93,19 +93,19 @@ class ConsultaController extends Controller
             'codigoFuncionario' => 'nullable|string',
             'cartao_seguro_saude' => 'nullable|file|mimes:pdf,jpg,jpeg,png' // Validação para o arquivo
         ]);
-    
+
         // Verifica a forma de pagamento
         $formaPagamento = $request->input('formaPagamento');
         if ($formaPagamento == 'Via Seguro de Saude' && !$request->hasFile('cartao_seguro_saude')) {
-            return back()->withErrors(['cartao_seguro_saude' => 'O upload do documento é obrigatório para "Via Seguro de Saude".']);
+            return back()->with(['error' => 'O upload do documento é obrigatório para "Via Seguro de Saude".'])->withInput();
         }
-    
+
         try {
             // Formata os dados
             $data_consulta = Carbon::createFromFormat('d/m/Y', $request->input('data_consulta'))->format('Y-m-d');
             $hora_inicio = Carbon::createFromFormat('H:i', $request->input('hora_inicio'))->format('H:i:s');
             $hora_fim = Carbon::createFromFormat('H:i', $request->input('hora_fim'))->format('H:i:s');
-    
+
             // Cria a consulta
             $consulta = Consulta::create([
                 'data_consulta' => $data_consulta,
@@ -119,21 +119,21 @@ class ConsultaController extends Controller
                 'codigo_funcionario' => $request->input('codigoFuncionario'),
                 'agendamento_id' => $request->input('agendamento_id')
             ]);
-    
+
             // Verifica e cria as pastas necessárias
             $pastaPrincipal = 'consultas';
             $pastaCartaoSaude = 'cartao_saude';
             $pathPrincipal = storage_path("app/public/{$pastaPrincipal}");
             $pathCartaoSaude = "{$pathPrincipal}/{$pastaCartaoSaude}";
-    
+
             if (!File::exists($pathPrincipal)) {
                 File::makeDirectory($pathPrincipal, 0755, true);
             }
-    
+
             if (!File::exists($pathCartaoSaude)) {
                 File::makeDirectory($pathCartaoSaude, 0755, true);
             }
-    
+
             // Faz o upload do arquivo se ele existir
             if ($request->hasFile('cartao_seguro_saude')) {
                 $paciente = Paciente::find($request->input('id_paciente'));
@@ -144,39 +144,39 @@ class ConsultaController extends Controller
                 $originalFile = $request->file('cartao_seguro_saude');
                 $originalFileName = pathinfo($originalFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $extensao = $originalFile->getClientOriginalExtension();
-    
+
                 // Limpa caracteres indesejados do nome do arquivo
                 $nomePaciente = preg_replace('/[^a-zA-Z0-9_\- ]/', '_', $nomePaciente); // Remove caracteres especiais
                 $dataConsulta = preg_replace('/[^a-zA-Z0-9_\- ]/', '_', $dataConsulta);
                 $horaInicio = preg_replace('/[^a-zA-Z0-9_\- ]/', '_', $horaInicio);
                 $horaFim = preg_replace('/[^a-zA-Z0-9_\- ]/', '_', $horaFim);
-    
+
                 $nomeArquivo = "{$nomePaciente}_{$dataConsulta}_{$horaInicio}_{$horaFim}_{$originalFileName}.{$extensao}";
-    
+
                 // Armazena o arquivo com o novo nome
                 $originalFile->storeAs("public/{$pastaPrincipal}/{$pastaCartaoSaude}", $nomeArquivo);
-    
+
                 // Atualiza o nome do arquivo na consulta
                 $consulta->update(['cartao_seguro_saude' => $nomeArquivo]);
             }
-    
+
             // Atualiza o agendamento
             $agendamento = Agendamento::find($request->input('agendamento_id'));
             $agendamento->update([
                 'consulta_id' => $consulta->id
             ]);
-    
+
             return redirect('/consultaIndex')->with('success', 'Consulta salva com sucesso!');
         } catch (\Exception $e) {
             \Log::error('Erro ao salvar a consulta.', [
                 'error_message' => $e->getMessage(),
                 'error_trace' => $e->getTraceAsString(),
             ]);
-    
+
             return redirect('/consultaIndex')->with('error', 'Erro ao salvar a consulta. Por favor, verifique os dados e tente novamente.');
         }
     }
-       
+
     public function delete($id)
     {
         $consulta = Consulta::findOrFail($id);

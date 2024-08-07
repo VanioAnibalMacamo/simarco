@@ -3,6 +3,15 @@
 @section('title', 'Cadastrar Consulta')
 
 @section('content_header')
+     @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+    @if (session('successDelete'))
+        <div class="alert alert-danger">{{ session('successDelete') }}</div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
     <h1>Cadastrar Consulta</h1>
 @stop
 
@@ -167,5 +176,11 @@
                 document.getElementById('id_medico').disabled = true;
             }
         });
+    </script>
+
+    <script>
+        setTimeout(function() {
+            document.querySelector('.alert').remove();
+        }, 5000);
     </script>
 @stop
