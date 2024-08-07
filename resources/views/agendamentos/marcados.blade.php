@@ -43,10 +43,9 @@
                     @foreach($agendamento->disponibilidades as $disponibilidade)
                         @php
                             $count++;
-                            // Verifique se a consulta está associada e se foi realizada
-                            $consultaRealizada = $agendamento->consulta && $agendamento->consulta->exists;
-                            $prescricao = $agendamento->consulta ? $agendamento->consulta->prescricao : null;
-                            $diagnostico = $agendamento->consulta ? $agendamento->consulta->diagnostico : null;
+                            $consulta = $agendamento->consulta;
+                            $prescricao = $consulta ? $consulta->prescricao : null;
+                            $diagnostico = $consulta ? $consulta->diagnostico : null;
 
                             if ($prescricao) {
                                 $estado = 'Prescrita';
@@ -54,7 +53,7 @@
                             } elseif ($diagnostico) {
                                 $estado = 'Diagnosticada';
                                 $estadoClass = 'bg-primary'; // Cor para Diagnosticada
-                            } elseif ($consultaRealizada) {
+                            } elseif ($consulta) {
                                 $estado = 'Realizada';
                                 $estadoClass = 'bg-success'; // Cor para Realizada
                             } else {
@@ -75,10 +74,25 @@
                                 <!-- Estado da consulta -->
                                 <span class="badge {{ $estadoClass }}">{{ $estado }}</span>
                             </td>
-                            <td>
+                            <td class="actions">
                                 <a class="btn btn-success btn-sm d-inline mr-2" href="{{ route('agendamentos.show', $agendamento->id) }}" title="Visualizar Detalhes"><i class="fas fa-eye"></i></a>
-                                @if (!$consultaRealizada)
+
+                                @if ($estado === 'Agendada')
                                     <a class="btn btn-primary btn-sm d-inline" href="{{ route('videoconferencia', $agendamento->id) }}" title="Iniciar teleconsulta"><i class="fas fa-video"></i></a>
+                                @endif
+
+                                @if ($consulta)
+                                    @if ($prescricao)
+                                        @if (!$diagnostico)
+                                            <a class="btn btn-info btn-sm d-inline" href="{{ route('diagnosticoCreate', ['consultaId' => $consulta->id]) }}" title="Diagnosticar"><i class="fas fa-stethoscope"></i></a>
+                                        @endif
+                                    @else
+                                        @if ($diagnostico)
+                                            <a class="btn btn-secondary btn-sm d-inline" href="{{ route('prescricaoCreate', ['consultaId' => $consulta->id]) }}" title="Prescrever"><i class="fas fa-prescription-bottle-alt"></i></a>
+                                        @else
+                                            <a class="btn btn-info btn-sm d-inline" href="{{ route('diagnosticoCreate', ['consultaId' => $consulta->id]) }}" title="Diagnosticar"><i class="fas fa-stethoscope"></i></a>
+                                        @endif
+                                    @endif
                                 @endif
                             </td>
                         </tr>
@@ -100,6 +114,14 @@
 
 @section('css')
 <link rel="stylesheet" href="/css/admin_custom.css">
+<style>
+    .actions .btn {
+        display: none;
+    }
+    tr:hover .actions .btn {
+        display: inline-block;
+    }
+</style>
 @stop
 
 @section('js')
