@@ -49,16 +49,14 @@
                 <i class="fas fa-arrow-left"></i> Voltar
             </a>
             <a href="{{ route('consultaCreate', [
-    'paciente_id' => $agendamento->paciente->id,
-    'medico_id' => $agendamento->disponibilidades[0]->medico->id,
-    'data_consulta' => $agendamento->dia->format('d/m/Y'), // Ajuste se $agendamento->dia for uma string
-    'hora_inicio' => \Carbon\Carbon::parse($agendamento->horario)->format('H:i') // Ajuste se $agendamento->horario for uma string
-]) }}" class="btn btn-primary">
-    <i class="fas fa-calendar-check"></i> Cadastrar Consulta
-</a>
-
-
-
+                    'agendamento_id' => $agendamento->id,
+                    'paciente_id' => $agendamento->paciente->id,
+                    'medico_id' => $agendamento->disponibilidades[0]->medico->id,
+                    'data_consulta' => $agendamento->dia->format('d/m/Y'), // Ajuste se $agendamento->dia for uma string
+                    'hora_inicio' => \Carbon\Carbon::parse($agendamento->horario)->format('H:i') // Ajuste se $agendamento->horario for uma string
+                ]) }}" class="btn btn-primary">
+                    <i class="fas fa-calendar-check"></i> Cadastrar Consulta
+            </a>
         </div>
     </div>
 

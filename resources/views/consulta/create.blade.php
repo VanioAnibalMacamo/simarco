@@ -128,6 +128,8 @@
                 <input type="hidden" id="hidden_hora_fim" name="hidden_hora_fim" value="{{ old('hidden_hora_fim') }}">
                 <input type="hidden" id="hidden_id_paciente" name="hidden_id_paciente" value="{{ old('hidden_id_paciente') }}">
                 <input type="hidden" id="hidden_id_medico" name="hidden_id_medico" value="{{ old('hidden_id_medico') }}">
+                <input type="hidden" name="agendamento_id" value="{{ $agendamento_id }}">
+
             </div>
             <div class="card-footer">
                 <input type="submit" class="btn btn-primary" value='Salvar'>

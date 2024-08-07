@@ -16,12 +16,13 @@
 @stop
 
 @section('content')
-    <div class="d-flex flex-row-reverse align-items-end mb-3">
-        <a href="{{ url('consultaCreate') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Adicionar
-        </a>
-    </div>
-
+    <!--
+        <div class="d-flex flex-row-reverse align-items-end mb-3">
+            <a href="{{ url('consultaCreate') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Adicionar
+            </a>
+        </div>
+    -->
     <div class="card">
         <div class="card-body p-0">
             <table class="table table-striped">
@@ -71,16 +72,17 @@
                                     href="{{ url('update_consulta', $consulta->id) }}"><i
                                         class="fas fa-pencil-alt"></i></a>
 
-                                <form id="form-excluir-{{ $consulta->id }}"
-                                    action="{{ route('consultas.delete', ['id' => $consulta->id]) }}" method="POST"
-                                    class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm"
-                                        onclick="confirmDelete(event, '{{ $consulta->numero_identificacao }}', '{{ $consulta->paciente->nome }}', {{ $consulta->id }})"><i
-                                            class="fas fa-trash"></i></button>
-
-                                </form>
+                                        <!--
+                                            <form id="form-excluir-{{ $consulta->id }}"
+                                                action="{{ route('consultas.delete', ['id' => $consulta->id]) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="confirmDelete(event, '{{ $consulta->numero_identificacao }}', '{{ $consulta->paciente->nome }}', {{ $consulta->id }})"><i
+                                                        class="fas fa-trash"></i></button>
+                                            </form>
+                                        -->
                             </td>
                         </tr>
                     @endforeach
