@@ -97,13 +97,13 @@
                         <input type="text" class="form-control" id="codigoFuncionario" name="codigoFuncionario" placeholder="Digite o código do funcionário" value="{{ old('codigoFuncionario') }}">
                     </div>
                 </div>
-
                 <div class="row">
-                    <div class="form-group col-md-12">
-                        <label for="cartaoSeguro">Cartão de Seguro de Saúde</label>
-                        <input type="file" class="form-control-file" id="cartaoSeguro" name="cartaoSeguro">
-                    </div>
-                </div>
+    <div class="form-group col-md-12">
+        <label for="cartao_seguro_saude">Cartão de Seguro de Saúde</label>
+        <input type="file" class="form-control-file" id="cartao_seguro_saude" name="cartao_seguro_saude">
+    </div>
+</div>
+
 
                 <!-- Campos ocultos para dados desativados -->
                 <input type="hidden" id="hidden_data_consulta" name="hidden_data_consulta" value="{{ old('hidden_data_consulta') }}">
