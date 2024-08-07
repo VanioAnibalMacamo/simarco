@@ -19,13 +19,21 @@ class AgendamentosController extends Controller
 
     public function agendamentosMarcados()
     {
-        $agendamentos = Agendamento::with('paciente', 'disponibilidades.medico')
-            ->orderBy('dia')
-            ->orderBy('horario')
-            ->paginate(10); // Ajuste o número de itens por página conforme necessário
+        $agendamentos = Agendamento::with([
+            'paciente',
+            'disponibilidades.medico',
+            'consulta.diagnostico', // Carrega o diagnóstico da consulta
+            'consulta.prescricao', // Carrega a prescrição da consulta
+            'consulta.medico', // Carrega o médico da consulta
+            'consulta.paciente' // Carrega o paciente da consulta
+        ])
+        ->orderBy('dia')
+        ->orderBy('horario')
+        ->paginate(10);
 
         return view('agendamentos.marcados', compact('agendamentos'));
     }
+
 
     public function store(Request $request)
     {

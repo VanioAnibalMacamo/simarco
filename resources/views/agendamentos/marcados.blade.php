@@ -31,51 +31,62 @@
                     <th>Especialidade</th>
                     <th>Data</th>
                     <th>Estado</th>
-
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 @php
                 $count = 0;
-            @endphp
+                @endphp
 
-            @foreach($agendamentos as $agendamento)
-                @foreach($agendamento->disponibilidades as $disponibilidade)
-                    @php
-                        $count++;
-                        // Verifique se a consulta está associada e se foi realizada
-                        $consultaRealizada = $agendamento->consulta && $agendamento->consulta->exists;
-                        $estado = $consultaRealizada ? 'Realizada' : 'Agendada';
-                        $estadoClass = $estado === 'Realizada' ? 'bg-success' : 'bg-warning';
-                    @endphp
-                    <tr>
-                        <td>{{ $count }}</td>
-                        <td>{{ $agendamento->paciente->nome }}</td>
-                        <td>{{ $disponibilidade->medico->nome }}</td>
-                        <td>{{ $disponibilidade->medico->especialidade->descricao ?? 'Não definida' }}</td>
-                        <td>
-                            {{ \Carbon\Carbon::parse($agendamento->dia)->format('d/m/Y') }}
-                            {{ \Carbon\Carbon::parse($agendamento->horario)->format('H:i') }}
-                        </td>
-                        <td>
-                            <!-- Estado da consulta -->
-                            <span class="badge {{ $estadoClass }}">{{ $estado }}</span>
-                        </td>
-                        <td>
-                            <a class="btn btn-success btn-sm d-inline mr-2" href="{{ route('agendamentos.show', $agendamento->id) }}" title="Visualizar Detalhes"><i class="fas fa-eye"></i></a>
-                            @if (!$consultaRealizada)
-                                <a class="btn btn-primary btn-sm d-inline" href="{{ route('videoconferencia', $agendamento->id) }}" title="Iniciar teleconsulta"><i class="fas fa-video"></i></a>
-                            @endif
-                        </td>
-                    </tr>
+                @foreach($agendamentos as $agendamento)
+                    @foreach($agendamento->disponibilidades as $disponibilidade)
+                        @php
+                            $count++;
+                            // Verifique se a consulta está associada e se foi realizada
+                            $consultaRealizada = $agendamento->consulta && $agendamento->consulta->exists;
+                            $prescricao = $agendamento->consulta ? $agendamento->consulta->prescricao : null;
+                            $diagnostico = $agendamento->consulta ? $agendamento->consulta->diagnostico : null;
+
+                            if ($prescricao) {
+                                $estado = 'Prescrita';
+                                $estadoClass = 'bg-info'; // Cor para Prescrita
+                            } elseif ($diagnostico) {
+                                $estado = 'Diagnosticada';
+                                $estadoClass = 'bg-primary'; // Cor para Diagnosticada
+                            } elseif ($consultaRealizada) {
+                                $estado = 'Realizada';
+                                $estadoClass = 'bg-success'; // Cor para Realizada
+                            } else {
+                                $estado = 'Agendada';
+                                $estadoClass = 'bg-warning'; // Cor para Agendada
+                            }
+                        @endphp
+                        <tr>
+                            <td>{{ $count }}</td>
+                            <td>{{ $agendamento->paciente->nome }}</td>
+                            <td>{{ $disponibilidade->medico->nome }}</td>
+                            <td>{{ $disponibilidade->medico->especialidade->descricao ?? 'Não definida' }}</td>
+                            <td>
+                                {{ \Carbon\Carbon::parse($agendamento->dia)->format('d/m/Y') }}
+                                {{ \Carbon\Carbon::parse($agendamento->horario)->format('H:i') }}
+                            </td>
+                            <td>
+                                <!-- Estado da consulta -->
+                                <span class="badge {{ $estadoClass }}">{{ $estado }}</span>
+                            </td>
+                            <td>
+                                <a class="btn btn-success btn-sm d-inline mr-2" href="{{ route('agendamentos.show', $agendamento->id) }}" title="Visualizar Detalhes"><i class="fas fa-eye"></i></a>
+                                @if (!$consultaRealizada)
+                                    <a class="btn btn-primary btn-sm d-inline" href="{{ route('videoconferencia', $agendamento->id) }}" title="Iniciar teleconsulta"><i class="fas fa-video"></i></a>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
                 @endforeach
-            @endforeach
-
-
 
             </tbody>
         </table>
-
 
         @if ($agendamentos->hasPages())
             <div class="pagination-wrapper d-flex justify-content-center mt-3">
@@ -89,9 +100,6 @@
 
 @section('css')
 <link rel="stylesheet" href="/css/admin_custom.css">
-
-
-
 @stop
 
 @section('js')
