@@ -67,7 +67,7 @@
                     <div class="form-group col-md-4">
                         <label for="formaPagamento">Forma de Pagamento</label>
                         <input type="text" class="form-control" id="formaPagamento" name="formaPagamento"
-                            value="{{ $consulta->formaPagamento }}" readonly>
+                            value="{{ $consulta->forma_pagamento }}" readonly>
                     </div>
                     <div class="form-group col-md-4">
                         <label for="empresa">Empresa</label>
@@ -80,7 +80,6 @@
                             value="{{ $consulta->codigo_funcionario }}" readonly>
                     </div>
                 </div>
-
 
                 <div class="row mt-3">
                     <div class="form-group col-md-12">
@@ -146,7 +145,7 @@
         </div>
         <div class="card-footer">
             <a href="{{ route('agendamentosMarcados') }}" type="button" class="btn btn-warning">Voltar</a>
-            <!--
+            <!-- Se necessário, descomente o botão de teleconsulta
             <a href="{{ route('videoconferencia', $agendamento->id) }}" type="button" class="btn btn-primary">Teleconsulta</a>
             -->
         </div>

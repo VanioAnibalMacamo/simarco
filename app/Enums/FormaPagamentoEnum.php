@@ -5,7 +5,7 @@ namespace App\Enums;
 enum FormaPagamentoEnum: string
 {
     case CASH = 'Cash';
-    case SEGURO = 'Via Seguro de Saúde';
+    case SEGURO = 'Via Seguro de Saude';
     case EMPRESA = 'Via Empresa';
 
     public static function getValues(): array
@@ -13,5 +13,3 @@ enum FormaPagamentoEnum: string
         return array_map(fn($enum) => $enum->value, self::cases());
     }
 }
-
-

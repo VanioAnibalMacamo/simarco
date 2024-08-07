@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\FormaPagamentoEnum;
+use InvalidArgumentException;
 
 class Consulta extends Model
 {
@@ -23,7 +24,7 @@ class Consulta extends Model
     ];
 
     protected $casts = [
-        'forma_pagamento' => FormaPagamentoEnum::class, // Configuração do casting do Enum
+        'forma_pagamento' => FormaPagamentoEnum::class, // Casting do Enum
     ];
 
     public function getDuracaoFormatadaAttribute()
@@ -79,15 +80,14 @@ class Consulta extends Model
         return $this->belongsTo(Agendamento::class, 'agendamento_id');
     }
 
-    // Método para definir o valor de forma_pagamento
     public function setFormaPagamentoAttribute($value)
     {
-        $this->attributes['forma_pagamento'] = FormaPagamentoEnum::from($value)->value;
+        try {
+            $this->attributes['forma_pagamento'] = FormaPagamentoEnum::from($value)->value;
+        } catch (InvalidArgumentException $e) {
+            \Log::error('Forma de pagamento inválida:', ['value' => $value]);
+            throw new \InvalidArgumentException('Forma de pagamento inválida.');
+        }
     }
 
-    // Método para obter o valor de forma_pagamento
-    public function getFormaPagamentoAttribute($value)
-    {
-        return FormaPagamentoEnum::from($value);
-    }
 }

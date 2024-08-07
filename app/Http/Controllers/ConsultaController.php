@@ -85,20 +85,6 @@ class ConsultaController extends Controller
 
     public function saveConsulta(Request $request)
     {
-        \Log::info('Dados recebidos para salvar a consulta:', $request->only([
-            'data_consulta',
-            'hora_inicio',
-            'hora_fim',
-            'observacoes',
-            'id_medico',
-            'id_paciente',
-            'agendamento_id',
-            'formaPagamento',
-            'empresa',
-            'codigoFuncionario'
-        ]));
-
-        // Obtendo as opções válidas do Enum
         $validPaymentOptions = FormaPagamentoEnum::getValues();
 
         $request->validate([
@@ -118,17 +104,6 @@ class ConsultaController extends Controller
             $data_consulta = Carbon::createFromFormat('d/m/Y', $request->input('data_consulta'))->format('Y-m-d');
             $hora_inicio = Carbon::createFromFormat('H:i', $request->input('hora_inicio'))->format('H:i:s');
             $hora_fim = Carbon::createFromFormat('H:i', $request->input('hora_fim'))->format('H:i:s');
-
-            \Log::info('Dados formatados para salvar a consulta:', [
-                'data_consulta' => $data_consulta,
-                'hora_inicio' => $hora_inicio,
-                'hora_fim' => $hora_fim,
-            ]);
-
-            if (empty($data_consulta)) {
-                \Log::error('O campo data_consulta está vazio.');
-                return redirect('/consultaIndex')->with('error', 'O campo data_consulta não pode estar vazio.');
-            }
 
             $consulta = Consulta::create([
                 'data_consulta' => $data_consulta,
@@ -158,7 +133,6 @@ class ConsultaController extends Controller
             return redirect('/consultaIndex')->with('error', 'Erro ao salvar a consulta. Por favor, verifique os dados e tente novamente.');
         }
     }
-
 
     public function delete($id)
     {
