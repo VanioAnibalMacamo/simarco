@@ -45,7 +45,6 @@
                     </div>
                 </div>
 
-
                 <div class="row">
                     <div class="form-group col-md-4">
                         <label for="data_consulta">Data da Consulta</label>
@@ -84,18 +83,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="id_status">Status da Consulta</label>
-                        <select class="form-control" id="id_status" name="id_status">
-                            @foreach ($statusConsultas as $status)
-                                <option value="{{ $status->id }}" {{ $status->id == old('id_status') ? 'selected' : '' }}>
-                                    {{ $status->descricao }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <label for="formaPagamento">Forma de Pagamento</label>
                         <select class="form-control" id="formaPagamento" name="formaPagamento">
                             <option value="">Selecione a Forma de Pagamento</option>
@@ -106,9 +94,6 @@
                             @endforeach
                         </select>
                     </div>
-                </div>
-
-                <div class="row">
                     <div class="form-group col-md-4">
                         <label for="empresa">Empresa</label>
                         <input type="text" class="form-control" id="empresa" name="empresa" placeholder="Digite o nome da empresa" value="{{ old('empresa') }}">
@@ -117,11 +102,15 @@
                         <label for="codigoFuncionario">Código do Funcionário</label>
                         <input type="text" class="form-control" id="codigoFuncionario" name="codigoFuncionario" placeholder="Digite o código do funcionário" value="{{ old('codigoFuncionario') }}">
                     </div>
-                    <div class="form-group col-md-4">
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-md-12">
                         <label for="cartaoSeguro">Cartão de Seguro de Saúde</label>
                         <input type="file" class="form-control-file" id="cartaoSeguro" name="cartaoSeguro">
                     </div>
                 </div>
+
                 <!-- Campos ocultos para dados desativados -->
                 <input type="hidden" id="hidden_data_consulta" name="hidden_data_consulta" value="{{ old('hidden_data_consulta') }}">
                 <input type="hidden" id="hidden_hora_inicio" name="hidden_hora_inicio" value="{{ old('hidden_hora_inicio') }}">
@@ -142,43 +131,40 @@
 @section('css')
     <link rel="stylesheet" href="/css/admin_custom.css">
 @stop
+
 @section('js')
     <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const pacienteId = urlParams.get('paciente_id');
-    const medicoId = urlParams.get('medico_id');
-    const dataConsulta = urlParams.get('data_consulta');
-    const horaInicio = urlParams.get('hora_inicio');
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const pacienteId = urlParams.get('paciente_id');
+            const medicoId = urlParams.get('medico_id');
+            const dataConsulta = urlParams.get('data_consulta');
+            const horaInicio = urlParams.get('hora_inicio');
 
-    if (pacienteId && medicoId && dataConsulta && horaInicio) {
-        // Preencher os campos com os valores da URL
-        document.getElementById('data_consulta').value = dataConsulta;
-        document.getElementById('hora_inicio').value = horaInicio;
+            if (pacienteId && medicoId && dataConsulta && horaInicio) {
+                // Preencher os campos com os valores da URL
+                document.getElementById('data_consulta').value = dataConsulta;
+                document.getElementById('hora_inicio').value = horaInicio;
 
-        // Calcular e preencher a hora de fim
-        const [hora, minuto] = horaInicio.split(':').map(Number);
-        const horaInicioObj = new Date();
-        horaInicioObj.setHours(hora, minuto, 0, 0); // Define hora e minuto
-        const horaFimObj = new Date(horaInicioObj.getTime() + 30 * 60 * 1000); // Adiciona 30 minutos
-        const horaFim = `${horaFimObj.getHours().toString().padStart(2, '0')}:${horaFimObj.getMinutes().toString().padStart(2, '0')}`; // Formata para HH:mm
+                // Calcular e preencher a hora de fim
+                const [hora, minuto] = horaInicio.split(':').map(Number);
+                const horaInicioObj = new Date();
+                horaInicioObj.setHours(hora, minuto, 0, 0); // Define hora e minuto
+                const horaFimObj = new Date(horaInicioObj.getTime() + 30 * 60 * 1000); // Adiciona 30 minutos
+                const horaFim = `${horaFimObj.getHours().toString().padStart(2, '0')}:${horaFimObj.getMinutes().toString().padStart(2, '0')}`; // Formata para HH:mm
 
-        document.getElementById('hora_fim').value = horaFim;
+                document.getElementById('hora_fim').value = horaFim;
+                // Selecionar os pacientes e médicos corretos
+                document.getElementById('id_paciente').value = pacienteId;
+                document.getElementById('id_medico').value = medicoId;
 
-
-
-        // Selecionar os pacientes e médicos corretos
-        document.getElementById('id_paciente').value = pacienteId;
-        document.getElementById('id_medico').value = medicoId;
-
-        // Preencher os campos ocultos
-        document.getElementById('hidden_data_consulta').value = dataConsulta;
-        document.getElementById('hidden_hora_inicio').value = horaInicio;
-        document.getElementById('hidden_hora_fim').value = horaFim;
-        document.getElementById('hidden_id_paciente').value = pacienteId;
-        document.getElementById('hidden_id_medico').value = medicoId;
-    }
-});
-
+                // Preencher os campos ocultos
+                document.getElementById('hidden_data_consulta').value = dataConsulta;
+                document.getElementById('hidden_hora_inicio').value = horaInicio;
+                document.getElementById('hidden_hora_fim').value = horaFim;
+                document.getElementById('hidden_id_paciente').value = pacienteId;
+                document.getElementById('hidden_id_medico').value = medicoId;
+            }
+        });
     </script>
 @stop

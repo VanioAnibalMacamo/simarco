@@ -21,14 +21,14 @@ class ConsultaController extends Controller
 {
     public function index()
     {
-        $consultas = Consulta::with('statusConsulta', 'medico', 'paciente')->paginate(8);
+        $consultas = Consulta::with('medico', 'paciente')->paginate(8);
         return view('consulta.index', compact('consultas'));
     }
 
 
     public function create(Request $request)
     {
-        $statusConsultas = StatusConsulta::all();
+       // $statusConsultas = StatusConsulta::all();
         $medicos = Medico::all();
         $pacientes = Paciente::all();
         $formasPagamento = FormaPagamentoEnum::getConstants();
@@ -71,7 +71,7 @@ class ConsultaController extends Controller
         }
 
         return view('consulta.create', compact(
-            'statusConsultas',
+
             'medicos',
             'pacientes',
             'formasPagamento',
@@ -85,88 +85,86 @@ class ConsultaController extends Controller
     }
 
     public function saveConsulta(Request $request)
-    {
-        // Log dos dados recebidos
-        \Log::info('Dados recebidos para salvar a consulta:', $request->only([
-            'data_consulta',
-            'hora_inicio',
-            'hora_fim',
-            'observacoes',
-            'id_medico',
-            'id_paciente',
-            'id_status',
-            'agendamento_id',
-            'formaPagamento',
-            'empresa',
-            'codigoFuncionario'
-        ]));
+{
+    // Log dos dados recebidos
+    \Log::info('Dados recebidos para salvar a consulta:', $request->only([
+        'data_consulta',
+        'hora_inicio',
+        'hora_fim',
+        'observacoes',
+        'id_medico',
+        'id_paciente',
+        'agendamento_id',
+        'formaPagamento',
+        'empresa',
+        'codigoFuncionario'
+    ]));
 
-        // Validação dos dados
-        $request->validate([
-            'data_consulta' => 'required|date_format:d/m/Y',
-            'hora_inicio' => 'required|date_format:H:i',
-            'hora_fim' => 'required|date_format:H:i|after:hora_inicio',
-            'observacoes' => 'nullable|string',
-            'id_medico' => 'required|exists:medicos,id',
-            'id_paciente' => 'required|exists:pacientes,id',
-            'id_status' => 'required|integer',
-            'agendamento_id' => 'required|exists:agendamentos,id',
-            'formaPagamento' => 'nullable|string',
-            'empresa' => 'nullable|string',
-            'codigoFuncionario' => 'nullable|string'
+    // Validação dos dados
+    $request->validate([
+        'data_consulta' => 'required|date_format:d/m/Y',
+        'hora_inicio' => 'required|date_format:H:i',
+        'hora_fim' => 'required|date_format:H:i|after:hora_inicio',
+        'observacoes' => 'nullable|string',
+        'id_medico' => 'required|exists:medicos,id',
+        'id_paciente' => 'required|exists:pacientes,id',
+        'agendamento_id' => 'required|exists:agendamentos,id',
+        'formaPagamento' => 'nullable|string',
+        'empresa' => 'nullable|string',
+        'codigoFuncionario' => 'nullable|string'
+    ]);
+
+    try {
+        // Converter data e hora para o formato do banco de dados
+        $data_consulta = Carbon::createFromFormat('d/m/Y', $request->input('data_consulta'))->format('Y-m-d');
+        $hora_inicio = Carbon::createFromFormat('H:i', $request->input('hora_inicio'))->format('H:i:s');
+        $hora_fim = Carbon::createFromFormat('H:i', $request->input('hora_fim'))->format('H:i:s');
+
+        // Log dos dados formatados
+        \Log::info('Dados formatados para salvar a consulta:', [
+            'data_consulta' => $data_consulta,
+            'hora_inicio' => $hora_inicio,
+            'hora_fim' => $hora_fim,
         ]);
 
-        try {
-            // Converter data e hora para o formato do banco de dados
-            $data_consulta = Carbon::createFromFormat('d/m/Y', $request->input('data_consulta'))->format('Y-m-d');
-            $hora_inicio = Carbon::createFromFormat('H:i', $request->input('hora_inicio'))->format('H:i:s');
-            $hora_fim = Carbon::createFromFormat('H:i', $request->input('hora_fim'))->format('H:i:s');
-
-            // Log dos dados formatados
-            \Log::info('Dados formatados para salvar a consulta:', [
-                'data_consulta' => $data_consulta,
-                'hora_inicio' => $hora_inicio,
-                'hora_fim' => $hora_fim,
-            ]);
-
-            // Verificar se a data_consulta não é null
-            if (empty($data_consulta)) {
-                \Log::error('O campo data_consulta está vazio.');
-                return redirect('/consultaIndex')->with('error', 'O campo data_consulta não pode estar vazio.');
-            }
-
-            // Criar a consulta
-            $consulta = Consulta::create([
-                'data_consulta' => $data_consulta,
-                'hora_inicio' => $hora_inicio,
-                'hora_fim' => $hora_fim,
-                'observacoes' => $request->input('observacoes'),
-                'medico_id' => $request->input('id_medico'),
-                'paciente_id' => $request->input('id_paciente'),
-                'id_status' => $request->input('id_status'),
-                'formaPagamento' => $request->input('formaPagamento'),
-                'empresa' => $request->input('empresa'),
-                'codigoFuncionario' => $request->input('codigoFuncionario'),
-                'agendamento_id' => $request->input('agendamento_id')
-            ]);
-
-            // Actualizar o agendamento com o ID da consulta
-            $agendamento = Agendamento::find($request->input('agendamento_id'));
-            $agendamento->update([
-                'consulta_id' => $consulta->id
-            ]);
-
-            return redirect('/consultaIndex')->with('success', 'Consulta salva com sucesso!');
-        } catch (\Exception $e) {
-            // Log de erro detalhado
-            \Log::error('Erro ao salvar a consulta.', [
-                'error_message' => $e->getMessage(),
-                'error_trace' => $e->getTraceAsString(),
-            ]);
-
-            return redirect('/consultaIndex')->with('error', 'Erro ao salvar a consulta. Por favor, verifique os dados e tente novamente.');
+        // Verificar se a data_consulta não é null
+        if (empty($data_consulta)) {
+            \Log::error('O campo data_consulta está vazio.');
+            return redirect('/consultaIndex')->with('error', 'O campo data_consulta não pode estar vazio.');
         }
+
+        // Criar a consulta
+        $consulta = Consulta::create([
+            'data_consulta' => $data_consulta,
+            'hora_inicio' => $hora_inicio,
+            'hora_fim' => $hora_fim,
+            'observacoes' => $request->input('observacoes'),
+            'medico_id' => $request->input('id_medico'),
+            'paciente_id' => $request->input('id_paciente'),
+            'formaPagamento' => $request->input('formaPagamento'),
+            'empresa' => $request->input('empresa'),
+            'codigoFuncionario' => $request->input('codigoFuncionario'),
+            'agendamento_id' => $request->input('agendamento_id')
+        ]);
+
+        // Actualizar o agendamento com o ID da consulta
+        $agendamento = Agendamento::find($request->input('agendamento_id'));
+        $agendamento->update([
+            'consulta_id' => $consulta->id
+        ]);
+
+        return redirect('/consultaIndex')->with('success', 'Consulta salva com sucesso!');
+    } catch (\Exception $e) {
+        // Log de erro detalhado
+        \Log::error('Erro ao salvar a consulta.', [
+            'error_message' => $e->getMessage(),
+            'error_trace' => $e->getTraceAsString(),
+        ]);
+
+        return redirect('/consultaIndex')->with('error', 'Erro ao salvar a consulta. Por favor, verifique os dados e tente novamente.');
     }
+}
+
 
     public function delete($id)
     {

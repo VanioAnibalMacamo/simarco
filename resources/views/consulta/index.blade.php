@@ -30,24 +30,17 @@
                     <tr>
                         <th style="width: 10px">#</th>
                         <th>Data e Hora da Consulta</th>
-                        <th>Status Consulta</th>
-                        <th>Medico Responsavel</th>
+                        <th>Status</th>
+                        <th>Medico Responsável</th>
                         <th>Paciente</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @php
-                        $count = 0;
-                    @endphp
-
                     @foreach ($consultas as $consulta)
-                        @php
-                            $count++;
-                        @endphp
                         <tr>
                             <td>{{ $loop->index + 1 }}</td>
-                            <td>{{ $consulta->data_consulta . ' ' . \Carbon\Carbon::createFromFormat('H:i:s', $consulta->hora_inicio)->format('H:i') }}
-                            </td>
+                            <td>{{ \Carbon\Carbon::parse($consulta->data_consulta)->format('d/m/Y') . ' ' . \Carbon\Carbon::parse($consulta->hora_inicio)->format('H:i') }}</td>
                             @php
                                 // Escolher o status dinamicamente com base na presença ou ausência de diagnóstico e prescrição
                                 if (isset($consulta->diagnostico) && isset($consulta->prescricao)) {
@@ -62,36 +55,27 @@
                                 $statusText = \App\Models\StatusConsulta::find($statusId)->descricao;
                             @endphp
                             <td>{{ $statusText }}</td>
-
                             <td>{{ $consulta->medico->nome }}</td>
                             <td>{{ $consulta->paciente->nome }}</td>
                             <td>
-                                <a class="btn btn-primary btn-sm d-inline"
-                                    href="{{ url('visualizar_consulta', $consulta->id) }}"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-info btn-sm d-inline"
-                                    href="{{ url('update_consulta', $consulta->id) }}"><i
-                                        class="fas fa-pencil-alt"></i></a>
-
-                                        <!--
-                                            <form id="form-excluir-{{ $consulta->id }}"
-                                                action="{{ route('consultas.delete', ['id' => $consulta->id]) }}" method="POST"
-                                                class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                    onclick="confirmDelete(event, '{{ $consulta->numero_identificacao }}', '{{ $consulta->paciente->nome }}', {{ $consulta->id }})"><i
-                                                        class="fas fa-trash"></i></button>
-                                            </form>
-                                        -->
+                                <a class="btn btn-primary btn-sm d-inline" href="{{ url('visualizar_consulta', $consulta->id) }}"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-info btn-sm d-inline" href="{{ url('update_consulta', $consulta->id) }}"><i class="fas fa-pencil-alt"></i></a>
+                                <!--
+                                    <form id="form-excluir-{{ $consulta->id }}" action="{{ route('consultas.delete', ['id' => $consulta->id]) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event, '{{ $consulta->numero_identificacao }}', '{{ $consulta->paciente->nome }}', {{ $consulta->id }})"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                -->
                             </td>
                         </tr>
                     @endforeach
-
-                    @if ($count > 1)
-                        {{ $consultas->links('pagination::bootstrap-4') }}
-                    @endif
                 </tbody>
             </table>
+            <!-- Paginação -->
+            <div class="d-flex justify-content-center">
+                {{ $consultas->links('pagination::bootstrap-4') }}
+            </div>
         </div>
     </div>
 @stop

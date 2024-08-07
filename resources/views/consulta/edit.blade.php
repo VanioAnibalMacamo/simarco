@@ -41,7 +41,7 @@
                             placeholder="Digite as observações da consulta...">{{ $consulta->observacoes }}</textarea>
                     </div>
 
-                    <div class="form-group col-md-4">
+                    <!--<div class="form-group col-md-4">
                         <label for="id_status">Status da Consulta</label>
                         <select class="form-control" id="id_status" name="id_status" disabled>
                             @php
@@ -54,7 +54,7 @@
                             </option>
                         </select>
                     </div>
-
+-->
 
 
                     <div class="form-group col-md-4">

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +13,6 @@ class Consulta extends Model
         'data_consulta',
         'hora_inicio',
         'hora_fim',
-        'id_status',
         'observacoes',
         'medico_id',
         'paciente_id',
@@ -49,11 +47,6 @@ class Consulta extends Model
         return $duracaoFormatada;
     }
 
-    public function statusConsulta()
-    {
-        return $this->belongsTo(StatusConsulta::class, 'id_status');
-    }
-
     public function medico()
     {
         return $this->belongsTo(Medico::class, 'medico_id');
@@ -72,11 +65,6 @@ class Consulta extends Model
     public function prescricao()
     {
         return $this->hasOne(Prescricao::class);
-    }
-
-    public function status_antecessor()
-    {
-        return $this->belongsTo(StatusConsulta::class, 'status_antecessor_id');
     }
 
     public function sintoma()

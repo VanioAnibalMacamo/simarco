@@ -49,7 +49,7 @@
 
 
 
-                <div class="form-group col-md-4">
+                <!--<div class="form-group col-md-4">
                     <label for="id_status">Status da Consulta</label>
                     @php
                         // Escolher o status dinamicamente com base na presença ou ausência de diagnóstico
@@ -59,6 +59,7 @@
                     <input type="text" class="form-control" id="id_status" name='id_status' value="{{ $statusText }}"
                         readonly>
                 </div>
+-->
 
                 <div class="form-group col-md-8">
                     <label for="observacoes">Observações</label>
