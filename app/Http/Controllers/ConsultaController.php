@@ -142,6 +142,7 @@ class ConsultaController extends Controller
                 $horaInicio = $request->input('hora_inicio');
                 $horaFim = $request->input('hora_fim');
                 $originalFile = $request->file('cartao_seguro_saude');
+                $originalFileName = pathinfo($originalFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $extensao = $originalFile->getClientOriginalExtension();
     
                 // Limpa caracteres indesejados do nome do arquivo
@@ -150,7 +151,7 @@ class ConsultaController extends Controller
                 $horaInicio = preg_replace('/[^a-zA-Z0-9_\- ]/', '_', $horaInicio);
                 $horaFim = preg_replace('/[^a-zA-Z0-9_\- ]/', '_', $horaFim);
     
-                $nomeArquivo = "{$nomePaciente}_{$dataConsulta}_{$horaInicio}_{$horaFim}.{$extensao}";
+                $nomeArquivo = "{$nomePaciente}_{$dataConsulta}_{$horaInicio}_{$horaFim}_{$originalFileName}.{$extensao}";
     
                 // Armazena o arquivo com o novo nome
                 $originalFile->storeAs("public/{$pastaPrincipal}/{$pastaCartaoSaude}", $nomeArquivo);
