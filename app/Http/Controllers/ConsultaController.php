@@ -166,14 +166,14 @@ class ConsultaController extends Controller
                 'consulta_id' => $consulta->id
             ]);
 
-            return redirect('/consultaIndex')->with('success', 'Consulta salva com sucesso!');
+            return redirect('/agendamentosMarcados')->with('success', 'Consulta salva com sucesso!');
         } catch (\Exception $e) {
             \Log::error('Erro ao salvar a consulta.', [
                 'error_message' => $e->getMessage(),
                 'error_trace' => $e->getTraceAsString(),
             ]);
 
-            return redirect('/consultaIndex')->with('error', 'Erro ao salvar a consulta. Por favor, verifique os dados e tente novamente.');
+            return redirect('/agendamentosMarcados')->with('error', 'Erro ao salvar a consulta. Por favor, verifique os dados e tente novamente.');
         }
     }
 
