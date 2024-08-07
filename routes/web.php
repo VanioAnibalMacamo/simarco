@@ -176,5 +176,11 @@ Route::get('/horarios/{disponibilidade}', [HorariosController::class, 'index'])-
 
 Route::get('/visualizar_agendamento/{id}', [AgendamentosController::class, 'show'])->name('agendamentos.show');
 
-Route::resource('empresas', EmpresaController::class);
-Route::get('empresasIndex', [EmpresaController::class, 'index'])->name('empresasIndex');
+
+Route::get('empresas', [EmpresaController::class, 'index'])->name('empresas.index');
+Route::get('empresas/create', [EmpresaController::class, 'create'])->name('empresas.create');
+Route::post('empresas', [EmpresaController::class, 'store'])->name('empresas.store');
+Route::get('empresas/{empresa}', [EmpresaController::class, 'show'])->name('empresas.show');
+Route::get('empresas/{empresa}/edit', [EmpresaController::class, 'edit'])->name('empresas.edit');
+Route::put('empresas/{empresa}', [EmpresaController::class, 'update'])->name('empresas.update');
+Route::delete('empresas/{empresa}', [EmpresaController::class, 'destroy'])->name('empresas.destroy');
