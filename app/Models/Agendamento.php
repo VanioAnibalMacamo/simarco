@@ -12,6 +12,7 @@ class Agendamento extends Model
         'dia',
         'paciente_id',
         'horario',
+        'consulta_id',
     ];
 
     protected $casts = [
@@ -28,5 +29,10 @@ class Agendamento extends Model
     {
         return $this->belongsToMany(Disponibilidade::class, 'agendamento_disponibilidade')
             ->withTimestamps();
+    }
+
+    public function consulta()
+    {
+        return $this->hasOne(Consulta::class, 'consulta_id');
     }
 }

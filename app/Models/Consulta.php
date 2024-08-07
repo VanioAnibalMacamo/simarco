@@ -19,6 +19,7 @@ class Consulta extends Model
         'medico_id',
         'paciente_id',
         'forma_pagamento',
+        'agendamento_id',
     ];
 
     protected $casts = [
@@ -81,5 +82,10 @@ class Consulta extends Model
     public function sintoma()
     {
         return $this->hasOne(Sintoma::class, 'consulta_id');
+    }
+
+    public function agendamento()
+    {
+        return $this->belongsTo(Agendamento::class, 'agendamento_id');
     }
 }
