@@ -22,7 +22,8 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="status_consulta">Status da Consulta</label>
-                    <input type="text" class="form-control" id="status_consulta" name='status_consulta' value="{{ $agendamento->consulta ? 'Realizada' : 'Agendada' }}" readonly>
+                    <input type="text" class="form-control" id="status_consulta" name='status_consulta'
+                           value="{{ $consulta ? ($prescricao ? 'Prescrita' : ($diagnostico ? 'Diagnosticada' : 'Realizada')) : 'Agendada' }}" readonly>
                 </div>
             </div>
 
@@ -67,8 +68,6 @@
                         <textarea class="form-control h-100" id="observacoes" name='observacoes' readonly>{{ $consulta->observacoes }}</textarea>
                     </div>
                 </div>
-            @else
-                <p>Nenhuma consulta registrada.</p>
             @endif
 
             @if ($diagnostico)
