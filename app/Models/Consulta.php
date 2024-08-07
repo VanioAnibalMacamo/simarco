@@ -19,9 +19,6 @@ class Consulta extends Model
         'paciente_id',
         'forma_pagamento',
         'agendamento_id',
-        'empresa',
-        'codigo_funcionario',
-        'cartao_seguro_saude',
     ];
 
     protected $casts = [
@@ -90,5 +87,4 @@ class Consulta extends Model
             throw new \InvalidArgumentException('Forma de pagamento inválida.');
         }
     }
-
 }

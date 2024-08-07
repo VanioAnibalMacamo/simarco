@@ -97,23 +97,6 @@
 
                     </div>
 
-                    <div class="form-group col-md-4">
-                        <label for="empresa">Empresa</label>
-                        <input type="text" class="form-control" id="empresa" name="empresa" placeholder="Digite o nome da empresa" value="{{ old('empresa') }}">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="codigoFuncionario">Código do Funcionário</label>
-                        <input type="text" class="form-control" id="codigoFuncionario" name="codigoFuncionario" placeholder="Digite o código do funcionário" value="{{ old('codigoFuncionario') }}">
-                    </div>
-                </div>
-                <div class="row">
-    <div class="form-group col-md-12">
-        <label for="cartao_seguro_saude">Cartão de Seguro de Saúde</label>
-        <input type="file" class="form-control-file" id="cartao_seguro_saude" name="cartao_seguro_saude">
-    </div>
-</div>
-
-
                 <!-- Campos ocultos para dados desativados -->
                 <input type="hidden" id="hidden_data_consulta" name="hidden_data_consulta" value="{{ old('hidden_data_consulta') }}">
                 <input type="hidden" id="hidden_hora_inicio" name="hidden_hora_inicio" value="{{ old('hidden_hora_inicio') }}">

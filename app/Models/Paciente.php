@@ -1,14 +1,13 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable; // Importe a trait Notifiable
+use Illuminate\Notifications\Notifiable;
 
 class Paciente extends Model
 {
-    use HasFactory, Notifiable; // Adicione a trait Notifiable aqui
+    use HasFactory, Notifiable;
 
     protected $fillable = [
         'nome',
@@ -18,6 +17,9 @@ class Paciente extends Model
         'endereco',
         'telefone',
         'email',
+        'empresa',
+        'codigo_funcionario',
+        'cartao_seguro_saude',
     ];
 
     public function consultas()
@@ -25,9 +27,9 @@ class Paciente extends Model
         return $this->hasMany(Consulta::class);
     }
 
-     // Relacionamento um para muitos com Agendamento
-     public function agendamentos()
-     {
-         return $this->hasMany(Agendamento::class);
-     }
+    // Relacionamento um para muitos com Agendamento
+    public function agendamentos()
+    {
+        return $this->hasMany(Agendamento::class);
+    }
 }

@@ -6,6 +6,7 @@ use App\Enums\FormaPagamentoEnum;
 use App\Models\Agendamento;
 use App\Models\Medico;
 use App\Models\Paciente;
+use App\Models\StatusConsulta;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Consulta;
@@ -89,16 +90,22 @@ class ConsultaController extends Controller
             'id_paciente' => 'required|exists:pacientes,id',
             'agendamento_id' => 'required|exists:agendamentos,id',
             'formaPagamento' => 'nullable|in:' . implode(',', $validPaymentOptions),
-            'empresa' => 'nullable|string',
-            'codigoFuncionario' => 'nullable|string',
-            'cartao_seguro_saude' => 'nullable|file|mimes:pdf,jpg,jpeg,png' // Validação para o arquivo
+           
         ]);
 
-        // Verifica a forma de pagamento
-        $formaPagamento = $request->input('formaPagamento');
-        if ($formaPagamento == 'Via Seguro de Saude' && !$request->hasFile('cartao_seguro_saude')) {
-            return back()->with(['error' => 'O upload do documento é obrigatório para "Via Seguro de Saude".'])->withInput();
+       // Verifica a forma de pagamento
+    $formaPagamento = $request->input('formaPagamento');
+    $paciente = Paciente::find($request->input('id_paciente'));
+
+    if ($formaPagamento == 'Via Seguro de Saude') {
+        // Verifica se o paciente já possui um cartão de seguro de saúde registrado
+        if (!$paciente->cartao_seguro_saude) {
+            // Se o paciente não tiver um cartão registrado, exige o upload
+            if (!$request->hasFile('cartao_seguro_saude')) {
+                return back()->with(['error' => 'O Paciente nao fez upload do cartao seguro saude e é obrigatório para "Via Seguro de Saude".'])->withInput();
+            }
         }
+    }
 
         try {
             // Formata os dados
@@ -115,50 +122,9 @@ class ConsultaController extends Controller
                 'medico_id' => $request->input('id_medico'),
                 'paciente_id' => $request->input('id_paciente'),
                 'forma_pagamento' => FormaPagamentoEnum::from($request->input('formaPagamento'))->value,
-                'empresa' => $request->input('empresa'),
-                'codigo_funcionario' => $request->input('codigoFuncionario'),
-                'agendamento_id' => $request->input('agendamento_id')
+               
             ]);
-
-            // Verifica e cria as pastas necessárias
-            $pastaPrincipal = 'consultas';
-            $pastaCartaoSaude = 'cartao_saude';
-            $pathPrincipal = storage_path("app/public/{$pastaPrincipal}");
-            $pathCartaoSaude = "{$pathPrincipal}/{$pastaCartaoSaude}";
-
-            if (!File::exists($pathPrincipal)) {
-                File::makeDirectory($pathPrincipal, 0755, true);
-            }
-
-            if (!File::exists($pathCartaoSaude)) {
-                File::makeDirectory($pathCartaoSaude, 0755, true);
-            }
-
-            // Faz o upload do arquivo se ele existir
-            if ($request->hasFile('cartao_seguro_saude')) {
-                $paciente = Paciente::find($request->input('id_paciente'));
-                $nomePaciente = $paciente ? $paciente->nome : 'PacienteDesconhecido'; // Nome do paciente
-                $dataConsulta = $request->input('data_consulta');
-                $horaInicio = $request->input('hora_inicio');
-                $horaFim = $request->input('hora_fim');
-                $originalFile = $request->file('cartao_seguro_saude');
-                $originalFileName = pathinfo($originalFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $extensao = $originalFile->getClientOriginalExtension();
-
-                // Limpa caracteres indesejados do nome do arquivo
-                $nomePaciente = preg_replace('/[^a-zA-Z0-9_\- ]/', '_', $nomePaciente); // Remove caracteres especiais
-                $dataConsulta = preg_replace('/[^a-zA-Z0-9_\- ]/', '_', $dataConsulta);
-                $horaInicio = preg_replace('/[^a-zA-Z0-9_\- ]/', '_', $horaInicio);
-                $horaFim = preg_replace('/[^a-zA-Z0-9_\- ]/', '_', $horaFim);
-
-                $nomeArquivo = "{$nomePaciente}_{$dataConsulta}_{$horaInicio}_{$horaFim}_{$originalFileName}.{$extensao}";
-
-                // Armazena o arquivo com o novo nome
-                $originalFile->storeAs("public/{$pastaPrincipal}/{$pastaCartaoSaude}", $nomeArquivo);
-
-                // Atualiza o nome do arquivo na consulta
-                $consulta->update(['cartao_seguro_saude' => $nomeArquivo]);
-            }
+            
 
             // Atualiza o agendamento
             $agendamento = Agendamento::find($request->input('agendamento_id'));
@@ -220,9 +186,7 @@ class ConsultaController extends Controller
                 'medico_id' => 'required|exists:medicos,id',
                 'paciente_id' => 'required|exists:pacientes,id',
                 'forma_pagamento' => 'nullable|in:' . implode(',', FormaPagamentoEnum::getValues()),
-                'empresa' => 'nullable|string',
-                'codigo_funcionario' => 'nullable|string',
-                'cartao_seguro_saude' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+               
             ]);
 
             $consulta = Consulta::findOrFail($id);
@@ -268,10 +232,5 @@ class ConsultaController extends Controller
     }
 
     // Função para verificar e criar pastas
-    private function verificarCriarPasta($caminho)
-    {
-        if (!File::exists($caminho)) {
-            File::makeDirectory($caminho, 0755, true);
-        }
-    }
+    
 }
