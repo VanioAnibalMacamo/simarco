@@ -49,14 +49,6 @@ class DiagnosticosController extends Controller
 
             $consulta = Consulta::find($request->input('consulta_id'));
 
-            // Obtém o novo status dinamicamente com base na existência de um diagnóstico
-            $novoStatus = $consulta->diagnostico ? StatusConsulta::find(2) : StatusConsulta::find(1);
-
-            // Verifica se o novo status foi encontrado
-            if (!$novoStatus) {
-                throw new \Exception('Novo status não encontrado.');
-            }
-
             $diagnostico = new Diagnostico([
                 'data_diagnostico' => $request->input('data_diagnostico'),
                 'consulta_id' => $request->input('consulta_id'),
@@ -66,13 +58,6 @@ class DiagnosticosController extends Controller
 
             $diagnostico->save();
 
-            Log::info('Status antes de atualizar: ' . $consulta->statusConsulta->descricao);
-
-            // Atualizar o status da consulta
-            $consulta->statusConsulta()->associate($novoStatus);
-            $consulta->save();
-
-            Log::info('Status depois de atualizar: ' . $consulta->statusConsulta->descricao);
 
             DB::commit();
 
