@@ -176,7 +176,7 @@ class ConsultaController extends Controller
 
     public function show($id)
     {
-        $consulta = Consulta::with(['statusConsulta', 'medico', 'paciente', 'diagnostico', 'prescricao'])->findOrFail($id);
+        $consulta = Consulta::with(['medico', 'paciente', 'diagnostico', 'prescricao'])->findOrFail($id);
         $statusConsulta = $consulta->statusConsulta;
         $consulta->load('paciente');
         $consulta->load('medico');
@@ -195,7 +195,7 @@ class ConsultaController extends Controller
         $diagnostico = $consulta->diagnostico;
         $prescricao = $consulta->prescricao;
 
-        return view('consulta.edit', compact('consulta', 'statusConsultas', 'pacientes', 'medicos', 'diagnostico', 'prescricao'));
+        return view('consulta.edit', compact('consulta',  'pacientes', 'medicos', 'diagnostico', 'prescricao'));
     }
 
     public function update(Request $request, $id)
@@ -205,7 +205,6 @@ class ConsultaController extends Controller
                 'data_consulta' => 'required|date',
                 'hora_inicio' => 'required|date_format:H:i',
                 'hora_fim' => 'required|date_format:H:i',
-                'id_status' => 'required|exists:status_consultas,id',
                 'observacoes' => 'nullable|string',
                 'id_medico' => 'required|exists:medicos,id',
                 'id_paciente' => 'required|exists:pacientes,id',
@@ -228,7 +227,7 @@ class ConsultaController extends Controller
                 'data_consulta' => $request->input('data_consulta'),
                 'hora_inicio' => $horaInicio,
                 'hora_fim' => $horaFim,
-                'id_status' => $request->input('id_status'),
+               
                 'observacoes' => $request->input('observacoes'),
             ]);
 
