@@ -3,13 +3,13 @@
 @section('title', 'Consultas Agendadas')
 
 @section('content_header')
-@if (session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-@endif
-@if (session('error'))
-    <div class="alert alert-danger">{{ session('error') }}</div>
-@endif
 <h1>Consultas Agendadas</h1>
+    @if (session('success'))
+         <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
 @stop
 
 @section('content')
@@ -126,4 +126,10 @@
 
 @section('js')
 <script> console.log('Tabela de Agendamentos Carregada!'); </script>
+
+<script>
+    setTimeout(function() {
+        document.querySelector('.alert').remove();
+    }, 5000);
+</script>
 @stop
