@@ -54,7 +54,7 @@
                     <input type="email" class="form-control" id="email" name='email' placeholder="Digite o email do Paciente...">
                 </div>
             </div>
-            
+
             <hr>
             <div class="row">
             <div class="row">
@@ -67,19 +67,19 @@
                             @endforeach
                         </select>
                     </div>
-    <div class="form-group col-md-6">
-        <label for="codigoFuncionario">Código do Funcionário</label>
-        <input type="text" class="form-control" id="codigoFuncionario" name="codigoFuncionario" placeholder="Digite o código do funcionário" value="{{ old('codigoFuncionario') }}">
-    </div>
-</div>
+                <div class="form-group col-md-6">
+                    <label for="codigoFuncionario">Código do Funcionário</label>
+                    <input type="text" class="form-control" id="codigoFuncionario" name="codigoFuncionario" placeholder="Digite o código do funcionário" value="{{ old('codigoFuncionario') }}">
+                </div>
+            </div>
 
                 <div class="row">
-    <div class="form-group col-md-12">
-        <label for="cartao_seguro_saude">Cartão de Seguro de Saúde</label>
-        <input type="file" class="form-control-file" id="cartao_seguro_saude" name="cartao_seguro_saude">
-    </div>
-</div>
-</div>
+                    <div class="form-group col-md-12">
+                        <label for="cartao_seguro_saude">Cartão de Seguro de Saúde</label>
+                        <input type="file" class="form-control-file" id="cartao_seguro_saude" name="cartao_seguro_saude">
+                    </div>
+                </div>
+            </div>
             <div class="card-footer">
                 <input type="submit" class="btn btn-primary" value='Salvar'>
                 <a href="{{ url('/pacienteIndex') }}" type="button" class="btn btn-warning">Cancelar</a>
