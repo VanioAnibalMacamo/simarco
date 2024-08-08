@@ -124,6 +124,7 @@
                                 <tr>
                                     <th>Comprimido</th>
                                     <th>Dosagem</th>
+                                    <th>Instruções</th>
                                     <th>Data da Prescrição</th>
                                     <th>Observações da Prescrição</th>
                                 </tr>
@@ -133,6 +134,7 @@
                                     <tr>
                                         <td>{{ $medicamento->nome_medicamento }}</td>
                                         <td>{{ $medicamento->pivot->dosagem }}</td>
+                                        <td>{{ $medicamento->pivot->instrucoes }}</td>
                                         <td>{{ \Carbon\Carbon::parse($prescricao->data_prescricao)->format('d/m/Y') }}</td>
                                         <td>{{ $prescricao->observacoes }}</td>
                                     </tr>
