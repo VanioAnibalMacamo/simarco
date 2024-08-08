@@ -14,6 +14,32 @@
     @if (session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
+
+    <!-- Exibir erros de validação -->
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <!-- Exibir mensagens de sucesso -->
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <!-- Exibir mensagens de erro genéricas -->
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
 @stop
 
 @section('content')
@@ -62,8 +88,11 @@
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for="data_prescricao">Data da Prescrição</label>
-                    <input type="date" class="form-control" id="data_prescricao" name='data_prescricao' required>
+                    <input type="date" class="form-control" id="data_prescricao" name='data_prescricao'
+                           value="{{ old('data_prescricao', \Carbon\Carbon::now()->format('Y-m-d')) }}"
+                           readonly>
                 </div>
+
 
                 <div class="form-group col-md-6">
                     <label for="consulta_id">Paciente relacionado à Consulta</label>
@@ -90,15 +119,24 @@
                         <div class="col-md-4">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="medicamentos[]"
-                                    value="{{ $medicamento->id }}">
-                                <label class="form-check-label">{{ $medicamento->nome_medicamento }}</label>
-                                <input type="text" class="form-control" id="dosagem_{{ $medicamento->id }}"
-                                    name="dosagens[{{ $medicamento->id }}]" placeholder="Dosagem">
+                                       value="{{ $medicamento->id }}" id="medicamento_{{ $medicamento->id }}">
+                                <label class="form-check-label" for="medicamento_{{ $medicamento->id }}">
+                                    {{ $medicamento->nome_medicamento }}
+                                </label>
+
+                                <!-- Campo para Dosagem -->
+                                <input type="text" class="form-control mt-2" id="dosagem_{{ $medicamento->id }}"
+                                       name="dosagens[{{ $medicamento->id }}]" placeholder="Dosagem">
+
+                                <!-- Campo para Instruções -->
+                                <input type="text" class="form-control mt-2" id="instrucoes_{{ $medicamento->id }}"
+                                       name="instrucoes[{{ $medicamento->id }}]" placeholder="Instruções">
                             </div>
                         </div>
                     @endforeach
                 </div>
             </div>
+
 
             <div class="form-group">
                 <label for="observacoes">Observações</label>

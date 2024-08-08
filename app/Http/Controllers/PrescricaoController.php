@@ -31,37 +31,65 @@ class PrescricaoController extends Controller
 
     public function savePrescricao(Request $request)
     {
-        $request->validate([
+        // Recupere os nomes dos medicamentos selecionados
+        $medicamentoIds = $request->input('medicamentos');
+        $medicamentos = Medicamento::whereIn('id', $medicamentoIds)->pluck('nome_medicamento', 'id');
+
+        $validator = \Validator::make($request->all(), [
             'data_prescricao' => 'required|date',
             'observacoes' => 'nullable|string',
             'consulta_id' => 'required|exists:consultas,id',
             'medicamentos' => 'required|array',
-            'dosagens' => 'required|array',
+            'medicamentos.*' => 'exists:medicamentos,id',
+            'dosagens' => ['array', function ($attribute, $value, $fail) use ($medicamentos) {
+                foreach ($medicamentos as $medicamentoId => $medicamentoNome) {
+                    if (!isset($value[$medicamentoId])) {
+                        $fail("A dosagem para o medicamento '{$medicamentoNome}' é obrigatória.");
+                    }
+                }
+            }],
+            'instrucoes' => ['array', function ($attribute, $value, $fail) use ($medicamentos) {
+                foreach ($medicamentos as $medicamentoId => $medicamentoNome) {
+                    if (!isset($value[$medicamentoId])) {
+                        $fail("A instrução para o medicamento '{$medicamentoNome}' é obrigatória.");
+                    }
+                }
+            }],
+            'dosagens.*' => 'nullable|string',
+            'instrucoes.*' => 'nullable|string',
         ]);
 
-        // Verifica se a consulta já possui uma prescrição associada
-        if (Prescricao::where('consulta_id', $request->input('consulta_id'))->exists()) {
-            return redirect('/prescricaoIndex')->with('error', 'Esta consulta já possui uma prescrição associada.');
+        // Verifica se a validação falhou
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Cria a instância da Prescricao
+        if (Prescricao::where('consulta_id', $request->input('consulta_id'))->exists()) {
+            return redirect()->back()->with('error', 'Esta consulta já possui uma prescrição associada.')->withInput();
+        }
+
         $prescricao = Prescricao::create([
             'data_prescricao' => $request->input('data_prescricao'),
             'observacoes' => $request->input('observacoes'),
             'consulta_id' => $request->input('consulta_id'),
         ]);
 
-        // Obtém os medicamentos e dosagens selecionados
         $medicamentosSelecionados = $request->input('medicamentos');
         $dosagens = $request->input('dosagens');
+        $instrucoes = $request->input('instrucoes');
 
-        // Associa os medicamentos e dosagens à prescrição
         foreach ($medicamentosSelecionados as $medicamentoId) {
-            $prescricao->medicamentos()->attach($medicamentoId, ['dosagem' => $dosagens[$medicamentoId]]);
+            if (isset($dosagens[$medicamentoId]) && isset($instrucoes[$medicamentoId])) {
+                $prescricao->medicamentos()->attach($medicamentoId, [
+                    'dosagem' => $dosagens[$medicamentoId],
+                    'instrucoes' => $instrucoes[$medicamentoId],
+                ]);
+            }
         }
 
-        return redirect('/prescricaoIndex')->with('success', 'Prescrição médica salva com sucesso!');
+        return redirect('/agendamentosMarcados')->with('success', 'Prescrição médica salva com sucesso!');
     }
+
 
 
     public function edit($id)
@@ -72,7 +100,6 @@ class PrescricaoController extends Controller
         $medicamentos = Medicamento::all();
         return view('prescricao.edit', compact('prescricao', 'consultas', 'medicamentos'));
     }
-
 
     public function update(Request $request, $id)
     {

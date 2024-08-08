@@ -48,6 +48,7 @@ class Medicamento extends Model
 
     public function prescricoes()
     {
-        return $this->belongsToMany(Prescricao::class)->withPivot('dosagem');
+        return $this->belongsToMany(Medicamento::class, 'prescricao_medicamento')
+                     ->withPivot('dosagem', 'instrucoes');
     }
 }
