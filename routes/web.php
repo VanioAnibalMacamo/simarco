@@ -49,6 +49,7 @@ Route::post('/update_paciente/{id}', [PacienteController::class, 'update'])->nam
 Route::get('/visualizar_paciente/{id}', [PacienteController::class, 'show']);
 Route::post('/visualizarPaciente/{id}', [PacienteController::class, 'visualizar']);
 Route::delete('/paciente/{id}', 'App\Http\Controllers\PacienteController@delete')->name('pacientes.delete');
+Route::get('/paciente/download/{id}', [PacienteController::class, 'downloadCartaoSeguroSaude'])->name('paciente.downloadCartao');
 
 Route::get('/especialidadeIndex', [EspecialidadeController::class, 'index'])->name('especialidadeIndex');
 Route::get('/especialidadeCreate', [EspecialidadeController::class, 'create'])->name('especialidadeCreate');
@@ -184,3 +185,5 @@ Route::get('empresas/{empresa}', [EmpresaController::class, 'show'])->name('empr
 Route::get('empresas/{empresa}/edit', [EmpresaController::class, 'edit'])->name('empresas.edit');
 Route::put('empresas/{empresa}', [EmpresaController::class, 'update'])->name('empresas.update');
 Route::delete('empresas/{empresa}', [EmpresaController::class, 'destroy'])->name('empresas.destroy');
+
+
