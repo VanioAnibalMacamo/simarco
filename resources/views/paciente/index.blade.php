@@ -32,8 +32,8 @@
                     <th>Nome</th>
                     <th>Data Nascimento</th>
                     <th>Genero</th>
-                    <th>Telefone</th> 
-                    <th>Número de Identificação</th>
+                    <th>Telefone</th>
+                    <th>Empresa</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,8 +50,16 @@
                         <td>{{ $paciente->nome }}</td>
                         <td>{{ $paciente->data_nascimento }}</td>
                         <td>{{ ucfirst($paciente->genero) }}</td>
-                        <td>{{ $paciente->telefone }}</td> 
-                        <td>{{ $paciente->numero_identificacao }}</td> 
+                        <td>{{ $paciente->telefone }}</td>
+                        <td>
+                            @if ($paciente->empresa)
+                                <span class="badge badge-success">
+                                     {{ $paciente->empresa->nome }}
+                                </span>
+                            @else
+                                <span class="badge badge-danger">Não registrada</span>
+                            @endif
+                        </td>
                         <td>
                             <a class="btn btn-primary btn-sm d-inline" href="{{ url('visualizar_paciente', $paciente->id) }}"><i class="fas fa-eye"></i></a>
                             <a class="btn btn-info btn-sm d-inline" href="{{ url('update_paciente', $paciente->id) }}"><i class="fas fa-pencil-alt"></i></a>
