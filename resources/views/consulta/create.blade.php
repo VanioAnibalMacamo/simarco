@@ -3,7 +3,9 @@
 @section('title', 'Cadastrar Consulta')
 
 @section('content_header')
-     @if (session('success'))
+    <h1>Cadastrar Consulta</h1>
+
+    @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
     @if (session('successDelete'))
@@ -12,7 +14,6 @@
     @if (session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
-    <h1>Cadastrar Consulta</h1>
 @stop
 
 @section('content')
