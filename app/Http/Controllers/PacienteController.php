@@ -175,4 +175,22 @@ class PacienteController extends Controller
             File::makeDirectory($caminho, 0755, true);
         }
     }
+
+    public function downloadCartaoSeguroSaude($id)
+    {
+        $paciente = Paciente::findOrFail($id);
+
+        if (!$paciente->cartao_seguro_saude) {
+            return redirect()->back()->with('error', 'Nenhum cartão de seguro de saúde disponível.');
+        }
+
+        $path = storage_path('app/public/consultas/cartao_saude/' . $paciente->cartao_seguro_saude);
+
+        if (!file_exists($path)) {
+            return redirect()->back()->with('error', 'Arquivo não encontrado.');
+        }
+
+        return response()->download($path);
+    }
+
 }
