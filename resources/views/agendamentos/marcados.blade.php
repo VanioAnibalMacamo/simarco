@@ -3,7 +3,7 @@
 @section('title', 'Consultas Agendadas')
 
 @section('content_header')
-<h1>Consultas Agendadas</h1>
+<h1>Consultas</h1>
     @if (session('success'))
          <div class="alert alert-success">{{ session('success') }}</div>
     @endif
@@ -20,9 +20,13 @@
     </a>
 </div>
 
+<div class="mb-3">
+    <input type="text" id="searchInput" class="form-control border-primary" placeholder="Pesquisar...">
+</div>
+
 <div class="card">
     <div class="card-body p-0">
-        <table class="table table-striped">
+        <table class="table table-striped" id="agendamentosTable">
             <thead>
                 <tr>
                     <th>#</th>
@@ -121,13 +125,27 @@
     tr:hover .actions .btn {
         display: inline-block;
     }
+    #searchInput {
+        border-color: #007bff; /* Borda azul */
+    }
 </style>
 @stop
 
 @section('js')
-<script> console.log('Tabela de Agendamentos Carregada!'); </script>
-
 <script>
+    console.log('Tabela de Agendamentos Carregada!');
+
+    // Função para filtrar a tabela
+    document.getElementById('searchInput').addEventListener('input', function() {
+        var query = this.value.toLowerCase();
+        var rows = document.querySelectorAll('#agendamentosTable tbody tr');
+
+        rows.forEach(function(row) {
+            var text = row.innerText.toLowerCase();
+            row.style.display = text.includes(query) ? '' : 'none';
+        });
+    });
+
     setTimeout(function() {
         document.querySelector('.alert').remove();
     }, 5000);
