@@ -34,7 +34,7 @@
                     <div class="form-group col-md-6">
                         <label for="data_prescricao">Data da Prescrição</label>
                         <input type="date" class="form-control" id="data_prescricao" name='data_prescricao'
-                            value="{{ $prescricao->data_prescricao }}" required>
+                            value="{{ old('data_prescricao', $prescricao->data_prescricao) }}" required>
                     </div>
 
                     <div class="form-group col-md-6">
@@ -65,7 +65,10 @@
                                     <label class="form-check-label">{{ $medicamento->nome_medicamento }}</label>
                                     <input type="text" class="form-control" id="dosagem_{{ $medicamento->id }}"
                                         name="dosagens[{{ $medicamento->id }}]" placeholder="Dosagem"
-                                        value="{{ $prescricao->medicamentos->where('id', $medicamento->id)->first() ? $prescricao->medicamentos->where('id', $medicamento->id)->first()->pivot->dosagem : '' }}">
+                                        value="{{ old('dosagens.' . $medicamento->id, $prescricao->medicamentos->where('id', $medicamento->id)->first() ? $prescricao->medicamentos->where('id', $medicamento->id)->first()->pivot->dosagem : '') }}">
+                                    <input type="text" class="form-control mt-2" id="instrucoes_{{ $medicamento->id }}"
+                                        name="instrucoes[{{ $medicamento->id }}]" placeholder="Instruções"
+                                        value="{{ old('instrucoes.' . $medicamento->id, $prescricao->medicamentos->where('id', $medicamento->id)->first() ? $prescricao->medicamentos->where('id', $medicamento->id)->first()->pivot->instrucoes : '') }}">
                                 </div>
                             </div>
                         @endforeach
@@ -75,7 +78,7 @@
                 <div class="form-group">
                     <label for="observacoes">Observações</label>
                     <textarea class="form-control custom-textarea" id="observacoes" name='observacoes'
-                        placeholder="Digite as observações...">{{ $prescricao->observacoes }}</textarea>
+                        placeholder="Digite as observações...">{{ old('observacoes', $prescricao->observacoes) }}</textarea>
                 </div>
 
             </div>

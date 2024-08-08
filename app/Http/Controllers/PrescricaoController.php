@@ -90,8 +90,6 @@ class PrescricaoController extends Controller
         return redirect('/agendamentosMarcados')->with('success', 'Prescrição médica salva com sucesso!');
     }
 
-
-
     public function edit($id)
     {
 
@@ -106,9 +104,23 @@ class PrescricaoController extends Controller
         $request->validate([
             'data_prescricao' => 'required|date',
             'observacoes' => 'nullable|string',
-            //'consulta_id' => 'required|exists:consultas,id',
             'medicamentos' => 'required|array',
-            'dosagens' => 'required|array',
+            'dosagens' => ['array', function ($attribute, $value, $fail) use ($request) {
+                foreach ($request->input('medicamentos') as $medicamentoId) {
+                    if (!isset($value[$medicamentoId])) {
+                        $fail("A dosagem para o medicamento com ID {$medicamentoId} é obrigatória.");
+                    }
+                }
+            }],
+            'instrucoes' => ['array', function ($attribute, $value, $fail) use ($request) {
+                foreach ($request->input('medicamentos') as $medicamentoId) {
+                    if (!isset($value[$medicamentoId])) {
+                        $fail("A instrução para o medicamento com ID {$medicamentoId} é obrigatória.");
+                    }
+                }
+            }],
+            'dosagens.*' => 'nullable|string',
+            'instrucoes.*' => 'nullable|string',
         ]);
 
         $prescricao = Prescricao::find($id);
@@ -120,21 +132,26 @@ class PrescricaoController extends Controller
         $prescricao->update([
             'data_prescricao' => $request->input('data_prescricao'),
             'observacoes' => $request->input('observacoes'),
-           // 'consulta_id' => $request->input('consulta_id'),
         ]);
 
-        // Sincronize os medicamentos e dosagens na tabela pivot
+        // Sincronize os medicamentos e suas informações na tabela pivot
         $medicamentosSelecionados = $request->input('medicamentos');
         $dosagens = $request->input('dosagens');
+        $instrucoes = $request->input('instrucoes');
 
+        // Sincronize medicamentos e limpe a tabela pivot
         $prescricao->medicamentos()->sync([]);
 
         foreach ($medicamentosSelecionados as $medicamentoId) {
-            $prescricao->medicamentos()->attach($medicamentoId, ['dosagem' => $dosagens[$medicamentoId]]);
+            $prescricao->medicamentos()->attach($medicamentoId, [
+                'dosagem' => $dosagens[$medicamentoId] ?? null,
+                'instrucoes' => $instrucoes[$medicamentoId] ?? null,
+            ]);
         }
 
-        return redirect('/prescricaoIndex')->with('success', 'Prescrição médica actualizada com sucesso.');
+        return redirect('/prescricaoIndex')->with('success', 'Prescrição médica atualizada com sucesso.');
     }
+
 
     public function show($id)
     {

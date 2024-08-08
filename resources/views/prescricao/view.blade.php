@@ -42,6 +42,7 @@
                         <tr>
                             <th>Comprimido</th>
                             <th>Dosagem</th>
+                        <th>Instruções</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,6 +50,7 @@
                             <tr>
                                 <td>{{ $medicamento->nome_medicamento }}</td>
                                 <td>{{ $medicamento->pivot->dosagem }}</td>
+                                <td>{{ $medicamento->pivot->instrucoes }}</td>
                             </tr>
                         @endforeach
                     </tbody>
