@@ -311,14 +311,8 @@ return [
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
         ],
-        [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
-        ],
-        ['header' => 'account_settings'],
+
+        ['header' => 'MENU PRINCIPAL'],
         [
             'text' => 'Pagina Principal Paciente',
             'url'  => 'pacienteTipoConsulta',
@@ -349,7 +343,17 @@ return [
             'icon' => 'fas fa-fw fa-user-md',
         ],
 
+        [
+            'text' => 'Diagnósticos',
+            'url'  => 'diagnosticoIndex',
+            'icon' => 'fas fa-fw fa-notes-medical'
+        ],
 
+        [
+            'text' => 'Prescrições',
+            'url'  => 'prescricaoIndex',
+            'icon' => 'fas fa-fw fa-file-medical-alt'
+        ],
 
 /*
         [
@@ -363,23 +367,7 @@ return [
             'url'  => 'medicamentoIndex',
             'icon' => 'fas fa-fw fa-pills',
         ],
-        [
-            'text' => 'Fabricantes',
-            'url'  => 'fabricanteIndex',
-            'icon' => 'fas fa-fw fa-flask'
-        ],
 
-        [
-            'text' => 'Diagnósticos',
-            'url'  => 'diagnosticoIndex',
-            'icon' => 'fas fa-fw fa-notes-medical'
-        ],
-
-        [
-            'text' => 'Prescrições',
-            'url'  => 'prescricaoIndex',
-            'icon' => 'fas fa-fw fa-file-medical-alt'
-        ],
         [
             'text' => 'Sintomas e Queixas',
             'url'  => 'sintomasIndex',
@@ -408,6 +396,30 @@ return [
                             'icon'    => 'fas fa-clock',
                         ],
                         // submenu de Médicos
+                    ],
+                ],
+                [
+                    'text'    => 'Medicamentos',
+                    'url'     => '#',
+                    'icon' => 'fas fa-fw fa-pills',
+                    'submenu' => [
+                        [
+                            'text' => 'Fabricantes',
+                            'url'  => 'fabricanteIndex',
+                            'icon' => 'fas fa-fw fa-flask'
+                        ],
+                        [
+                            'text' => 'Via Administração',
+                            'url'  => 'via_administracaoIndex',
+                            'icon' => 'fas fa-syringe',
+                        ],
+
+                        [
+                            'text' => 'Forma Farmaceutica',
+                            'url'  => 'forma_farmaceutica',
+                            'icon' => 'fas fa-capsules',
+                        ],
+                        //  Medicamentos
                     ],
                 ],
                 [
@@ -443,31 +455,7 @@ return [
                             'url'  => 'gravidadeIndex',
                             'icon' => 'fas fa-microscope',
 
-
-
-
-
-
                         ],
-                    ],
-                ],
-                [
-                    'text'    => 'Medicamentos',
-                    'url'     => '#',
-                    'icon' => 'fas fa-fw fa-pills',
-                    'submenu' => [
-                        [
-                            'text' => 'Via Administração',
-                            'url'  => 'via_administracaoIndex',
-                            'icon' => 'fas fa-syringe',
-                        ],
-
-                        [
-                            'text' => 'Forma Farmaceutica',
-                            'url'  => 'forma_farmaceutica',
-                            'icon' => 'fas fa-capsules',
-                        ],
-                        //  Medicamentos
                     ],
                 ],
 

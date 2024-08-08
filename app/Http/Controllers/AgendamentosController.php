@@ -29,7 +29,7 @@ class AgendamentosController extends Controller
         ])
         ->orderBy('dia')
         ->orderBy('horario')
-        ->paginate(10);
+        ->paginate(8);
 
         return view('agendamentos.marcados', compact('agendamentos'));
     }
