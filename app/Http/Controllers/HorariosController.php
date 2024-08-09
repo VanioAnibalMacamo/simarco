@@ -25,45 +25,43 @@ class HorariosController extends Controller
             return redirect()->back()->with('error', 'Dia não especificado.');
         }
 
-        // Inicializa o array de horários disponíveis
-        $horarios = [];
-        $horaInicio = Carbon::createFromTimeString('08:00:00');
-        $horaFim = Carbon::createFromTimeString('15:30:00');
+        // Dentro do método index:
+$horarios = [];
+$horaInicio = Carbon::createFromTimeString('08:00:00');
+$horaFim = Carbon::createFromTimeString('15:30:00');
 
-        // Obter os horários já agendados para a data e disponibilidade
-        $agendamentos = Agendamento::where('dia', Carbon::createFromFormat('d/m/Y', $dia)->format('Y-m-d'))
-            ->whereHas('disponibilidades', function ($query) use ($disponibilidadeId) {
-                $query->where('disponibilidade_id', $disponibilidadeId);
-            })
-            ->pluck('horario')
-            ->map(function ($horario) {
-                return Carbon::createFromFormat('H:i:s', $horario)->format('H:i');
-            })
-            ->toArray();
+$agendamentos = Agendamento::where('dia', Carbon::createFromFormat('d/m/Y', $dia)->format('Y-m-d'))
+    ->whereHas('disponibilidades', function ($query) use ($disponibilidadeId) {
+        $query->where('disponibilidade_id', $disponibilidadeId);
+    })
+    ->pluck('horario')
+    ->map(function ($horario) {
+        return Carbon::createFromFormat('H:i:s', $horario)->format('H:i');
+    })
+    ->toArray();
 
-        while ($horaInicio < $horaFim) {
-            $horaFimIntervalo = $horaInicio->copy()->addMinutes(30)->format('H:i');
-            $inicioIntervalo = $horaInicio->format('H:i');
-            $horaInicio = $horaInicio->copy()->addMinutes(31);
-            if ($horaInicio > $horaFim) {
-                break;
-            }
+while ($horaInicio < $horaFim) {
+    $horaFimIntervalo = $horaInicio->copy()->addMinutes(30)->format('H:i');
+    $inicioIntervalo = $horaInicio->format('H:i');
+    $horaInicio = $horaInicio->copy()->addMinutes(31);
+    if ($horaInicio > $horaFim) {
+        break;
+    }
 
-            // Verificar se o horário está agendado
-            if (!in_array($inicioIntervalo, $agendamentos)) {
-                $horarios[] = [
-                    'start' => $inicioIntervalo,
-                    'end' => $horaFimIntervalo,
-                ];
-            }
-        }
+    $horarios[] = [
+        'start' => $inicioIntervalo,
+        'end' => $horaFimIntervalo,
+        'isBooked' => in_array($inicioIntervalo, $agendamentos), // Verifica se o horário está agendado
+    ];
+}
 
-        return view('horarios.index', [
-            'disponibilidade' => $disponibilidade,
-            'pacienteId' => $pacienteId,
-            'horarios' => $horarios,
-            'dia' => $dia
-        ]);
+return view('horarios.index', [
+    'disponibilidade' => $disponibilidade,
+    'pacienteId' => $pacienteId,
+    'horarios' => $horarios,
+    'dia' => $dia
+]);
+
     }
 
     public function store(Request $request)
