@@ -15,31 +15,7 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-    <!-- Exibir erros de validação -->
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <!-- Exibir mensagens de sucesso -->
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <!-- Exibir mensagens de erro genéricas -->
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
-
+    
 @stop
 
 @section('content')

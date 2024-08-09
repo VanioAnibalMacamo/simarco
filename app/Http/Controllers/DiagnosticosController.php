@@ -60,9 +60,11 @@ class DiagnosticosController extends Controller
 
 
             DB::commit();
-
-            return redirect()->route('prescricaoCreate', ['consultaId' => $consulta->id])
-                ->with('success', 'Diagnóstico cadastrado com sucesso!');
+            if (!session()->has('success')) {
+                session()->flash('success', 'Diagnóstico cadastrado com sucesso!');
+            }
+    
+            return redirect()->route('prescricaoCreate', ['consultaId' => $consulta->id]);
         } catch (\Exception $e) {
             DB::rollback();
 
