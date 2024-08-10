@@ -79,8 +79,6 @@ class ConsultaController extends Controller
 
     public function saveConsulta(Request $request)
     {
-        $validPaymentOptions = FormaPagamentoEnum::getValues();
-
         $request->validate([
             'data_consulta' => 'required|date_format:d/m/Y',
             'hora_inicio' => 'required|date_format:H:i',
@@ -89,19 +87,18 @@ class ConsultaController extends Controller
             'id_medico' => 'required|exists:medicos,id',
             'id_paciente' => 'required|exists:pacientes,id',
             'agendamento_id' => 'required|exists:agendamentos,id',
-         
+            'foto_1' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'foto_2' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
-
-     
+    
         $paciente = Paciente::find($request->input('id_paciente'));
-
-
+    
         try {
             // Formata os dados
             $data_consulta = Carbon::createFromFormat('d/m/Y', $request->input('data_consulta'))->format('Y-m-d');
             $hora_inicio = Carbon::createFromFormat('H:i', $request->input('hora_inicio'))->format('H:i:s');
             $hora_fim = Carbon::createFromFormat('H:i', $request->input('hora_fim'))->format('H:i:s');
-
+    
             // Cria a consulta
             $consulta = Consulta::create([
                 'data_consulta' => $data_consulta,
@@ -110,43 +107,64 @@ class ConsultaController extends Controller
                 'observacoes' => $request->input('observacoes'),
                 'medico_id' => $request->input('id_medico'),
                 'paciente_id' => $request->input('id_paciente'),
-             //   'forma_pagamento' => FormaPagamentoEnum::from($request->input('formaPagamento'))->value,
                 'agendamento_id' => $request->input('agendamento_id'),
             ]);
-
+    
             // Atualiza o agendamento
             $agendamento = Agendamento::find($request->input('agendamento_id'));
-            $agendamento->update([
-                'consulta_id' => $consulta->id
-            ]);
-
-            // Verifica se é necessário fazer upload de um cartão de seguro de saúde
-            if ($request->hasFile('cartao_seguro_saude')) {
-                $pathPrincipal = storage_path('app/public/consultas/cartao_saude');
-                $originalFileName = $request->file('cartao_seguro_saude')->getClientOriginalName();
-                $nomePaciente = $paciente->nome;
-                $dataConsulta = $request->input('data_consulta');
-                $horaInicio = $request->input('hora_inicio');
-                $horaFim = $request->input('hora_fim');
-                $nomeArquivo = "{$nomePaciente}_{$dataConsulta}_{$horaInicio}_{$horaFim}_{$originalFileName}";
-
-                $request->file('cartao_seguro_saude')->storeAs('public/consultas/cartao_saude', $nomeArquivo);
-
-                // Atualiza o nome do arquivo na consulta
-                $consulta->update(['cartao_seguro_saude' => $nomeArquivo]);
+            $agendamento->update(['consulta_id' => $consulta->id]);
+    
+            // Processa o upload das fotos
+            $zipFileName = null;
+            $photos = [];
+            if ($request->hasFile('foto_1')) {
+                $photos[] = $request->file('foto_1');
             }
-
+            if ($request->hasFile('foto_2')) {
+                $photos[] = $request->file('foto_2');
+            }
+    
+            if (count($photos) > 0) {
+                $zipFileName = "{$paciente->nome}_{$data_consulta}_{$hora_inicio}_{$hora_fim}.zip";
+                $zipDirectoryPath = storage_path("app/public/consultas/zip_fotos_consultas");
+    
+                // Cria o diretório se não existir
+                if (!File::exists($zipDirectoryPath)) {
+                    File::makeDirectory($zipDirectoryPath, 0755, true);
+                }
+    
+                $zipFilePath = "{$zipDirectoryPath}/{$zipFileName}";
+    
+                $zip = new \ZipArchive();
+                if ($zip->open($zipFilePath, \ZipArchive::CREATE) === TRUE) {
+                    foreach ($photos as $photo) {
+                        $fileName = $photo->getClientOriginalName();
+                        $filePath = $photo->storeAs('public/consultas/temp', $fileName);
+                        $zip->addFile(storage_path("app/{$filePath}"), $fileName);
+                    }
+                    $zip->close();
+                    \Log::info("Arquivo ZIP criado com sucesso: {$zipFilePath}");
+                    // Remove os arquivos temporários após o zip ser criado
+                    foreach ($photos as $photo) {
+                        File::delete(storage_path("app/public/consultas/temp/{$photo->getClientOriginalName()}"));
+                    }
+                }
+    
+                // Atualiza o nome do arquivo ZIP na consulta
+                $consulta->update(['fotos_zip' => $zipFileName]);
+            }
+    
             return redirect('/agendamentosMarcados')->with('success', 'Consulta salva com sucesso!');
         } catch (\Exception $e) {
             \Log::error('Erro ao salvar a consulta.', [
                 'error_message' => $e->getMessage(),
                 'error_trace' => $e->getTraceAsString(),
             ]);
-
+    
             return redirect('/agendamentosMarcados')->with('error', 'Erro ao salvar a consulta. Por favor, verifique os dados e tente novamente.');
         }
     }
-
+    
 
     public function delete($id)
     {

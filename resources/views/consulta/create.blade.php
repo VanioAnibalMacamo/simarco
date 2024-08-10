@@ -83,7 +83,17 @@
                         <textarea class="form-control h-98" id="observacoes" name="observacoes" placeholder="Digite as observações da consulta...">{{ old('observacoes') }}</textarea>
                     </div>
                 </div>
-
+                
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="foto_1">Foto 1 (opcional)</label>
+                        <input type="file" class="form-control" id="foto_1" name="foto_1">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="foto_2">Foto 2 (opcional)</label>
+                        <input type="file" class="form-control" id="foto_2" name="foto_2">
+                    </div>
+                </div>
                 <div class="row">
                    
 

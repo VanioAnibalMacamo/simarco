@@ -17,7 +17,7 @@ class Consulta extends Model
         'observacoes',
         'medico_id',
         'paciente_id',
-        
+        'fotos_zip',  
         'agendamento_id',
     ];
 
