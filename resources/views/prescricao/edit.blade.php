@@ -75,11 +75,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="observacoes">Observações</label>
-                    <textarea class="form-control custom-textarea" id="observacoes" name='observacoes'
-                        placeholder="Digite as observações...">{{ old('observacoes', $prescricao->observacoes) }}</textarea>
-                </div>
+             
 
             </div>
 

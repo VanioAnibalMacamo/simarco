@@ -37,7 +37,7 @@ class PrescricaoController extends Controller
 
         $validator = \Validator::make($request->all(), [
             'data_prescricao' => 'required|date',
-            'observacoes' => 'nullable|string',
+           
             'consulta_id' => 'required|exists:consultas,id',
             'medicamentos' => 'required|array',
             'medicamentos.*' => 'exists:medicamentos,id',
@@ -70,7 +70,7 @@ class PrescricaoController extends Controller
 
         $prescricao = Prescricao::create([
             'data_prescricao' => $request->input('data_prescricao'),
-            'observacoes' => $request->input('observacoes'),
+          
             'consulta_id' => $request->input('consulta_id'),
         ]);
 
@@ -103,7 +103,7 @@ class PrescricaoController extends Controller
     {
         $request->validate([
             'data_prescricao' => 'required|date',
-            'observacoes' => 'nullable|string',
+           
             'medicamentos' => 'required|array',
             'dosagens' => ['array', function ($attribute, $value, $fail) use ($request) {
                 foreach ($request->input('medicamentos') as $medicamentoId) {
@@ -131,7 +131,7 @@ class PrescricaoController extends Controller
 
         $prescricao->update([
             'data_prescricao' => $request->input('data_prescricao'),
-            'observacoes' => $request->input('observacoes'),
+           
         ]);
 
         // Sincronize os medicamentos e suas informações na tabela pivot

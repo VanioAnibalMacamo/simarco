@@ -30,10 +30,7 @@
 
             </div>
 
-            <div class="form-group">
-                <label for="observacoes">Observações</label>
-                <textarea class="form-control" id="observacoes" name='observacoes' readonly>{{ $prescricao->observacoes }}</textarea>
-            </div>
+           
 
             <div class="form-group">
                 <label for="medicamentos">Medicamentos Prescritos</label>

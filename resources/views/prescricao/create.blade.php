@@ -89,6 +89,7 @@
                 </div>
             </div>
             <div class="form-group">
+                <hr>
                 <label>Medicamentos</label>
                 <div class="row">
                     @foreach ($medicamentos as $medicamento)
@@ -114,10 +115,7 @@
             </div>
 
 
-            <div class="form-group">
-                <label for="observacoes">Observações</label>
-                <textarea class="form-control h-100" id="observacoes" name='observacoes' placeholder="Digite as observações..."></textarea>
-            </div>
+           
 
     </div>
     <div class="card-footer">
