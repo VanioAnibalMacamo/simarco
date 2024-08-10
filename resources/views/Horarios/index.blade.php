@@ -49,6 +49,8 @@
                                 <input type="hidden" name="paciente_id" value="{{ $pacienteId }}">
                                 <input type="hidden" name="dia" value="{{ $dia }}">
                                 <input type="hidden" name="horario" value="{{ $horario['start'] }}">
+                                <input type="hidden" name="forma_pagamento" value="{{ $formaPagamento }}">
+
                                 <br>
                                 <br>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\FormaPagamentoEnum;
 use App\Models\Disponibilidade;
 use App\Models\Agendamento;
 use Illuminate\Http\Request;
@@ -12,6 +13,8 @@ class HorariosController extends Controller
 {
     public function index(Request $request, $disponibilidadeId)
     {
+        $formaPagamento = $request->input('formaPagamento');
+
         $pacienteId = $request->input('paciente_id');
         if (!$pacienteId) {
             return redirect()->back()->with('error', 'Paciente não selecionado.');
@@ -59,13 +62,16 @@ return view('horarios.index', [
     'disponibilidade' => $disponibilidade,
     'pacienteId' => $pacienteId,
     'horarios' => $horarios,
-    'dia' => $dia
+    'dia' => $dia,
+    'formaPagamento' => $formaPagamento
 ]);
 
     }
 
     public function store(Request $request)
     {
+        $validPaymentOptions = FormaPagamentoEnum::getValues();
+      
         Log::info('Dados recebidos para agendamento: ', $request->all());
 
         $request->validate([
@@ -73,6 +79,7 @@ return view('horarios.index', [
             'paciente_id' => 'required|exists:pacientes,id',
             'dia' => 'required|date_format:d/m/Y',
             'horario' => 'required|date_format:H:i',
+            'forma_pagamento' => 'required|in:' . implode(',', $validPaymentOptions), // Validando forma de pagamento
         ]);
 
         try {
@@ -86,6 +93,8 @@ return view('horarios.index', [
                 'paciente_id' => $request->input('paciente_id'),
                 'dia' => $data,
                 'horario' => $horario,
+                'forma_pagamento' => $request->input('forma_pagamento'), // Salvando forma de pagamento
+            
             ]);
 
             Log::info('Agendamento criado com sucesso.', ['agendamento_id' => $agendamento->id, 'horario' => $agendamento->horario]);

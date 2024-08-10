@@ -89,27 +89,12 @@ class ConsultaController extends Controller
             'id_medico' => 'required|exists:medicos,id',
             'id_paciente' => 'required|exists:pacientes,id',
             'agendamento_id' => 'required|exists:agendamentos,id',
-            'formaPagamento' => 'nullable|in:' . implode(',', $validPaymentOptions),
+         
         ]);
 
-        $formaPagamento = $request->input('formaPagamento');
+     
         $paciente = Paciente::find($request->input('id_paciente'));
 
-        // Verifica a forma de pagamento
-        if ($formaPagamento == 'Via Seguro de Saude') {
-            // Verifica se o paciente já possui um cartão de seguro de saúde registrado
-            if (!$paciente->cartao_seguro_saude) {
-                // Se o paciente não tiver um cartão registrado, exige o upload
-                if (!$request->hasFile('cartao_seguro_saude')) {
-                    return back()->with(['error' => 'O Paciente nao fez upload do cartao seguro saude e é obrigatório para "Via Seguro de Saude".'])->withInput();
-                }
-            }
-        } elseif ($formaPagamento == 'Via Empresa') {
-            // Verifica se o paciente tem uma empresa cadastrada
-            if (!$paciente->empresa) {
-                return back()->with(['error' => 'O Paciente nao possui uma empresa cadastrada e é obrigatório para "Via Empresa".'])->withInput();
-            }
-        }
 
         try {
             // Formata os dados
@@ -125,7 +110,7 @@ class ConsultaController extends Controller
                 'observacoes' => $request->input('observacoes'),
                 'medico_id' => $request->input('id_medico'),
                 'paciente_id' => $request->input('id_paciente'),
-                'forma_pagamento' => FormaPagamentoEnum::from($request->input('formaPagamento'))->value,
+             //   'forma_pagamento' => FormaPagamentoEnum::from($request->input('formaPagamento'))->value,
                 'agendamento_id' => $request->input('agendamento_id'),
             ]);
 

@@ -85,18 +85,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="form-group col-md-4">
-                        <label for="formaPagamento">Forma de Pagamento</label>
-                        <select class="form-control" id="formaPagamento" name="formaPagamento">
-                            <option value="">Selecione a Forma de Pagamento</option>
-                            @foreach(\App\Enums\FormaPagamentoEnum::getValues() as $formaPagamento)
-                                <option value="{{ $formaPagamento }}" {{ old('formaPagamento') == $formaPagamento ? 'selected' : '' }}>
-                                    {{ $formaPagamento }}
-                                </option>
-                            @endforeach
-                        </select>
-
-                    </div>
+                   
 
                 <!-- Campos ocultos para dados desativados -->
                 <input type="hidden" id="hidden_data_consulta" name="hidden_data_consulta" value="{{ old('hidden_data_consulta') }}">

@@ -72,12 +72,15 @@
                         </td>
                     </tr>
                 @endforeach
-
-                @if ($count > 1)
-                    {{ $pacientes->links('pagination::bootstrap-4') }}
-                @endif
             </tbody>
         </table>
+
+        <!-- Paginação -->
+        @if ($pacientes->hasPages())
+            <div class="d-flex justify-content-center">
+                {{ $pacientes->links('pagination::bootstrap-4') }}
+            </div>
+        @endif
     </div>
 </div>
 @stop
