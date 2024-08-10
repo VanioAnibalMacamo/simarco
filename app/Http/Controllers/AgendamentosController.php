@@ -96,6 +96,8 @@ class AgendamentosController extends Controller
         if (!$paciente) {
             throw new \Exception('Paciente não encontrado.');
         }
+        
+        
 
         $this->checkFormaPagamento($validatedData['forma_pagamento'], $paciente);
 

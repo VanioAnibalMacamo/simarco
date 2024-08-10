@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class RemoveIdStatusFromConsultasTable extends Migration
 {
@@ -13,9 +14,11 @@ class RemoveIdStatusFromConsultasTable extends Migration
      */
     public function up()
     {
-        Schema::table('consultas', function (Blueprint $table) {
-            $table->dropColumn('id_status');
-        });
+        if (Schema::hasColumn('consultas', 'id_status')) {
+            Schema::table('consultas', function (Blueprint $table) {
+                $table->dropColumn('id_status');
+            });
+        }
     }
 
     /**
@@ -25,8 +28,10 @@ class RemoveIdStatusFromConsultasTable extends Migration
      */
     public function down()
     {
-        Schema::table('consultas', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_status')->nullable();
-        });
+        if (!Schema::hasColumn('consultas', 'id_status')) {
+            Schema::table('consultas', function (Blueprint $table) {
+                $table->unsignedBigInteger('id_status')->nullable();
+            });
+        }
     }
 }
