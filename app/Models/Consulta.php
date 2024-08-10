@@ -1,10 +1,10 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Enums\FormaPagamentoEnum;
-use InvalidArgumentException;
+use Carbon\Carbon;
 
 class Consulta extends Model
 {
@@ -17,20 +17,19 @@ class Consulta extends Model
         'observacoes',
         'medico_id',
         'paciente_id',
-        'fotos_zip',  
+        'fotos_zip',
         'agendamento_id',
+        'foto_1',
+        'foto_2',
     ];
-
-   
 
     public function getDuracaoFormatadaAttribute()
     {
-        $horaInicio = \Carbon\Carbon::parse($this->hora_inicio);
-        $horaFim = \Carbon\Carbon::parse($this->hora_fim);
+        $horaInicio = Carbon::parse($this->hora_inicio);
+        $horaFim = Carbon::parse($this->hora_fim);
         $duracao = $horaInicio->diff($horaFim);
 
         $duracaoFormatada = '';
-
         if ($duracao->h > 0) {
             $duracaoFormatada .= ($duracao->h == 1) ? '1 hora' : $duracao->h . ' horas';
         }
@@ -75,6 +74,4 @@ class Consulta extends Model
     {
         return $this->belongsTo(Agendamento::class, 'agendamento_id');
     }
-
-   
 }

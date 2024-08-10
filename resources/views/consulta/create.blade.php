@@ -77,21 +77,18 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label for="observacoes">Observações</label>
-                        <textarea class="form-control h-98" id="observacoes" name="observacoes" placeholder="Digite as observações da consulta...">{{ old('observacoes') }}</textarea>
-                    </div>
-                </div>
-                
+             
+
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="foto_1">Foto 1 (opcional)</label>
                         <input type="file" class="form-control" id="foto_1" name="foto_1">
+                        <div id="foto_1_preview" class="mt-2"></div>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="foto_2">Foto 2 (opcional)</label>
                         <input type="file" class="form-control" id="foto_2" name="foto_2">
+                        <div id="foto_2_preview" class="mt-2"></div>
                     </div>
                 </div>
                 <div class="row">
@@ -119,51 +116,74 @@
 @stop
 
 @section('js')
+ 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const pacienteId = urlParams.get('paciente_id');
-            const medicoId = urlParams.get('medico_id');
-            const dataConsulta = urlParams.get('data_consulta');
-            const horaInicio = urlParams.get('hora_inicio');
+    document.addEventListener("DOMContentLoaded", function() {
+        // Preencher campos a partir da URL (já existente)
+        const urlParams = new URLSearchParams(window.location.search);
+        const pacienteId = urlParams.get('paciente_id');
+        const medicoId = urlParams.get('medico_id');
+        const dataConsulta = urlParams.get('data_consulta');
+        const horaInicio = urlParams.get('hora_inicio');
 
-            if (pacienteId && medicoId && dataConsulta && horaInicio) {
-                // Preencher os campos com os valores da URL
-                document.getElementById('data_consulta').value = dataConsulta;
-                document.getElementById('hora_inicio').value = horaInicio;
+        if (pacienteId && medicoId && dataConsulta && horaInicio) {
+            document.getElementById('data_consulta').value = dataConsulta;
+            document.getElementById('hora_inicio').value = horaInicio;
 
-                // Calcular e preencher a hora de fim
-                const [hora, minuto] = horaInicio.split(':').map(Number);
-                const horaInicioObj = new Date();
-                horaInicioObj.setHours(hora, minuto, 0, 0); // Define hora e minuto
-                const horaFimObj = new Date(horaInicioObj.getTime() + 30 * 60 * 1000); // Adiciona 30 minutos
-                const horaFim = `${horaFimObj.getHours().toString().padStart(2, '0')}:${horaFimObj.getMinutes().toString().padStart(2, '0')}`; // Formata para HH:mm
+            const [hora, minuto] = horaInicio.split(':').map(Number);
+            const horaInicioObj = new Date();
+            horaInicioObj.setHours(hora, minuto, 0, 0);
+            const horaFimObj = new Date(horaInicioObj.getTime() + 30 * 60 * 1000);
+            const horaFim = `${horaFimObj.getHours().toString().padStart(2, '0')}:${horaFimObj.getMinutes().toString().padStart(2, '0')}`;
 
-                document.getElementById('hora_fim').value = horaFim;
-                // Selecionar os pacientes e médicos corretos
-                document.getElementById('id_paciente').value = pacienteId;
-                document.getElementById('id_medico').value = medicoId;
+            document.getElementById('hora_fim').value = horaFim;
+            document.getElementById('id_paciente').value = pacienteId;
+            document.getElementById('id_medico').value = medicoId;
 
-                // Preencher os campos ocultos
-                document.getElementById('hidden_data_consulta').value = dataConsulta;
-                document.getElementById('hidden_hora_inicio').value = horaInicio;
-                document.getElementById('hidden_hora_fim').value = horaFim;
-                document.getElementById('hidden_id_paciente').value = pacienteId;
-                document.getElementById('hidden_id_medico').value = medicoId;
+            document.getElementById('hidden_data_consulta').value = dataConsulta;
+            document.getElementById('hidden_hora_inicio').value = horaInicio;
+            document.getElementById('hidden_hora_fim').value = horaFim;
+            document.getElementById('hidden_id_paciente').value = pacienteId;
+            document.getElementById('hidden_id_medico').value = medicoId;
 
-                // Desabilitar os campos
-                document.getElementById('data_consulta').disabled = true;
-                document.getElementById('hora_inicio').disabled = true;
-                document.getElementById('hora_fim').disabled = true;
-                document.getElementById('id_paciente').disabled = true;
-                document.getElementById('id_medico').disabled = true;
-            }
-        });
-    </script>
+            document.getElementById('data_consulta').disabled = true;
+            document.getElementById('hora_inicio').disabled = true;
+            document.getElementById('hora_fim').disabled = true;
+            document.getElementById('id_paciente').disabled = true;
+            document.getElementById('id_medico').disabled = true;
+        }
 
-    <script>
-        setTimeout(function() {
-            document.querySelector('.alert').remove();
-        }, 5000);
-    </script>
+        // Função para mostrar pré-visualizações das imagens
+        function previewFile(inputId, previewId) {
+            const fileInput = document.getElementById(inputId);
+            const previewContainer = document.getElementById(previewId);
+            
+            fileInput.addEventListener('change', function(event) {
+                const files = event.target.files;
+                previewContainer.innerHTML = ''; // Limpa pré-visualização existente
+
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.width = '100px'; // Ajuste o tamanho conforme necessário
+                        img.style.height = '100px'; // Ajuste o tamanho conforme necessário
+                        img.style.marginRight = '10px';
+                        previewContainer.appendChild(img);
+                    };
+
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Inicializa pré-visualização para os campos de foto
+        previewFile('foto_1', 'foto_1_preview');
+        previewFile('foto_2', 'foto_2_preview');
+    });
+</script>
+
 @stop

@@ -7,6 +7,7 @@ use App\Models\Agendamento;
 use App\Models\Medico;
 use App\Models\Paciente;
 use App\Models\StatusConsulta;
+use Illuminate\Support\Facades\Storage; 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Consulta;
@@ -83,121 +84,75 @@ class ConsultaController extends Controller
             'data_consulta' => 'required|date_format:d/m/Y',
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fim' => 'required|date_format:H:i|after:hora_inicio',
-            'observacoes' => 'nullable|string',
             'id_medico' => 'required|exists:medicos,id',
             'id_paciente' => 'required|exists:pacientes,id',
             'agendamento_id' => 'required|exists:agendamentos,id',
             'foto_1' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'foto_2' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
-    
+
         $paciente = Paciente::find($request->input('id_paciente'));
-    
+
         try {
             // Formata os dados
             $data_consulta = Carbon::createFromFormat('d/m/Y', $request->input('data_consulta'))->format('Y-m-d');
             $hora_inicio = Carbon::createFromFormat('H:i', $request->input('hora_inicio'))->format('H:i:s');
-            $hora_fim = Carbon::createFromFormat('H:i', $request->input('hora_fim'))->format('H:i:s');
-    
+            $hora_inicio_formatada = Carbon::createFromFormat('H:i:s', $hora_inicio)->format('H-i'); // Formata hora para nome de diretório
+            $hora_inicio_formatada = preg_replace('/[^A-Za-z0-9\-]/', '_', $hora_inicio_formatada);
+
+            // Nome do paciente
+            $pacienteNome = preg_replace('/[^A-Za-z0-9\-]/', '_', $paciente->nome);
+
+            // Define o diretório
+            $pacienteDiretorio = 'public/fotos_consultas/' . $pacienteNome . '_' . $data_consulta . '_' . $hora_inicio_formatada;
+            if (!Storage::exists($pacienteDiretorio)) {
+                Storage::makeDirectory($pacienteDiretorio);
+            }
+
+            // Inicializa variáveis para as fotos
+            $foto1Path = null;
+            $foto2Path = null;
+
+            // Processa foto_1
+            if ($request->hasFile('foto_1')) {
+                $foto1 = $request->file('foto_1');
+                $foto1Nome = $pacienteNome . '_foto1.' . $foto1->getClientOriginalExtension();
+                $foto1Path = $foto1->storeAs($pacienteDiretorio, $foto1Nome);
+            }
+
+            // Processa foto_2
+            if ($request->hasFile('foto_2')) {
+                $foto2 = $request->file('foto_2');
+                $foto2Nome = $pacienteNome . '_foto2.' . $foto2->getClientOriginalExtension();
+                $foto2Path = $foto2->storeAs($pacienteDiretorio, $foto2Nome);
+            }
+
             // Cria a consulta
             $consulta = Consulta::create([
                 'data_consulta' => $data_consulta,
                 'hora_inicio' => $hora_inicio,
-                'hora_fim' => $hora_fim,
-                'observacoes' => $request->input('observacoes'),
+                'hora_fim' => $request->input('hora_fim'),
                 'medico_id' => $request->input('id_medico'),
                 'paciente_id' => $request->input('id_paciente'),
                 'agendamento_id' => $request->input('agendamento_id'),
+                'foto_1' => $foto1Path,
+                'foto_2' => $foto2Path,
             ]);
-    
+
             // Atualiza o agendamento
             $agendamento = Agendamento::find($request->input('agendamento_id'));
             $agendamento->update(['consulta_id' => $consulta->id]);
-    
-            // Processa o upload das fotos
-            $zipFileName = null;
-            $photos = [];
-            if ($request->hasFile('foto_1')) {
-                $photos[] = $request->file('foto_1');
-            }
-            if ($request->hasFile('foto_2')) {
-                $photos[] = $request->file('foto_2');
-            }
-    
-            if (count($photos) > 0) {
-                $zipFileName = "{$paciente->nome}_{$data_consulta}_{$hora_inicio}_{$hora_fim}.zip";
-                $zipDirectoryPath = storage_path("app/public/consultas/zip_fotos_consultas");
-    
-                // Cria o diretório se não existir
-                if (!File::exists($zipDirectoryPath)) {
-                    File::makeDirectory($zipDirectoryPath, 0755, true);
-                }
-    
-                $zipFilePath = "{$zipDirectoryPath}/{$zipFileName}";
-    
-                $zip = new \ZipArchive();
-                if ($zip->open($zipFilePath, \ZipArchive::CREATE) === TRUE) {
-                    foreach ($photos as $photo) {
-                        $fileName = $photo->getClientOriginalName();
-                        $filePath = $photo->storeAs('public/consultas/temp', $fileName);
-                        $zip->addFile(storage_path("app/{$filePath}"), $fileName);
-                    }
-                    $zip->close();
-                    \Log::info("Arquivo ZIP criado com sucesso: {$zipFilePath}");
-                    // Remove os arquivos temporários após o zip ser criado
-                    foreach ($photos as $photo) {
-                        File::delete(storage_path("app/public/consultas/temp/{$photo->getClientOriginalName()}"));
-                    }
-                }
-    
-                // Atualiza o nome do arquivo ZIP na consulta
-                $consulta->update(['fotos_zip' => $zipFileName]);
-            }
-    
+
             return redirect('/agendamentosMarcados')->with('success', 'Consulta salva com sucesso!');
         } catch (\Exception $e) {
             \Log::error('Erro ao salvar a consulta.', [
                 'error_message' => $e->getMessage(),
                 'error_trace' => $e->getTraceAsString(),
             ]);
-    
+
             return redirect('/agendamentosMarcados')->with('error', 'Erro ao salvar a consulta. Por favor, verifique os dados e tente novamente.');
         }
     }
-    
-
-    public function delete($id)
-    {
-        $consulta = Consulta::findOrFail($id);
-        $consulta->delete();
-
-        return redirect('/consultaIndex')->with('successDelete', 'Consulta excluída com sucesso!');
-    }
-
-    public function show($id)
-    {
-        $consulta = Consulta::with(['medico', 'paciente', 'diagnostico', 'prescricao'])->findOrFail($id);
-        $statusConsulta = $consulta->statusConsulta;
-        $consulta->load('paciente');
-        $consulta->load('medico');
-        $diagnostico = $consulta->diagnostico;
-        $prescricao = $consulta->prescricao;
-
-        return view('consulta.view', compact('consulta', 'statusConsulta', 'diagnostico', 'prescricao'));
-    }
-
-    public function edit($id)
-    {
-        $consulta = Consulta::findOrFail($id);
-        $statusConsultas = StatusConsulta::all();
-        $pacientes = Paciente::all();
-        $medicos = Medico::all();
-        $diagnostico = $consulta->diagnostico;
-        $prescricao = $consulta->prescricao;
-
-        return view('consulta.edit', compact('consulta',  'pacientes', 'medicos', 'diagnostico', 'prescricao'));
-    }
-
     public function update(Request $request, $id)
     {
         try {

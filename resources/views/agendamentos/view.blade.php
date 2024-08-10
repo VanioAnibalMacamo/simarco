@@ -61,32 +61,6 @@
                             value="{{ $consulta->duracaoFormatada }}" readonly>
                     </div>
                 </div>
-
-                <!-- Novos campos adicionados -->
-                <div class="row mt-3">
-                    <div class="form-group col-md-4">
-                        <label for="formaPagamento">Forma de Pagamento</label>
-                        <input type="text" class="form-control" id="formaPagamento" name="formaPagamento"
-                            value="{{ $consulta->forma_pagamento }}" readonly>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="empresa">Empresa</label>
-                        <input type="text" class="form-control" id="empresa" name="empresa"
-                            value="{{ $consulta->empresa }}" readonly>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="codigoFuncionario">Código do Funcionário</label>
-                        <input type="text" class="form-control" id="codigoFuncionario" name="codigoFuncionario"
-                            value="{{ $consulta->codigo_funcionario }}" readonly>
-                    </div>
-                </div>
-
-                <div class="row mt-3">
-                    <div class="form-group col-md-12">
-                        <label for="observacoes">Observações</label>
-                        <textarea class="form-control h-100" id="observacoes" name='observacoes' readonly>{{ $consulta->observacoes }}</textarea>
-                    </div>
-                </div>
             @endif
 
             @if ($diagnostico)
