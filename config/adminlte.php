@@ -329,50 +329,51 @@ return [
             //'text' => 'Consultas Agendadas',
             'text' => ' Consultas',
             'url'  => 'agendamentosMarcados',
-           // 'icon' => 'fas fa-calendar-alt',
-           'icon' => 'fas fa-fw fa-stethoscope',
+            'icon' => 'fas fa-fw fa-stethoscope',
+             'can'  => 'view consultas'
+
         ],
         [
             'text' => 'Pacientes',
             'url'  => 'pacienteIndex',
             'icon' => 'fas fa-fw fa-user-injured',
+               'can'  => 'view pacientes'
         ],
         [
             'text' => ' Médicos',
             'url'  => 'medicoIndex',
             'icon' => 'fas fa-fw fa-user-md',
+            'can'  => 'view medicos'
         ],
 
         [
             'text' => 'Diagnósticos',
             'url'  => 'diagnosticoIndex',
-            'icon' => 'fas fa-fw fa-notes-medical'
+            'icon' => 'fas fa-fw fa-notes-medical',
+            'can'  => 'view diagnosticos'
         ],
 
         [
             'text' => 'Prescrições',
             'url'  => 'prescricaoIndex',
-            'icon' => 'fas fa-fw fa-file-medical-alt'
+            'icon' => 'fas fa-fw fa-file-medical-alt',
+            'can'  => 'view prescricoes'
         ],
 
-/*
-        [
-            'text' => ' Consultas',
-            'url'  => 'consultaIndex',
-            'icon' => 'fas fa-fw fa-stethoscope',
-        ],
-*/
         [
             'text' => 'Medicamentos',
             'url'  => 'medicamentoIndex',
             'icon' => 'fas fa-fw fa-pills',
+            'can'  => 'view medicamentos'
         ],
 
+        /*
         [
             'text' => 'Sintomas e Queixas',
             'url'  => 'sintomasIndex',
             'icon' => 'fas fa-fw fa-thermometer-half'
         ],
+        */
 
         [
             'text'    => 'Gestão',
@@ -388,16 +389,19 @@ return [
                             'text' => 'Users',
                             'icon' => 'fas fa-user-circle',
                             'url'  => 'users',
+                            'can'  => 'view users'
                         ],
                         [
                             'text' => 'Roles',
                             'icon' => 'fas fa-user-tag',
                             'url'  => 'roles',
+                             'can'  => 'view roles'
                         ],
                         [
                             'text' => 'Permissions',
                             'icon' => 'fas fa-key',
                             'url'  => 'permissions',
+                            'can'  => 'view permissions'
                         ],
                     ],
                 ],

@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\DB;
 
 class EmpresaSeeder extends Seeder
 {
@@ -13,7 +12,7 @@ class EmpresaSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('empresas')->insert([
+        $empresas = [
             [
                 'nome' => 'Vodacom Moçambique',
                 'sigla' => 'VM',
@@ -59,6 +58,13 @@ class EmpresaSeeder extends Seeder
                 'contacto2' => '842500000',
                 'localizacao' => 'Tete, Moçambique',
             ],
-        ]);
+        ];
+
+        foreach ($empresas as $empresa) {
+            // Verificar se a empresa já existe com base no 'nuit'
+            if (!DB::table('empresas')->where('nuit', $empresa['nuit'])->exists()) {
+                DB::table('empresas')->insert($empresa);
+            }
+        }
     }
 }
