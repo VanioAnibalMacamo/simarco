@@ -45,6 +45,9 @@ class RolesTableSeeder extends Seeder
 
                 //Parametrizacao e Gestao
                 'view Parametrizacao', 'View gestao',
+
+                //Dashborad
+                'view dashboard',
             ],
             'manager' => [
                 // Usuários
@@ -74,8 +77,11 @@ class RolesTableSeeder extends Seeder
                 // Medicamentos
                 'view medicamentos', 'edit medicamentos',
 
-                  //Parametrizacao e Gestao
-                  'view Parametrizacao', 'View gestao',
+                //Parametrizacao e Gestao
+                'view Parametrizacao', 'View gestao',
+
+                //Dashborad
+                'view dashboard',
             ],
             'user' => [
                 // Consultas

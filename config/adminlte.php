@@ -323,22 +323,15 @@ return [
             'text' => 'DashBoard',
             'url'  => 'dashboard',
             'icon' => 'fas fa-chart-bar',
+            'can'  => 'view dashboard'
         ],
 
-        /*
-        [
-            'text' => 'Video Conferencia',
-            'url'  => 'videoconferencia',
-            'icon' => 'fas fa-video',
-        ],
-        */
         [
             //'text' => 'Consultas Agendadas',
             'text' => ' Consultas',
             'url'  => 'agendamentosMarcados',
             'icon' => 'fas fa-fw fa-stethoscope',
              'can'  => 'view consultas'
-
         ],
         [
             'text' => 'Pacientes',

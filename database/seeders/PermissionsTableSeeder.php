@@ -72,7 +72,10 @@ class PermissionsTableSeeder extends Seeder
             'View gestao',
 
             //Parametrizacao
-            'view Parametrizacao'
+            'view Parametrizacao',
+
+            //Dashborad
+            'view dashboard',
         ];
 
         foreach ($permissions as $permission) {
