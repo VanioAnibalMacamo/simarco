@@ -374,7 +374,35 @@ return [
             'icon' => 'fas fa-fw fa-thermometer-half'
         ],
 
+        [
+            'text'    => 'Gestão',
+            'icon'    => 'fas fa-cogs',
 
+            'submenu' => [
+
+                [
+                    'text'    => 'Users',
+                    'icon' => 'fas fa-regular fa-users',
+                    'submenu' => [
+                        [
+                            'text' => 'Users',
+                            'icon' => 'fas fa-user-circle',
+                            'url'  => 'users',
+                        ],
+                        [
+                            'text' => 'Roles',
+                            'icon' => 'fas fa-user-tag',
+                            'url'  => 'roleIndex',
+                        ],
+                        [
+                            'text' => 'Permissions',
+                            'icon' => 'fas fa-key',
+                            'url'  => 'permIndex',
+                        ],
+                    ],
+                ],
+            ],
+        ],
 
         [
             'text'    => 'Parametrização',
@@ -428,7 +456,6 @@ return [
                     'icon' => 'fas fa-fw fa-building', // Ícone de empresa
                 ],
 
-
                 [
                     'text'    => 'Consultas',
                     'url'     => '#',
@@ -442,7 +469,6 @@ return [
                         //  submenu de Consultas
                     ],
                 ],
-
 
                 [
                     'text' => 'Sintomas e Queixas',

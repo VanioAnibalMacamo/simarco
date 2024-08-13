@@ -21,6 +21,7 @@ use App\Http\Controllers\AgendamentosController;
 use App\Http\Controllers\VideoConferenciaController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -188,3 +189,4 @@ Route::delete('empresas/{empresa}', [EmpresaController::class, 'destroy'])->name
 Route::get('send-email/{toEmail}/{message}/{subject}', [EmailController::class, 'sendEmail']);
 Route::get('test-email', [EmailController::class, 'testEmail']);
 
+Route::resource('users', UserController::class);

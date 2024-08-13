@@ -7,7 +7,7 @@ use App\Models\Agendamento;
 use App\Models\Medico;
 use App\Models\Paciente;
 use App\Models\StatusConsulta;
-use Illuminate\Support\Facades\Storage; 
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Consulta;
