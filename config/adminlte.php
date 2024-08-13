@@ -314,10 +314,17 @@ return [
 
         ['header' => 'MENU PRINCIPAL'],
         [
-            'text' => 'Pagina Principal Paciente',
-            'url'  => 'pacienteTipoConsulta',
-            //'icon' => 'fas fa-fw fa-user-injured',
+            'text' => 'Home',
+            'url'  => 'home',
+            'icon' => 'fas fa-home', // Ícone de Home
         ],
+
+        [
+            'text' => 'DashBoard',
+            'url'  => 'dashboard',
+            'icon' => 'fas fa-chart-bar',
+        ],
+
         /*
         [
             'text' => 'Video Conferencia',
