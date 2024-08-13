@@ -66,7 +66,13 @@ class PermissionsTableSeeder extends Seeder
             'view medicamentos',
             'create medicamentos',
             'edit medicamentos',
-            'delete medicamentos'
+            'delete medicamentos',
+
+            //Gestao
+            'View gestao',
+
+            //Parametrizacao
+            'view Parametrizacao'
         ];
 
         foreach ($permissions as $permission) {

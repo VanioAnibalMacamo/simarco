@@ -41,7 +41,10 @@ class RolesTableSeeder extends Seeder
                 'view prescricoes', 'create prescricoes', 'edit prescricoes', 'delete prescricoes',
 
                 // Medicamentos
-                'view medicamentos', 'create medicamentos', 'edit medicamentos', 'delete medicamentos'
+                'view medicamentos', 'create medicamentos', 'edit medicamentos', 'delete medicamentos',
+
+                //Parametrizacao e Gestao
+                'view Parametrizacao', 'View gestao',
             ],
             'manager' => [
                 // Usuários
@@ -69,7 +72,10 @@ class RolesTableSeeder extends Seeder
                 'view prescricoes', 'edit prescricoes',
 
                 // Medicamentos
-                'view medicamentos', 'edit medicamentos'
+                'view medicamentos', 'edit medicamentos',
+
+                  //Parametrizacao e Gestao
+                  'view Parametrizacao', 'View gestao',
             ],
             'user' => [
                 // Consultas

@@ -378,12 +378,13 @@ return [
         [
             'text'    => 'Gestão',
             'icon'    => 'fas fa-cogs',
-
+            'can'  => 'View gestao',
             'submenu' => [
 
                 [
                     'text'    => 'Users',
                     'icon' => 'fas fa-regular fa-users',
+
                     'submenu' => [
                         [
                             'text' => 'Users',
@@ -411,6 +412,7 @@ return [
         [
             'text'    => 'Parametrização',
             'icon'    => 'fas fa-tools',
+            'can'  => 'view Parametrizacao',
             'submenu' => [
                 [
                     'text'    => 'Médicos',
