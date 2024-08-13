@@ -8,6 +8,9 @@ use App\Models\Agendamento;
 use App\Models\Paciente;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\EmailController;
 
 class AgendamentosController extends Controller
 {
@@ -46,35 +49,66 @@ class AgendamentosController extends Controller
     {
         // Valida os dados recebidos
         $validatedData = $this->validateRequest($request);
-    
+
         // Busca o paciente
         $paciente = Paciente::find($validatedData['paciente_id']);
-    
+
         // Verifica a forma de pagamento e obtém erros, se houver
         $error = $this->checkFormaPagamento($validatedData['forma_pagamento'], $paciente);
-    
+
         if ($error) {
             // Se houver um erro, redireciona com a mensagem de erro
             return back()->with(['error' => $error])->withInput();
         }
-    
+
         try {
             // Cria o agendamento com os dados validados
             $agendamento = $this->createAgendamento($validatedData);
-    
+
             // Associa a disponibilidade ao agendamento, se necessário
             $this->associateDisponibilidade($agendamento, $validatedData['disponibilidade_id']);
-    
+
             // Processa o upload do cartão de seguro de saúde, se necessário
             $this->processarUploadCartao($request, $agendamento);
-    
-            return redirect()->route('agendamentosMarcados')->with('success', 'Agendamento criado com sucesso!');
+
+            // Formata o dia para o formato dd/mm/aaaa
+            $diaFormatado = Carbon::parse($agendamento->dia)->format('d/m/Y');
+            // Formata a hora para o formato HH:mm (sem segundos)
+            $horaFormatada = Carbon::parse($agendamento->horario)->format('H:i');
+
+            // Formata o texto do e-mail
+            $mensagem = "Caro(a) " . $paciente->nome . ", a sua consulta foi marcada para o dia " . $diaFormatado . " às " . $horaFormatada . ". Deve entrar no sistema e acessar a teleconsulta.\n\nMelhores cumprimentos,\nO nosso maior valor é a vida.";
+
+            // Define o assunto do e-mail
+            $assunto = "Marcação de Consulta";
+
+            // Cria uma instância do controlador de e-mail
+            $emailController = new EmailController();
+
+            // Cria uma requisição simulada
+            $requestEmail = Request::create('/send-email', 'POST', [
+                'toEmail' => $paciente->email,
+                'message' => $mensagem,
+                'subject' => $assunto
+            ]);
+
+            // Chama o método sendEmail e obtém a resposta
+            $response = $emailController->sendEmail($requestEmail);
+
+            // Processa a resposta
+            if ($response->status() == 200) {
+                return back()->with(['success' => 'Consulta marcada e e-mail enviado com sucesso!']);
+            } else {
+                $responseData = $response->json();
+                return back()->with(['error' => $responseData['message']])->withInput();
+            }
+
         } catch (\Exception $e) {
             // Redireciona de volta com a mensagem de erro em caso de exceção
             return back()->with(['error' => 'Erro ao criar agendamento: ' . $e->getMessage()])->withInput();
         }
     }
-    
+
     private function validateRequest(Request $request)
     {
         $validPaymentOptions = FormaPagamentoEnum::getValues();
@@ -96,8 +130,8 @@ class AgendamentosController extends Controller
         if (!$paciente) {
             throw new \Exception('Paciente não encontrado.');
         }
-        
-        
+
+
 
         $this->checkFormaPagamento($validatedData['forma_pagamento'], $paciente);
 
@@ -109,14 +143,14 @@ class AgendamentosController extends Controller
         if ($formaPagamento == 'Via Seguro de Saude' && !$paciente->cartao_seguro_saude) {
             return 'O Paciente nao fez upload do cartao seguro saude e é obrigatório para "Via Seguro de Saude".';
         }
-    
+
         if ($formaPagamento == 'Via Empresa' && !$paciente->empresa) {
             return 'O Paciente nao possui uma empresa cadastrada e é obrigatório para "Via Empresa".';
         }
-    
+
         return null;
     }
-    
+
 
     private function createAgendamento(array $data)
     {
