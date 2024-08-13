@@ -22,6 +22,11 @@ use App\Http\Controllers\VideoConferenciaController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -190,3 +195,5 @@ Route::get('send-email/{toEmail}/{message}/{subject}', [EmailController::class, 
 Route::get('test-email', [EmailController::class, 'testEmail']);
 
 Route::resource('users', UserController::class);
+Route::resource('roles', RoleController::class);
+Route::resource('permissions', PermissionController::class);

@@ -392,12 +392,12 @@ return [
                         [
                             'text' => 'Roles',
                             'icon' => 'fas fa-user-tag',
-                            'url'  => 'roleIndex',
+                            'url'  => 'roles',
                         ],
                         [
                             'text' => 'Permissions',
                             'icon' => 'fas fa-key',
-                            'url'  => 'permIndex',
+                            'url'  => 'permissions',
                         ],
                     ],
                 ],

@@ -19,9 +19,11 @@
 @section('content')
 
     <div class="d-flex flex-row-reverse align-items-end mb-3">
-        <a href="{{ route('users.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Create User
-        </a>
+        @can('create users', App\Models\User::class)
+            <a href="{{ route('users.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Create User
+            </a>
+        @endcan
     </div>
 
     <div class="card">
@@ -42,21 +44,33 @@
                             <td>{{ $user->id }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $user->roles->pluck('name')->implode(', ') }}</td>
                             <td>
-                                <a class="btn btn-info btn-sm d-inline mr-1"
-                                    href="{{ route('users.edit', $user->id) }}">
-                                    <i class="fas fa-pencil-alt"></i>
-                                </a>
+                                @if ($user->roles->isNotEmpty())
+                                    @foreach ($user->roles as $role)
+                                        <span class="badge badge-primary">{{ ucfirst($role->name) }}</span>
+                                    @endforeach
+                                @else
+                                    <span class="badge badge-danger">Role não atribuída</span>
+                                @endif
+                            </td>
+                            <td>
+                                @can('edit users', $user)
+                                    <a class="btn btn-info btn-sm d-inline mr-1"
+                                        href="{{ route('users.edit', $user->id) }}">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                @endcan
 
-                                <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline" id="form-excluir-user-{{ $user->id }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm"
-                                        onclick="confirmDeleteUser(event, '{{ $user->name }}', {{ $user->id }})">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
+                                @can('delete users', $user)
+                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline" id="form-excluir-user-{{ $user->id }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="confirmDeleteUser(event, '{{ $user->name }}', {{ $user->id }})">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                @endcan
                             </td>
                         </tr>
                     @endforeach
