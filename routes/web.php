@@ -20,7 +20,7 @@ use App\Http\Controllers\DisponibilidadeController;
 use App\Http\Controllers\AgendamentosController;
 use App\Http\Controllers\VideoConferenciaController;
 use App\Http\Controllers\EmpresaController;
-
+use App\Http\Controllers\EmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -177,7 +177,6 @@ Route::get('/horarios/{disponibilidade}', [HorariosController::class, 'index'])-
 
 Route::get('/visualizar_agendamento/{id}', [AgendamentosController::class, 'show'])->name('agendamentos.show');
 
-
 Route::get('empresas', [EmpresaController::class, 'index'])->name('empresas.index');
 Route::get('empresas/create', [EmpresaController::class, 'create'])->name('empresas.create');
 Route::post('empresas', [EmpresaController::class, 'store'])->name('empresas.store');
@@ -186,4 +185,6 @@ Route::get('empresas/{empresa}/edit', [EmpresaController::class, 'edit'])->name(
 Route::put('empresas/{empresa}', [EmpresaController::class, 'update'])->name('empresas.update');
 Route::delete('empresas/{empresa}', [EmpresaController::class, 'destroy'])->name('empresas.destroy');
 
+Route::get('send-email/{toEmail}/{message}/{subject}', [EmailController::class, 'sendEmail']);
+Route::get('test-email', [EmailController::class, 'testEmail']);
 
