@@ -32,9 +32,10 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
+                        <th>User Name</th>
                         <th>Email</th>
                         <th>Role</th>
+                        <th>Tipo</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -54,6 +55,32 @@
                                 @endif
                             </td>
                             <td>
+                                @if ($user->tipo === 'Nenhum')
+                                    <span class="badge badge-danger">{{ $user->tipo }}</span>
+                                @elseif ($user->tipo === 'Médico')
+                                    <span class="badge badge-primary">{{ $user->tipo }}</span>
+                                @elseif ($user->tipo === 'Paciente')
+                                    <span class="badge badge-warning">{{ $user->tipo }}</span>
+                                @else
+                                    <span class="badge badge-secondary">{{ $user->tipo }}</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($user->tipo === 'Médico')
+                                <a class="btn btn-success btn-sm d-inline mr-1"
+                                    href="{{ route('medico.show', $user->id) }}"
+                                    title="View Médico">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                @elseif ($user->tipo === 'Paciente')
+                                    <a class="btn btn-success btn-sm d-inline mr-1"
+                                    href="{{ route('paciente.show', $user->id) }}"
+                                    title="View Paciente">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                @endif
+
+
                                 @can('edit users', $user)
                                     <a class="btn btn-info btn-sm d-inline mr-1"
                                         href="{{ route('users.edit', $user->id) }}">
@@ -71,6 +98,7 @@
                                         </button>
                                     </form>
                                 @endcan
+
                             </td>
                         </tr>
                     @endforeach

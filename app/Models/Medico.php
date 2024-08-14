@@ -31,4 +31,9 @@ class Medico extends Model
     {
         return $this->hasMany(Disponibilidade::class);
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'medico_id');
+    }
 }

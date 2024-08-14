@@ -17,7 +17,7 @@ class Paciente extends Model
         'endereco',
         'telefone',
         'email',
-        'empresa_id', 
+        'empresa_id',
         'codigo_funcionario',
         'cartao_seguro_saude',
     ];
@@ -36,5 +36,10 @@ class Paciente extends Model
     public function empresa()
     {
         return $this->belongsTo(Empresa::class);
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'paciente_id');
     }
 }

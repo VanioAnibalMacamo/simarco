@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
+use App\Models\Medico;
+use App\Models\Paciente;
 
 class UserController extends Controller
 {
@@ -18,10 +20,11 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return view('users.create', compact('roles'));
+        $medicos = Medico::all();
+        $pacientes = Paciente::all();
+
+        return view('users.create', compact('roles', 'medicos', 'pacientes'));
     }
-
-
 
     public function store(Request $request)
     {
@@ -41,8 +44,12 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
-        return view('users.edit', compact('user', 'roles'));
+        $medicos = Medico::all();
+        $pacientes = Paciente::all();
+
+        return view('users.edit', compact('user', 'roles', 'medicos', 'pacientes'));
     }
+
 
     public function update(Request $request, User $user)
     {
@@ -57,4 +64,7 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users.index')->with('success', 'User deleted successfully');
     }
+
+   
+
 }

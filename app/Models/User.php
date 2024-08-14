@@ -22,6 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'medico_id',
+        'paciente_id',
     ];
 
     /**
@@ -43,4 +45,26 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function medico()
+    {
+        return $this->belongsTo(Medico::class);
+    }
+
+    public function paciente()
+    {
+        return $this->belongsTo(Paciente::class);
+    }
+
+    public function getTipoAttribute()
+    {
+        if ($this->medico_id) {
+            return 'Médico';
+        } elseif ($this->paciente_id) {
+            return 'Paciente';
+        } else {
+            return 'Nenhum';
+        }
+    }
+
 }

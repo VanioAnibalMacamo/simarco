@@ -26,8 +26,6 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -57,6 +55,7 @@ Route::get('/visualizar_paciente/{id}', [PacienteController::class, 'show']);
 Route::post('/visualizarPaciente/{id}', [PacienteController::class, 'visualizar']);
 Route::delete('/paciente/{id}', 'App\Http\Controllers\PacienteController@delete')->name('pacientes.delete');
 Route::get('/paciente/download/{id}', [PacienteController::class, 'downloadCartaoSeguroSaude'])->name('paciente.downloadCartao');
+Route::get('/paciente/{id}', [PacienteController::class, 'show'])->name('paciente.show');
 
 Route::get('/especialidadeIndex', [EspecialidadeController::class, 'index'])->name('especialidadeIndex');
 Route::get('/especialidadeCreate', [EspecialidadeController::class, 'create'])->name('especialidadeCreate');
@@ -66,6 +65,7 @@ Route::post('/update_especialidade/{id}', [EspecialidadeController::class, 'upda
 Route::get('/visualizar_especialidade/{id}', [EspecialidadeController::class, 'show']);
 Route::delete('/especialidade/{id}', [EspecialidadeController::class, 'destroy'])->name('especialidades.delete');
 
+Route::get('/medico/{id}', [MedicoController::class, 'show'])->name('medico.show');
 Route::get('/medicoIndex', [MedicoController::class, 'index'])->name('medicoIndex');
 Route::get('/medicoCreate', [MedicoController::class, 'create'])->name('medicoCreate');
 Route::post('/saveMedico', [MedicoController::class, 'saveMedico']);
