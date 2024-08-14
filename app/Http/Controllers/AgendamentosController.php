@@ -54,7 +54,7 @@ class AgendamentosController extends Controller
             ->orderBy('horario')
             ->paginate(8);
 
-        return view('agendamentos.marcados', compact('agendamentos'));
+        return view('agendamentos.marcados', compact('agendamentos', 'user'));
     }
 
 

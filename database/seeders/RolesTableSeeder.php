@@ -26,7 +26,7 @@ class RolesTableSeeder extends Seeder
                 'view permissions', 'create permissions', 'edit permissions', 'delete permissions',
 
                 // Consultas
-                'view consultas', 'create consultas', 'edit consultas', 'delete consultas',
+                'view consultas', 'create consultas', 'edit consultas', 'delete consultas', 'start consultas',
 
                 // Pacientes
                 'view pacientes', 'create pacientes', 'edit pacientes', 'delete pacientes',
@@ -60,7 +60,7 @@ class RolesTableSeeder extends Seeder
                 'view permissions',
 
                 // Consultas
-                'view consultas', 'edit consultas',
+                'view consultas', 'edit consultas', 'start consultas',
 
                 // Pacientes
                 'view pacientes', 'edit pacientes',

@@ -46,14 +46,23 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-info btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                               <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-info btn-sm"><i class="fas fa-pencil-alt"></i></a>
 
-                                <form id="form-delete-{{ $role->id }}" action="{{ route('roles.destroy', $role->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event, '{{ $role->name }}', {{ $role->id }})"><i class="fas fa-trash"></i> </button>
-                                </form>
+                                @if($role->name !== 'admin')
+                                    <form id="form-delete-{{ $role->id }}" action="{{ route('roles.destroy', $role->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="confirmDelete(event, '{{ $role->name }}', {{ $role->id }})">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                @else
+                                    <button class="btn btn-danger btn-sm" disabled title="A role admin não pode ser excluída">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                @endif
                             </td>
+
                         </tr>
                     @endforeach
 

@@ -37,6 +37,7 @@ class PermissionsTableSeeder extends Seeder
             'create consultas',
             'edit consultas',
             'delete consultas',
+            'start consultas',
 
             // Pacientes
             'view pacientes',
@@ -76,6 +77,8 @@ class PermissionsTableSeeder extends Seeder
 
             //Dashborad
             'view dashboard',
+
+            //
         ];
 
         foreach ($permissions as $permission) {
