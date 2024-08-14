@@ -39,9 +39,10 @@
                     <div class="form-group col-md-6">
                         <label for="role">Função</label>
                         <select name="role" class="form-control" id="role" required>
+                            <option value="">Selecione uma Funcão</option>
                             @foreach ($roles as $role)
                                 <option value="{{ $role->name }}" {{ $user->roles->contains($role->name) ? 'selected' : '' }}>
-                                    {{ $role->name }}
+                                    {{ ucfirst($role->name) }}
                                 </option>
                             @endforeach
                         </select>
@@ -92,7 +93,7 @@
             </div>
 
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Atualizar Usuário</button>
+                <button type="submit" class="btn btn-primary">Actualizar</button>
                 <a href="javascript:history.back();" class="btn btn-warning">Cancelar</a>
             </div>
         </form>
@@ -114,6 +115,19 @@
             const medicoSelect = document.getElementById('medico-select');
             const pacienteSelect = document.getElementById('paciente-select');
 
+            // Defina o estado inicial dos comboboxes com base nos dados do usuário
+            if (medicoRadio.checked) {
+                medicoSelect.style.display = 'block';
+                pacienteSelect.style.display = 'none';
+            } else if (pacienteRadio.checked) {
+                medicoSelect.style.display = 'none';
+                pacienteSelect.style.display = 'block';
+            } else {
+                medicoSelect.style.display = 'none';
+                pacienteSelect.style.display = 'none';
+            }
+
+            // Adicione eventos para mudar a visibilidade conforme as seleções
             medicoRadio.addEventListener('change', function() {
                 medicoSelect.style.display = 'block';
                 pacienteSelect.style.display = 'none';
@@ -128,18 +142,6 @@
                 medicoSelect.style.display = 'none';
                 pacienteSelect.style.display = 'none';
             });
-
-            // Defina o estado inicial dos comboboxes com base na seleção de rádio inicial
-            if (nenhumRadio.checked) {
-                medicoSelect.style.display = 'none';
-                pacienteSelect.style.display = 'none';
-            } else if (medicoRadio.checked) {
-                medicoSelect.style.display = 'block';
-                pacienteSelect.style.display = 'none';
-            } else if (pacienteRadio.checked) {
-                medicoSelect.style.display = 'none';
-                pacienteSelect.style.display = 'block';
-            }
         });
     </script>
 @stop

@@ -53,8 +53,33 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-        $user->update($request->all());
+        // Valide os dados recebidos
+        $request->validate([
+            'medico_id' => 'nullable|exists:medicos,id',
+            'paciente_id' => 'nullable|exists:pacientes,id',
+            'role' => 'required|exists:roles,name',
+            'type' => 'required|in:nenhum,medico,paciente',
+        ]);
+
+        // Atualize os dados do usuário, exceto as relações
+        $user->update($request->except('role', 'medico_id', 'paciente_id'));
+
+        // Sincronize os papéis (roles)
         $user->syncRoles($request->role);
+
+        if ($request->type === 'medico') {
+            $user->medico_id = $request->medico_id;
+            $user->paciente_id = null;
+        } elseif ($request->type === 'paciente') {
+            $user->paciente_id = $request->paciente_id;
+            $user->medico_id = null;
+        } else {
+            $user->medico_id = null;
+            $user->paciente_id = null;
+        }
+
+        // Salve as mudanças no User, incluindo as relações
+        $user->save();
 
         return redirect()->route('users.index')->with('success', 'User updated successfully');
     }
@@ -65,6 +90,6 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User deleted successfully');
     }
 
-   
+
 
 }
