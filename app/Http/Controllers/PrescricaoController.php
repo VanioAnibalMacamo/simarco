@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PrescricaoMailable;
 use Illuminate\Http\Request;
 use App\Models\Prescricao;
 use App\Models\Consulta;
 use App\Models\Medicamento;
 use App\Models\Diagnostico;
+use Mail;
+use Storage;
+use PDF;
 
 class PrescricaoController extends Controller
 {
@@ -86,9 +90,51 @@ class PrescricaoController extends Controller
                 ]);
             }
         }
+  // Gere e envie o PDF
+  $this->generateAndSendPdf($prescricao);
 
-        return redirect('/agendamentosMarcados')->with('success', 'Prescrição médica salva com sucesso!');
+  // Redireciona com a mensagem de sucesso
+  return redirect('/agendamentosMarcados')->with('success', 'Prescrição médica salva com sucesso! A receita foi enviada para o e-mail do paciente.');
     }
+
+
+    private function generateAndSendPdf($prescricao)
+{
+    // Recupera consulta, paciente e medicamentos da prescrição
+    $consulta = $prescricao->consulta;
+    $paciente = $consulta->paciente;
+    $medicamentos = $prescricao->medicamentos;
+
+    // Gere o PDF usando a view específica e os dados necessários
+    $pdf = PDF::loadView('prescricao.receita_pdf.pdf', compact('prescricao', 'paciente', 'medicamentos'));
+
+    // Crie o nome do arquivo PDF
+    $dataPrescricao = \Carbon\Carbon::parse($prescricao->data_prescricao)->format('d-m-Y');
+    $nomePaciente = preg_replace('/[^a-zA-Z0-9]/', '_', $paciente->nome); // Substitui caracteres não alfanuméricos por _
+    $nomeArquivo = "Prescricao_Consulta_{$dataPrescricao}_{$nomePaciente}.pdf";
+    
+    // Defina o caminho da pasta onde os PDFs serão salvos
+    $directoryPath = 'public/prescricoes';
+    
+    // Crie a pasta caso ela não exista
+    if (!Storage::exists($directoryPath)) {
+        Storage::makeDirectory($directoryPath);
+    }
+    
+    // Caminho completo para salvar o PDF
+    $pdfPath = storage_path("app/{$directoryPath}/{$nomeArquivo}");
+    
+    // Salve o PDF no armazenamento
+    $pdf->save($pdfPath);
+    
+    // Envie o PDF por e-mail
+    Mail::to($paciente->email)->send(new PrescricaoMailable($prescricao, $paciente, $pdfPath));
+    
+    // Opcional: Remover o arquivo PDF do armazenamento após o envio, se necessário
+    if (file_exists($pdfPath)) {
+        unlink($pdfPath);
+    }
+}
 
     public function edit($id)
     {
