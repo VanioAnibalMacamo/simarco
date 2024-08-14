@@ -15,7 +15,7 @@
 @section('content')
 
 <div class="d-flex flex-row-reverse align-items-end mb-3">
-    <a href="{{ route('medico.especialidades') }}" class="btn btn-primary">
+    <a href="{{ route('marcar_consulta_especialidades') }}" class="btn btn-primary">
         <i class="fas fa-plus"></i> Agendar
     </a>
 </div>

@@ -159,7 +159,8 @@ Route::delete('/gravidade/{id}', [GravidadeController::class, 'destroy'])->name(
 
 //Route::get('/pacienteTipoConsulta', [PaginasController::class, 'pacienteTipoConsulta'])->name('pacienteTipoConsulta');
 
-Route::get('/medico/especialidades', [MedicoController::class, 'especialidades'])->name('medico.especialidades');
+Route::get('/marcar_consulta_especialidades', [MedicoController::class, 'marcar_consulta_especialidades'])->name('marcar_consulta_especialidades');
+//Route::get('/medico/especialidades', [MedicoController::class, 'especialidades'])->name('medico.especialidades');
 Route::get('/medico/medicos/{idEspecialidade}', [MedicoController::class, 'medicos'])->name('medico.medicos');
 
 Route::get('/medicos/{id}/disponibilidade', [MedicoController::class, 'showDisponibilidade'])->name('medicos.disponibilidade');

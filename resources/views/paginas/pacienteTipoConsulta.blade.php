@@ -33,7 +33,7 @@
                 </div>
                 <div class="card-footer">
                     <!-- Botão para abrir o modal -->
-                    <button type="button" class="btn btn-primary" onclick="window.location.href='{{ route('medico.especialidades') }}'">
+                    <button type="button" class="btn btn-primary" onclick="window.location.href='{{ route('marcar_consulta_especialidades') }}'">
                         Marcar Consulta Online
                     </button>
                 </div>

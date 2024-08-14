@@ -135,6 +135,13 @@ class MedicoController extends Controller
         return view('medico.especialidades', ['especialidades' => $especialidades]);
     }
 
+    public function marcar_consulta_especialidades()
+    {
+        $especialidades = Especialidade::all(); // Obtém todas as especialidades do banco de dados
+
+        return view('medico.especialidades', ['especialidades' => $especialidades]);
+    }
+
     public function medicos($idEspecialidade)
     {
         // Lógica para obter os médicos da especialidade com o ID fornecido
