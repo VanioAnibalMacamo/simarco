@@ -23,20 +23,40 @@ class AgendamentosController extends Controller
 
     public function agendamentosMarcados()
     {
-        $agendamentos = Agendamento::with([
+        $user = auth()->user(); // Obter o usuário autenticado
+
+        // Inicializa a query base com as relações necessárias
+        $query = Agendamento::with([
             'paciente',
             'disponibilidades.medico',
             'consulta.diagnostico',
             'consulta.prescricao',
             'consulta.medico',
             'consulta.paciente'
-        ])
-        ->orderBy('dia')
-        ->orderBy('horario')
-        ->paginate(8);
+        ]);
+
+        // Verifica o tipo de usuário e aplica os filtros adequados
+        if ($user->paciente_id) {
+            // Se o usuário for um paciente, filtra os agendamentos por ele
+            $query->where('paciente_id', $user->paciente_id);
+        } elseif ($user->medico_id) {
+            // Se o usuário for um médico, filtra os agendamentos por ele
+            $query->whereHas('disponibilidades', function ($q) use ($user) {
+                $q->where('medico_id', $user->medico_id);
+            });
+        } elseif (!$user->hasPermissionTo('view consultas')) {
+            // Verifica se o usuário tem a permissão específica para ver agendamentos
+            return abort(403, 'Você não tem permissão para visualizar esses agendamentos.');
+        }
+
+        // Ordena os resultados
+        $agendamentos = $query->orderBy('dia')
+            ->orderBy('horario')
+            ->paginate(8);
 
         return view('agendamentos.marcados', compact('agendamentos'));
     }
+
 
     public function create()
     {
