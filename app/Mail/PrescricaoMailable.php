@@ -12,6 +12,7 @@ class PrescricaoMailable extends Mailable
 
     public $prescricao;
     public $paciente;
+    public $consulta;  // Adiciona a consulta
     public $pdfPath;
 
     /**
@@ -19,12 +20,14 @@ class PrescricaoMailable extends Mailable
      *
      * @param $prescricao
      * @param $paciente
+     * @param $consulta  // Adiciona a consulta
      * @param $pdfPath
      */
-    public function __construct($prescricao, $paciente, $pdfPath)
+    public function __construct($prescricao, $paciente, $consulta, $pdfPath)
     {
         $this->prescricao = $prescricao;
         $this->paciente = $paciente;
+        $this->consulta = $consulta;  // Inicializa a consulta
         $this->pdfPath = $pdfPath;
     }
 

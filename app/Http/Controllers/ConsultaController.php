@@ -208,7 +208,22 @@ class ConsultaController extends Controller
             return redirect('/consultaIndex')->with('error', 'Erro ao atualizar a consulta. Por favor, verifique os dados e tente novamente.');
         }
     }
+    public function getConsultaHora($pacienteId)
+{
+    // Buscar a última consulta associada ao paciente
+    $consultas = Consulta::where('paciente_id', $pacienteId)
+        ->orderBy('data_consulta', 'desc')
+        ->orderBy('hora_inicio', 'desc')
+        ->first();
 
-    // Função para verificar e criar pastas
+    if ($consultas) {
+        return $consultas->hora_inicio;
+    }
+
+    return null;
+}
+
+
+   
 
 }

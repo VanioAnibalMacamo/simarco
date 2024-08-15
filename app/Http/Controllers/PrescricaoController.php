@@ -20,17 +20,33 @@ class PrescricaoController extends Controller
         return view('prescricao.index', compact('prescricoes'));
     }
 
+    private function getConsultaHora($pacienteId)
+    {
+        // Buscar a última consulta associada ao paciente
+        $consultas = Consulta::where('paciente_id', $pacienteId)
+            ->orderBy('data_consulta', 'desc')
+            ->orderBy('hora_inicio', 'desc')
+            ->first();
 
+        if ($consultas) {
+            return $consultas->hora_inicio;
+        }
+
+        return null;
+    }
     public function create($consultaId)
     {
         // Buscar a consulta específica pelo ID
         $consultas = Consulta::find($consultaId);
         $medicamentos = Medicamento::all();
 
+
         // Se há um diagnóstico associado à consulta, você pode recuperá-lo
         $diagnostico = Diagnostico::where('consulta_id', $consultaId)->first();
+// Obter a hora da consulta associada ao paciente
+$horaConsulta = $this->getConsultaHora($consultas->paciente_id);
 
-        return view('prescricao.create', compact('consultas', 'medicamentos', 'diagnostico'));
+        return view('prescricao.create', compact('consultas', 'medicamentos', 'diagnostico', 'horaConsulta'));
     }
 
     public function savePrescricao(Request $request)
@@ -100,36 +116,45 @@ class PrescricaoController extends Controller
 
     private function generateAndSendPdf($prescricao)
 {
-    // Recupera consulta, paciente e medicamentos da prescrição
+    // Recupera a consulta associada à prescrição
     $consulta = $prescricao->consulta;
     $paciente = $consulta->paciente;
     $medicamentos = $prescricao->medicamentos;
 
+    // Obter informações adicionais
+    $medico = $consulta->medico; // Recupera o médico da consulta
+
     // Gere o PDF usando a view específica e os dados necessários
-    $pdf = PDF::loadView('prescricao.receita_pdf.pdf', compact('prescricao', 'paciente', 'medicamentos'));
+    $pdf = PDF::loadView('prescricao.receita_pdf.pdf', [
+        'prescricao' => $prescricao,
+        'paciente' => $paciente,
+        'medicamentos' => $medicamentos,
+        'consulta' => $consulta,
+        'medico' => $medico, // Adiciona o médico aos dados passados para a view
+    ]);
 
     // Crie o nome do arquivo PDF
     $dataPrescricao = \Carbon\Carbon::parse($prescricao->data_prescricao)->format('d-m-Y');
     $nomePaciente = preg_replace('/[^a-zA-Z0-9]/', '_', $paciente->nome); // Substitui caracteres não alfanuméricos por _
     $nomeArquivo = "Prescricao_Consulta_{$dataPrescricao}_{$nomePaciente}.pdf";
-    
+
     // Defina o caminho da pasta onde os PDFs serão salvos
     $directoryPath = 'public/prescricoes';
-    
+
     // Crie a pasta caso ela não exista
     if (!Storage::exists($directoryPath)) {
         Storage::makeDirectory($directoryPath);
     }
-    
+
     // Caminho completo para salvar o PDF
     $pdfPath = storage_path("app/{$directoryPath}/{$nomeArquivo}");
-    
+
     // Salve o PDF no armazenamento
     $pdf->save($pdfPath);
-    
+
     // Envie o PDF por e-mail
-    Mail::to($paciente->email)->send(new PrescricaoMailable($prescricao, $paciente, $pdfPath));
-    
+    Mail::to($paciente->email)->send(new PrescricaoMailable($prescricao, $paciente, $consulta, $pdfPath));
+
     // Opcional: Remover o arquivo PDF do armazenamento após o envio, se necessário
     if (file_exists($pdfPath)) {
         unlink($pdfPath);
@@ -199,15 +224,23 @@ class PrescricaoController extends Controller
     }
 
 
-    public function show($id)
+   /* public function show($id)
     {
         $prescricao = Prescricao::with('consulta')->findOrFail($id);
         $consulta = $prescricao->consulta;  // Carrega a consulta associada à prescrição
 
 
         return view('prescricao.view', compact('prescricao', 'consulta'));
+    }*/
+    public function show($id)
+    {
+        $prescricao = Prescricao::with('consulta.medico', 'consulta.paciente')->findOrFail($id);
+        $consulta = $prescricao->consulta;  // Carrega a consulta associada à prescrição
+        $paciente = $consulta->paciente;    // Carrega o paciente associado à consulta
+    
+        return view('prescricao.view', compact('prescricao', 'consulta', 'paciente'));
     }
-
+    
 
     public function delete($id)
     {

@@ -94,6 +94,8 @@
         <div class="section">
             <p><strong>Data da Prescrição:</strong> {{ \Carbon\Carbon::parse($prescricao->data_prescricao)->format('d/m/Y') }}</p>
             <p><strong>Paciente:</strong> {{ $paciente->nome }}</p>
+            <p><strong>Médico Responsável:</strong> {{ $consulta->medico->nome }}</p>
+            <p><strong>Data e Hora da Consulta:</strong> {{ \Carbon\Carbon::parse($consulta->data_consulta)->format('d/m/Y') }} às {{ \Carbon\Carbon::parse($consulta->hora_inicio)->format('H:i') }}</p>
         </div>
 
         <div class="medicamentos">
