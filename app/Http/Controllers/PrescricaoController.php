@@ -11,7 +11,7 @@ use App\Models\Diagnostico;
 use Mail;
 use Storage;
 use PDF;
-
+use Carbon\Carbon;
 class PrescricaoController extends Controller
 {
     public function index()
@@ -254,14 +254,20 @@ $horaConsulta = $this->getConsultaHora($consultas->paciente_id);
         // Recupere a prescrição pelo ID
         $prescricao = Prescricao::findOrFail($id);
     
+        // Recupere a consulta associada à prescrição
+        $consulta = $prescricao->consulta;
+    
         // Recupere o paciente associado à prescrição
-        $paciente = $prescricao->consulta->paciente;
+        $paciente = $consulta->paciente;
     
         // Recupere os medicamentos prescritos
         $medicamentos = $prescricao->medicamentos;
     
-        // Recupere a consulta associada à prescrição
-        $consulta = $prescricao->consulta;
+        // Sanitize o nome do paciente para ser usado em um nome de arquivo
+        $nomePaciente = preg_replace('/[^A-Za-z0-9_\-]/', '_', $paciente->nome);
+    
+        // Formata a data da consulta para o formato desejado (YYYY-MM-DD)
+        $dataConsulta = Carbon::parse($consulta->data_consulta)->format('Y-m-d');
     
         // Crie o PDF a partir da view e passe os dados necessários
         $pdf = Pdf::loadView('prescricao.receita_pdf.pdf', [
@@ -271,9 +277,10 @@ $horaConsulta = $this->getConsultaHora($consultas->paciente_id);
             'consulta' => $consulta, // Passe a consulta para a view
         ]);
     
-        // Retorne o PDF para download
-        return $pdf->download('prescricao_'.$prescricao->id.'.pdf');
+        // Retorne o PDF para download com o nome personalizado
+        return $pdf->download("prescricao_{$nomePaciente}_{$dataConsulta}.pdf");
     }
+        
     
 
 }

@@ -119,13 +119,16 @@
                 </div>
             @endif
         </div>
-        <div class="card-footer">
-            <a href="{{ route('agendamentosMarcados') }}" type="button" class="btn btn-warning">Voltar</a>
-            <!-- Se necessário, descomente o botão de teleconsulta
-            <a href="{{ route('videoconferencia', $agendamento->id) }}" type="button" class="btn btn-primary">Teleconsulta</a>
-            -->
-        </div>
-    </div>
+        <div class="card-footer d-flex">
+    <a href="{{ route('agendamentosMarcados') }}" type="button" class="btn btn-warning">Voltar</a>
+    <a class="btn btn-success btn-sm d-inline px-4 mx-3" href="{{ route('prescricao.download', $prescricao->id) }}" title="Baixar Prescrição">
+        <i class="fas fa-download"></i>
+    </a>
+</div>
+
+
+
+
     <!-- /.card -->
 @stop
 
