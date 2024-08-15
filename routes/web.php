@@ -199,3 +199,5 @@ Route::get('test-email', [EmailController::class, 'testEmail']);
 Route::resource('users', UserController::class);
 Route::resource('roles', RoleController::class);
 Route::resource('permissions', PermissionController::class);
+
+Route::get('/prescricao/{id}/download', [PrescricaoController::class, 'download'])->name('prescricao.download');

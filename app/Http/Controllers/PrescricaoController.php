@@ -249,4 +249,31 @@ $horaConsulta = $this->getConsultaHora($consultas->paciente_id);
 
         return redirect('/prescricaoIndex')->with('successDelete', 'Prescrição médica excluída com sucesso!');
     }
+    public function download($id)
+    {
+        // Recupere a prescrição pelo ID
+        $prescricao = Prescricao::findOrFail($id);
+    
+        // Recupere o paciente associado à prescrição
+        $paciente = $prescricao->consulta->paciente;
+    
+        // Recupere os medicamentos prescritos
+        $medicamentos = $prescricao->medicamentos;
+    
+        // Recupere a consulta associada à prescrição
+        $consulta = $prescricao->consulta;
+    
+        // Crie o PDF a partir da view e passe os dados necessários
+        $pdf = Pdf::loadView('prescricao.receita_pdf.pdf', [
+            'prescricao' => $prescricao,
+            'paciente' => $paciente,
+            'medicamentos' => $medicamentos,
+            'consulta' => $consulta, // Passe a consulta para a view
+        ]);
+    
+        // Retorne o PDF para download
+        return $pdf->download('prescricao_'.$prescricao->id.'.pdf');
+    }
+    
+
 }

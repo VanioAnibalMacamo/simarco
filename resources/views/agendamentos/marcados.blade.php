@@ -79,30 +79,32 @@
                                 <span class="badge {{ $estadoClass }}">{{ $estado }}</span>
                             </td>
                             <td class="actions">
-                                <a class="btn btn-success btn-sm d-inline mr-2" href="{{ route('agendamentos.show', $agendamento->id) }}" title="Visualizar Detalhes"><i class="fas fa-eye"></i></a>
+    <a class="btn btn-success btn-sm d-inline mr-2" href="{{ route('agendamentos.show', $agendamento->id) }}" title="Visualizar Detalhes"><i class="fas fa-eye"></i></a>
 
-                                @if ($estado === 'Agendada')
-                                    @can('start consultas')
-                                        <a class="btn btn-primary btn-sm d-inline" href="{{ route('videoconferencia', $agendamento->id) }}" title="Iniciar teleconsulta"><i class="fas fa-video"></i></a>
-                                    @elseif (auth()->user()->id === $disponibilidade->medico->id || auth()->user()->id === $agendamento->paciente->id)
-                                        <a class="btn btn-primary btn-sm d-inline" href="{{ route('videoconferencia', $agendamento->id) }}" title="Iniciar teleconsulta"><i class="fas fa-video"></i></a>
-                                    @endif
-                                @endif
+    @if ($estado === 'Agendada')
+        @can('start consultas')
+            <a class="btn btn-primary btn-sm d-inline" href="{{ route('videoconferencia', $agendamento->id) }}" title="Iniciar teleconsulta"><i class="fas fa-video"></i></a>
+        @elseif (auth()->user()->id === $disponibilidade->medico->id || auth()->user()->id === $agendamento->paciente->id)
+            <a class="btn btn-primary btn-sm d-inline" href="{{ route('videoconferencia', $agendamento->id) }}" title="Iniciar teleconsulta"><i class="fas fa-video"></i></a>
+        @endif
+    @endif
 
-                                @if ($consulta)
-                                    @if ($prescricao)
-                                        @if (!$diagnostico)
-                                            <a class="btn btn-info btn-sm d-inline" href="{{ route('diagnosticoCreate', ['consultaId' => $consulta->id]) }}" title="Diagnosticar"><i class="fas fa-stethoscope"></i></a>
-                                        @endif
-                                    @else
-                                        @if ($diagnostico)
-                                            <a class="btn btn-secondary btn-sm d-inline" href="{{ route('prescricaoCreate', ['consultaId' => $consulta->id]) }}" title="Prescrever"><i class="fas fa-prescription-bottle-alt"></i></a>
-                                        @else
-                                            <a class="btn btn-info btn-sm d-inline" href="{{ route('diagnosticoCreate', ['consultaId' => $consulta->id]) }}" title="Diagnosticar"><i class="fas fa-stethoscope"></i></a>
-                                        @endif
-                                    @endif
-                                @endif
-                            </td>
+    @if ($consulta)
+        @if ($prescricao)
+            @if (!$diagnostico)
+                <a class="btn btn-info btn-sm d-inline" href="{{ route('diagnosticoCreate', ['consultaId' => $consulta->id]) }}" title="Diagnosticar"><i class="fas fa-stethoscope"></i></a>
+            @endif
+            <a class="btn btn-warning btn-sm d-inline" href="{{ route('prescricao.download', $prescricao->id) }}" title="Baixar Prescrição"><i class="fas fa-download"></i></a>
+        @else
+            @if ($diagnostico)
+                <a class="btn btn-secondary btn-sm d-inline" href="{{ route('prescricaoCreate', ['consultaId' => $consulta->id]) }}" title="Prescrever"><i class="fas fa-prescription-bottle-alt"></i></a>
+            @else
+                <a class="btn btn-info btn-sm d-inline" href="{{ route('diagnosticoCreate', ['consultaId' => $consulta->id]) }}" title="Diagnosticar"><i class="fas fa-stethoscope"></i></a>
+            @endif
+        @endif
+    @endif
+</td>
+
                         </tr>
                     @endforeach
                 @endforeach
