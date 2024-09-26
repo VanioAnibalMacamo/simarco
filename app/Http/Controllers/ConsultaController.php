@@ -79,80 +79,122 @@ class ConsultaController extends Controller
     }
 
     public function saveConsulta(Request $request)
-    {
-        $request->validate([
-            'data_consulta' => 'required|date_format:d/m/Y',
-            'hora_inicio' => 'required|date_format:H:i',
-            'hora_fim' => 'required|date_format:H:i|after:hora_inicio',
-            'id_medico' => 'required|exists:medicos,id',
-            'id_paciente' => 'required|exists:pacientes,id',
-            'agendamento_id' => 'required|exists:agendamentos,id',
-            'foto_1' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'foto_2' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+{
+    $request->validate([
+        'data_consulta' => 'required|date_format:d/m/Y',
+        'hora_inicio' => 'required|date_format:H:i',
+        'hora_fim' => 'required|date_format:H:i|after:hora_inicio',
+        'id_medico' => 'required|exists:medicos,id',
+        'id_paciente' => 'required|exists:pacientes,id',
+        'agendamento_id' => 'required|exists:agendamentos,id',
+        'foto_1' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        'foto_2' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        'descricao' => 'nullable|string',
+        'observacoes' => 'nullable|string',
+        'medicamentos' => 'nullable|array',
+        'medicamentos.*' => 'exists:medicamentos,id',
+        'dosagens' => 'nullable|array',
+        'instrucoes' => 'nullable|array',
+        'dosagens.*' => 'nullable|string',
+        'instrucoes.*' => 'nullable|string',
+    ]);
+
+    $paciente = Paciente::find($request->input('id_paciente'));
+
+    try {
+        // Formata os dados
+        $data_consulta = Carbon::createFromFormat('d/m/Y', $request->input('data_consulta'))->format('Y-m-d');
+        $hora_inicio = Carbon::createFromFormat('H:i', $request->input('hora_inicio'))->format('H:i:s');
+        $hora_inicio_formatada = Carbon::createFromFormat('H:i:s', $hora_inicio)->format('H-i'); // Formata hora para nome de diretório
+        $hora_inicio_formatada = preg_replace('/[^A-Za-z0-9\-]/', '_', $hora_inicio_formatada);
+
+        // Nome do paciente
+        $pacienteNome = preg_replace('/[^A-Za-z0-9\-]/', '_', $paciente->nome);
+
+        // Define o diretório
+        $pacienteDiretorio = 'public/fotos_consultas/' . $pacienteNome . '_' . $data_consulta . '_' . $hora_inicio_formatada;
+        if (!Storage::exists($pacienteDiretorio)) {
+            Storage::makeDirectory($pacienteDiretorio);
+        }
+
+        // Inicializa variáveis para as fotos
+        $foto1Path = null;
+        $foto2Path = null;
+
+        // Processa foto_1
+        if ($request->hasFile('foto_1')) {
+            $foto1 = $request->file('foto_1');
+            $foto1Nome = $pacienteNome . '_foto1.' . $foto1->getClientOriginalExtension();
+            $foto1Path = $foto1->storeAs($pacienteDiretorio, $foto1Nome);
+        }
+
+        // Processa foto_2
+        if ($request->hasFile('foto_2')) {
+            $foto2 = $request->file('foto_2');
+            $foto2Nome = $pacienteNome . '_foto2.' . $foto2->getClientOriginalExtension();
+            $foto2Path = $foto2->storeAs($pacienteDiretorio, $foto2Nome);
+        }
+
+        // Cria a consulta
+        $consulta = Consulta::create([
+            'data_consulta' => $data_consulta,
+            'hora_inicio' => $hora_inicio,
+            'hora_fim' => $request->input('hora_fim'),
+            'medico_id' => $request->input('id_medico'),
+            'paciente_id' => $request->input('id_paciente'),
+            'agendamento_id' => $request->input('agendamento_id'),
+            'foto_1' => $foto1Path,
+            'foto_2' => $foto2Path,
         ]);
 
-        $paciente = Paciente::find($request->input('id_paciente'));
+        // Atualiza o agendamento
+        $agendamento = Agendamento::find($request->input('agendamento_id'));
+        $agendamento->update(['consulta_id' => $consulta->id]);
 
-        try {
-            // Formata os dados
-            $data_consulta = Carbon::createFromFormat('d/m/Y', $request->input('data_consulta'))->format('Y-m-d');
-            $hora_inicio = Carbon::createFromFormat('H:i', $request->input('hora_inicio'))->format('H:i:s');
-            $hora_inicio_formatada = Carbon::createFromFormat('H:i:s', $hora_inicio)->format('H-i'); // Formata hora para nome de diretório
-            $hora_inicio_formatada = preg_replace('/[^A-Za-z0-9\-]/', '_', $hora_inicio_formatada);
-
-            // Nome do paciente
-            $pacienteNome = preg_replace('/[^A-Za-z0-9\-]/', '_', $paciente->nome);
-
-            // Define o diretório
-            $pacienteDiretorio = 'public/fotos_consultas/' . $pacienteNome . '_' . $data_consulta . '_' . $hora_inicio_formatada;
-            if (!Storage::exists($pacienteDiretorio)) {
-                Storage::makeDirectory($pacienteDiretorio);
-            }
-
-            // Inicializa variáveis para as fotos
-            $foto1Path = null;
-            $foto2Path = null;
-
-            // Processa foto_1
-            if ($request->hasFile('foto_1')) {
-                $foto1 = $request->file('foto_1');
-                $foto1Nome = $pacienteNome . '_foto1.' . $foto1->getClientOriginalExtension();
-                $foto1Path = $foto1->storeAs($pacienteDiretorio, $foto1Nome);
-            }
-
-            // Processa foto_2
-            if ($request->hasFile('foto_2')) {
-                $foto2 = $request->file('foto_2');
-                $foto2Nome = $pacienteNome . '_foto2.' . $foto2->getClientOriginalExtension();
-                $foto2Path = $foto2->storeAs($pacienteDiretorio, $foto2Nome);
-            }
-
-            // Cria a consulta
-            $consulta = Consulta::create([
-                'data_consulta' => $data_consulta,
-                'hora_inicio' => $hora_inicio,
-                'hora_fim' => $request->input('hora_fim'),
-                'medico_id' => $request->input('id_medico'),
-                'paciente_id' => $request->input('id_paciente'),
-                'agendamento_id' => $request->input('agendamento_id'),
-                'foto_1' => $foto1Path,
-                'foto_2' => $foto2Path,
+        // Salva diagnóstico, se fornecido
+        if ($request->has('descricao') || $request->has('observacoes')) {
+            $diagnostico = new Diagnostico([
+                'data_diagnostico' => now(),
+                'consulta_id' => $consulta->id,
+                'descricao' => $request->input('descricao'),
+                'observacoes' => $request->input('observacoes'),
             ]);
-
-            // Atualiza o agendamento
-            $agendamento = Agendamento::find($request->input('agendamento_id'));
-            $agendamento->update(['consulta_id' => $consulta->id]);
-
-            return redirect('/agendamentosMarcados')->with('success', 'Consulta salva com sucesso!');
-        } catch (\Exception $e) {
-            \Log::error('Erro ao salvar a consulta.', [
-                'error_message' => $e->getMessage(),
-                'error_trace' => $e->getTraceAsString(),
-            ]);
-
-            return redirect('/agendamentosMarcados')->with('error', 'Erro ao salvar a consulta. Por favor, verifique os dados e tente novamente.');
+            $diagnostico->save();
         }
+
+        // Salva prescrição, se medicamentos forem fornecidos
+        if ($request->has('medicamentos')) {
+            $prescricao = new Prescricao([
+                'data_prescricao' => now(),
+                'consulta_id' => $consulta->id,
+            ]);
+            $prescricao->save();
+
+            $medicamentosSelecionados = $request->input('medicamentos');
+            $dosagens = $request->input('dosagens');
+            $instrucoes = $request->input('instrucoes');
+
+            foreach ($medicamentosSelecionados as $medicamentoId) {
+                if (isset($dosagens[$medicamentoId]) && isset($instrucoes[$medicamentoId])) {
+                    $prescricao->medicamentos()->attach($medicamentoId, [
+                        'dosagem' => $dosagens[$medicamentoId],
+                        'instrucoes' => $instrucoes[$medicamentoId],
+                    ]);
+                }
+            }
+        }
+
+        return redirect('/agendamentosMarcados')->with('success', 'Consulta salva com sucesso!');
+    } catch (\Exception $e) {
+        \Log::error('Erro ao salvar a consulta.', [
+            'error_message' => $e->getMessage(),
+            'error_trace' => $e->getTraceAsString(),
+        ]);
+
+        return redirect('/agendamentosMarcados')->with('error', 'Erro ao salvar a consulta. Por favor, verifique os dados e tente novamente.');
     }
+}
+
     public function update(Request $request, $id)
     {
         try {

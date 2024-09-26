@@ -77,6 +77,7 @@ Route::delete('/medico/{id}', [MedicoController::class, 'delete'])->name('medico
 
 Route::get('/consultaIndex', [ConsultaController::class, 'index'])->name('consultaIndex');
 Route::get('/consultaCreate', [ConsultaController::class, 'create'])->name('consultaCreate');
+Route::post('/consultaCreate', [ConsultaController::class, 'create'])->name('consultaCreate');
 Route::post('/saveConsulta', [ConsultaController::class, 'saveConsulta']);
 Route::get('/update_consulta/{id}', [ConsultaController::class, 'edit'])->name('consultas.edit');
 Route::post('/update_consulta/{id}', [ConsultaController::class, 'update'])->name('consultas.update');
