@@ -182,6 +182,13 @@ Route::get('/videoconferencia', [VideoConferenciaController::class, 'index']);
 Route::get('/videoconferencia/{id}', [VideoConferenciaController::class, 'videoconferencia'])->name('videoconferencia');
 
 
+
+// Rotas em web.php
+Route::get('/videoconferencia/{id}', [VideoConferenciaController::class, 'videoconferencia'])->name('video_conferencia.videoconferencia');
+Route::post('/videoconferencia/salvar/{agendamentoId}', [VideoConferenciaController::class, 'salvarConsulta'])->name('video_conferencia.salvarConsulta');
+
+
+
 Route::get('/horarios/{disponibilidade}', [HorariosController::class, 'index'])->name('horarios.index');
 
 Route::get('/visualizar_agendamento/{id}', [AgendamentosController::class, 'show'])->name('agendamentos.show');
@@ -202,3 +209,5 @@ Route::resource('roles', RoleController::class);
 Route::resource('permissions', PermissionController::class);
 
 Route::get('/prescricao/{id}/download', [PrescricaoController::class, 'download'])->name('prescricao.download');
+
+Route::post('/salvar-consulta/{agendamento}', [VideoConferenciaController::class, 'salvarConsulta'])->name('salvarConsulta');
