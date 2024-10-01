@@ -16,7 +16,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <ul class="list-group">
+                        @if(isset($agendamento->paciente) && isset($agendamento->paciente->id))
+                        <input type="hidden" id="paciente_nome" name="paciente_nome" value="{{ $agendamento->paciente->nome }}">
                         <li class="list-group-item"><strong>Paciente:</strong> {{ $agendamento->paciente->nome }}</li>
+                    @else
+                        <li class="list-group-item">Paciente não encontrado.</li>
+                    @endif
+
                         <li class="list-group-item"><strong>Especialidade:</strong> {{ $agendamento->disponibilidades[0]->medico->especialidade->descricao ?? 'Não definida' }}</li>
                     </ul>
                 </div>
@@ -35,26 +41,49 @@
             <div class="card card-primary">
                 <div class="card-header">
                     <h3 class="card-title">Videoconferência</h3>
+
+                    <div class="card-body" id="meet">
+                        <script src="https://meet.jit.si/external_api.js"></script>
+                        <script>
+                            const domain = 'meet.jit.si';
+                            const options = {
+                                roomName: 'Teleconsulta',
+                                width: '100%',
+                                height: 500,
+                                parentNode: document.querySelector('#meet')
+                            };
+                            const api = new JitsiMeetExternalAPI(domain, options);
+                        </script>
+                    </div>
                 </div>
-                <div class="card-body" id="meet">
-                    <script src="https://meet.jit.si/external_api.js"></script>
-                    <script>
-                        const domain = 'meet.jit.si';
-                        const options = {
-                            roomName: 'Teleconsulta',
-                            width: '100%',
-                            height: 500,
-                            parentNode: document.querySelector('#meet')
-                        };
-                        const api = new JitsiMeetExternalAPI(domain, options);
-                    </script>
-                </div>
+
             </div>
+
+
 
             <!-- Formulário para salvar consulta -->
             <form action="{{ route('salvarConsulta', $agendamento->id) }}" method="POST">
                 @csrf
 
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Anexar Fotos</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="foto_1">Foto 1 (opcional)</label>
+                                <input type="file" class="form-control" id="foto_1" name="foto_1">
+                                <div id="foto_1_preview" class="mt-2"></div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="foto_2">Foto 2 (opcional)</label>
+                                <input type="file" class="form-control" id="foto_2" name="foto_2">
+                                <div id="foto_2_preview" class="mt-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Diagnóstico -->
                 <div class="card card-primary mt-4">
                     <div class="card-header">
@@ -119,4 +148,39 @@
 
 @section('js')
     <script> console.log('Teleconsulta carregada!'); </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Função para mostrar pré-visualizações das imagens
+            function previewFile(inputId, previewId) {
+                const fileInput = document.getElementById(inputId);
+                const previewContainer = document.getElementById(previewId);
+
+                fileInput.addEventListener('change', function(event) {
+                    const files = event.target.files;
+                    previewContainer.innerHTML = ''; // Limpa pré-visualização existente
+
+                    for (let i = 0; i < files.length; i++) {
+                        const file = files[i];
+                        const reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.style.width = '100px'; // Ajuste o tamanho conforme necessário
+                            img.style.height = '100px'; // Ajuste o tamanho conforme necessário
+                            img.style.marginRight = '10px';
+                            previewContainer.appendChild(img);
+                        };
+
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            // Inicializa pré-visualização para os campos de foto
+            previewFile('foto_1', 'foto_1_preview');
+            previewFile('foto_2', 'foto_2_preview');
+        });
+    </script>
 @stop
