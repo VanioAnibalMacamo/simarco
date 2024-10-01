@@ -184,7 +184,7 @@ Route::get('/videoconferencia/{id}', [VideoConferenciaController::class, 'videoc
 
 
 // Rotas em web.php
-Route::get('/videoconferencia/{id}', [VideoConferenciaController::class, 'videoconferencia'])->name('video_conferencia.videoconferencia');
+//Route::get('/videoconferencia/{id}', [VideoConferenciaController::class, 'videoconferencia'])->name('video_conferencia.videoconferencia');
 Route::post('/videoconferencia/salvar/{agendamentoId}', [VideoConferenciaController::class, 'salvarConsulta'])->name('video_conferencia.salvarConsulta');
 
 

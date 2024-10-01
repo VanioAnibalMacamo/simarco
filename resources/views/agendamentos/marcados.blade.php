@@ -85,7 +85,7 @@
         @can('start consultas')
             <a class="btn btn-primary btn-sm d-inline" href="{{ route('videoconferencia', $agendamento->id) }}" title="Iniciar teleconsulta"><i class="fas fa-video"></i></a>
         @elseif (auth()->user()->id === $disponibilidade->medico->id || auth()->user()->id === $agendamento->paciente->id)
-            <a class="btn btn-primary btn-sm d-inline" href="{{ route('videoconferencia', $agendamento->id) }}" title="Iniciar teleconsulta"><i class="fas fa-video"></i></a>
+           <a class="btn btn-primary btn-sm d-inline" href="{{ route('videoconferencia', $agendamento->id) }}" title="Iniciar teleconsulta"><i class="fas fa-video"></i></a>
         @endif
     @endif
 

@@ -17,14 +17,14 @@ class VideoConferenciaController extends Controller
 {
     // Obtém o primeiro agendamento com o paciente
     $agendamento = Agendamento::with('paciente')->first();
-    
+
     // Buscar medicamentos disponíveis
     $medicamentos = Medicamento::all();
 
     return view('video_conferencia.videoconferencia', compact('agendamento', 'medicamentos'));
 }
 
-    
+
     // Função para lidar com a videoconferência e salvar diagnóstico e prescrição
     public function videoconferencia($id)
     {
@@ -40,11 +40,11 @@ class VideoConferenciaController extends Controller
     {
         // Log dos dados recebidos
         Log::info('Dados recebidos para salvar a consulta:', $request->all());
-    
+
         // Buscar o agendamento pelo ID
         $agendamento = Agendamento::with('paciente', 'disponibilidades.medico')->findOrFail($agendamentoId);
         Log::info('Agendamento encontrado:', ['agendamento_id' => $agendamentoId, 'data' => $agendamento]);
-    
+
         // Validação dos dados recebidos
         $validatedData = $request->validate([
             'diagnostico.descricao' => 'required|string',
@@ -54,7 +54,7 @@ class VideoConferenciaController extends Controller
             'prescricao.instrucoes' => 'nullable|array',
         ]);
         Log::info('Dados validados:', $validatedData);
-    
+
         // Criar a consulta com dados do agendamento
         $consulta = Consulta::create([
             'data_consulta' => $agendamento->dia, // Usando a data do agendamento
@@ -64,7 +64,7 @@ class VideoConferenciaController extends Controller
             'paciente_id' => $agendamento->paciente_id,
         ]);
         Log::info('Consulta criada:', ['consulta_id' => $consulta->id]);
-    
+
         // Criar o diagnóstico associado à consulta
         if (isset($validatedData['diagnostico'])) {
             $diagnosticoData = array_merge($validatedData['diagnostico'], [
@@ -74,7 +74,7 @@ class VideoConferenciaController extends Controller
             Diagnostico::create($diagnosticoData);
             Log::info('Diagnóstico criado:', $diagnosticoData);
         }
-    
+
         // Criar a prescrição associada à consulta
         if (isset($validatedData['prescricao'])) {
             $prescricaoData = array_merge($validatedData['prescricao'], [
@@ -83,7 +83,7 @@ class VideoConferenciaController extends Controller
             ]);
             $prescricao = Prescricao::create($prescricaoData);
             Log::info('Prescrição criada:', $prescricaoData);
-    
+
             // Associar os medicamentos à prescrição
             if (isset($validatedData['prescricao']['medicamentos'])) {
                 foreach ($validatedData['prescricao']['medicamentos'] as $medicamentoId) {
@@ -99,11 +99,11 @@ class VideoConferenciaController extends Controller
                 }
             }
         }
-    
+
         // Redirecionar ou retornar uma resposta de sucesso
         Log::info('Consulta salva com sucesso:', ['consulta_id' => $consulta->id]);
-        return redirect()->route('consultaIndex')->with('success', 'Consulta salva com sucesso!');
-        
+        return redirect()->route('agendamentosMarcados')->with('success', 'Consulta salva com sucesso!');
+
     }
-    
+
 }
