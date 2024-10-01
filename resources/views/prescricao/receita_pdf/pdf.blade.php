@@ -86,8 +86,8 @@
 <body>
     <div class="container">
         <div class="header">
-          
-            <h1>SIMARCO</h1>
+
+            <h1>CLINICARE</h1>
             <h2>Prescrição Médica</h2>
         </div>
 
