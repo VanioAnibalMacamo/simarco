@@ -86,7 +86,14 @@
 <body>
     <div class="container">
         <div class="header">
+<<<<<<< Updated upstream
 
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> aeefc8742c73f112af2080516adbd2ba6e277d10
+>>>>>>> Stashed changes
             <h1>CLINICARE</h1>
             <h2>Prescrição Médica</h2>
         </div>
