@@ -17,6 +17,7 @@
             </div>
         @endif
 
+        
         @if(session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}
@@ -74,11 +75,13 @@
 @stop
 
 @section('js')
-<script>
+<script> 
+/*
+
     setTimeout(function () {
         document.querySelectorAll('.alert').forEach(function (alert) {
             alert.remove();
         });
-    }, 5000);
+    }, 5000);*/
 </script>
 @stop

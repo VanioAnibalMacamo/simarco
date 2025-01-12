@@ -6,9 +6,10 @@
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
+    <!--
     @if (session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
+    @endif -->
     <h1>Disponibilidade do Médico {{ $medico->especialidade->descricao }}: {{ $medico->nome }}</h1>
 @stop
 

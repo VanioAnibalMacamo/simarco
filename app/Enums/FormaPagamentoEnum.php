@@ -4,9 +4,9 @@ namespace App\Enums;
 
 enum FormaPagamentoEnum: string
 {
-    case CASH = 'Cash';
-    case SEGURO = 'Via Seguro de Saude';
-    case EMPRESA = 'Via Empresa';
+    case TRANSFERENCIA_BANCARIA = 'Transferencia Bancaria';
+    case APOLICE = 'Apolice';
+    case CARTEIRAS_MOVEIS = 'Carteiras Moveis';
 
     public static function getValues(): array
     {
