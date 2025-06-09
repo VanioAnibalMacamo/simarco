@@ -18,27 +18,32 @@
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for="paciente_nome">Nome do Paciente</label>
-                    <input type="text" class="form-control" id="paciente_nome" name='paciente_nome' value="{{ $agendamento->paciente->nome }}" readonly>
+                    <input type="text" class="form-control" id="paciente_nome" name='paciente_nome'
+                        value="{{ $agendamento->paciente->nome }}" readonly>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="status_consulta">Status da Consulta</label>
                     <input type="text" class="form-control" id="status_consulta" name='status_consulta'
-                           value="{{ $consulta ? ($prescricao ? 'Prescrita' : ($diagnostico ? 'Diagnosticada' : 'Realizada')) : 'Agendada' }}" readonly>
+                        value="{{ $consulta ? ($prescricao ? 'Prescrita' : ($diagnostico ? 'Diagnosticada' : 'Realizada')) : 'Agendada' }}"
+                        readonly>
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for="medico_nome">Nome do Médico</label>
-                    <input type="text" class="form-control" id="medico_nome" name='medico_nome' value="{{ $agendamento->disponibilidades[0]->medico->nome }}" readonly>
+                    <input type="text" class="form-control" id="medico_nome" name='medico_nome'
+                        value="{{ $agendamento->disponibilidades[0]->medico->nome }}" readonly>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="especialidade">Especialidade</label>
-                    <input type="text" class="form-control" id="especialidade" name='especialidade' value="{{ $agendamento->disponibilidades[0]->medico->especialidade->descricao ?? 'Não definida' }}" readonly>
+                    <input type="text" class="form-control" id="especialidade" name='especialidade'
+                        value="{{ $agendamento->disponibilidades[0]->medico->especialidade->descricao ?? 'Não definida' }}"
+                        readonly>
                 </div>
             </div>
 
-            @if($consulta)
+            @if ($consulta)
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label for="data_consulta">Data da Consulta</label>
@@ -120,22 +125,28 @@
             @endif
         </div>
         <div class="card-footer d-flex">
-    <a href="{{ route('agendamentosMarcados') }}" type="button" class="btn btn-warning">Voltar</a>
-    <a class="btn btn-success btn-sm d-inline px-4 mx-3" href="{{ route('prescricao.download', $prescricao->id) }}" title="Baixar Prescrição">
-        <i class="fas fa-download"></i>
-    </a>
-</div>
+            <a href="{{ route('agendamentosMarcados') }}" type="button" class="btn btn-warning">Voltar</a>
+            @if ($prescricao)
+                <a class="btn btn-success btn-sm d-inline px-4 mx-3"
+                    href="{{ route('prescricao.download', $prescricao->id) }}" title="Baixar Prescrição">
+                    <i class="fas fa-download"></i>
+                </a>
+            @endif
+
+        </div>
 
 
 
 
-    <!-- /.card -->
-@stop
+        <!-- /.card -->
+    @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
+    @section('css')
+        <link rel="stylesheet" href="/css/admin_custom.css">
+    @stop
 
-@section('js')
-    <script> console.log('Visualizar Agendamento Carregado!'); </script>
-@stop
+    @section('js')
+        <script>
+            console.log('Visualizar Agendamento Carregado!');
+        </script>
+    @stop
